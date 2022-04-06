@@ -9,17 +9,17 @@ const JsonFilesContext = createContext()
 // Best idea: see "getReferencedFolder" in "cozy-client/models/folder"
 const jsonFilesDefault = {
   inokufu: {
-    name: 'Inokufu.md',
+    name: 'Inokufu.json',
     data: [],
     dataLoaded: false
   },
   jobready: {
-    name: 'Jobready.md',
+    name: 'jobready.json',
     data: [],
     dataLoaded: false
   },
   orientoi: {
-    name: 'Orientoi.md',
+    name: 'orientoi.json',
     data: [],
     dataLoaded: false
   }

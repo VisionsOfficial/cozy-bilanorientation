@@ -11,7 +11,7 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles'
 const SoftSkills = () => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
-  const datas = jsonFiles.orientoi.data?.data?.badges || []
+  const datas = jsonFiles.orientoi.data?.badges || []
 
   return (
     <Accordion icon={SoftSkillIcon} title={t('softSkills')}>
