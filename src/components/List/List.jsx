@@ -31,7 +31,7 @@ const List = () => {
             leftIcon={SchoolIcon}
             text={t('List.schoolReports')}
           />
-          <ListItem link="/wip" leftIcon={WorkIcon} text={t('List.skills')} />
+          <ListItem link="/skills" leftIcon={WorkIcon} text={t('List.skills')} />
           <ListItem
             link="/jobExplorations"
             leftIcon={StarIcon}

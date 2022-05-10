@@ -8,7 +8,7 @@ const JobExplorationsPage = () => {
   //
   return (
     <>
-      {/* <JobCards /> */}
+      <JobCards />
       <EducationalContents />
       <Palm />
     </>

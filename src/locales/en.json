@@ -25,8 +25,8 @@
     "resumes": "CV et lettres de motivation",
     "trainingSearch": "Recherche de formation"
   },
-  "softSkills": "Mes talents de personne",
-  "badges": "Mes badges",
+  "softSkills": "Mes talents de personne - Orientoi",
+  "badges": "Mes badges - Jobready",
   "level": "Niveau",
   "context": "Contexte",
   "type": "Type",
@@ -39,5 +39,9 @@
       "error": "%{name} is not found",
       "info": "Data files are being loaded"
     }
-  }
+  },
+  "curiose.jobs": "Mes pistes métiers - Curiose",
+  "studyAdvisorTitle": "StudyAdvisor",
+  "interviewAppTitle": "InterviewApp",
+  "tridanTitle": "Tridan"
 }

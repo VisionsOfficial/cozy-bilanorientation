@@ -14,12 +14,42 @@ const jsonFilesDefault = {
     dataLoaded: false
   },
   jobready: {
-    name: 'jobready.md',
+    name: 'Jobready.md',
     data: [],
     dataLoaded: false
   },
   orientoi: {
-    name: 'orientoi.md',
+    name: 'Orientoi.md',
+    data: [],
+    dataLoaded: false
+  },
+  curiose: {
+    name: 'Curiose.md',
+    data: [],
+    dataLoaded: false
+  },
+  studyAdvisor: {
+    name: 'StudyAdvisor.md',
+    data: [],
+    dataLoaded: false
+  },
+  interviewApp: {
+    name: 'InterviewApp.md',
+    data: [],
+    dataLoaded: false
+  },
+  pitangoo: {
+    name: 'Pitangoo.md',
+    data: [],
+    dataLoaded: false
+  },
+  tridan: {
+    name: 'Tridan.md',
+    data: [],
+    dataLoaded: false
+  },
+  '5Discovery': {
+    name: '5Discovery.md',
     data: [],
     dataLoaded: false
   }

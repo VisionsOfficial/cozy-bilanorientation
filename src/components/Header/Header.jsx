@@ -26,12 +26,22 @@ const Title = () => {
   const { t } = useI18n()
 
   let title = t('orientationReport')
-  if (pathname === '/softSkills') {
-    title = t('List.softSkills')
-  } else if (pathname === '/jobExplorations') {
-    title = t('List.jobExplorations')
-  } else if (pathname === '/wip') {
-    title = t('Travaux en cours')
+  switch (pathname) {
+    case '/softSkills':
+      title = t('List.softSkills')
+      break;
+    case '/jobExplorations':
+      title = t('List.jobExplorations')
+      break;
+    case '/skills':
+      title = t('List.skills')
+      break;
+    case '/trainingSearch':
+      title = t('List.trainingSearch')
+      break;
+    case '/wip':
+      title = t('Travaux en cours')
+      break;
   }
 
   return <>{title}</>

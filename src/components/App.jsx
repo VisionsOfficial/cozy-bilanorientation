@@ -20,6 +20,7 @@ import List from 'src/components/List'
 import SoftSkillsPage from 'src/components/Views/SoftSkillsPage'
 import JobExplorationsPage from 'src/components/Views/JobExplorationsPage'
 import WipPage from 'src/components/Views/WipPage'
+import ExperiencesPage from 'src/components/Views/ExperiencesPage/ExperiencesPage'
 import { useJsonFiles } from 'src/components/Hooks/useJsonFiles'
 
 const styles = {
@@ -95,6 +96,7 @@ const App = () => {
                     path="/jobExplorations"
                     component={JobExplorationsPage}
                   />
+                  <Route path="/skills" component={ExperiencesPage} />
                   <Route path="/wip" component={WipPage} />
                   <Redirect from="/" to="/index" />
                   <Redirect from="*" to="/index" />

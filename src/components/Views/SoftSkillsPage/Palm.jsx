@@ -51,7 +51,8 @@ const Palm = () => {
       <Grid className="u-mv-1" container spacing={2}>
         {step === 0 && (
           <div style={styles.h5}>
-            <h5>
+            <h5>Bientôt disponible</h5>
+            {/* <h5>
               Pour récupérer vos Matchings de métiers, veuillez vous assurer que
               vous avec activé PALM depuis la page d'accueil de votre Cozy, puis
               revenez ici et entrez votre email.
@@ -65,7 +66,7 @@ const Palm = () => {
             </Grid>
             <button style={styles.button} onClick={tryLoadMatchings}>
               Valider
-            </button>
+            </button> */}
           </div>
         )}
         {step === 1 &&
