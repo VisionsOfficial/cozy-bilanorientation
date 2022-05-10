@@ -3,6 +3,7 @@ import React from 'react'
 import JobCards from './JobCards'
 import EducationalContents from './EducationalContents'
 import Palm from '../SoftSkillsPage/Palm'
+import Becomino from './Becomino'
 
 const JobExplorationsPage = () => {
   //
@@ -10,6 +11,7 @@ const JobExplorationsPage = () => {
     <>
       <JobCards />
       <EducationalContents />
+      <Becomino />
       <Palm />
     </>
   )

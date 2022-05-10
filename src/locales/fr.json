@@ -25,6 +25,10 @@
     "resumes": "CV et lettres de motivation",
     "trainingSearch": "Recherche de formation"
   },
+  "wip": {
+    "comingSoon": "Bientôt sur vos écrans...",
+    "text": "... votre bilan d’orientation avec des fonctionnalités de partage, de création de CV et lettres de motivation, des synthèses graphiques pour mieux vous connaitre, la connexion à de nouveaux contenus pédagogiques et sources de données, des notes sur votre recherche de métiers et formations, un catalogue de service pour vous accompagner dans votre orientation ..."
+  },
   "softSkills": "Mes talents de personne - Orientoi",
   "badges": "Mes badges - Jobready",
   "level": "Niveau",
@@ -44,5 +48,6 @@
   "studyAdvisorTitle": "StudyAdvisor",
   "interviewAppTitle": "InterviewApp",
   "tridanTitle": "Tridan",
-  "5DiscoveryTitle": "5Discovery - Bientôt Disponible"
+  "5DiscoveryTitle": "5Discovery - Bientôt Disponible",
+  "becominoTitle": "Becomino"
 }

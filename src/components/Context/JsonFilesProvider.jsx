@@ -13,6 +13,11 @@ const jsonFilesDefault = {
     data: [],
     dataLoaded: false
   },
+  becomino: {
+    name: 'Becomino.md',
+    data: [],
+    dataLoaded: false
+  },
   jobready: {
     name: 'Jobready.md',
     data: [],
