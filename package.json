@@ -1,6 +1,6 @@
 {
   "name": "bilanorientation",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "scripts": {
     "build": "yarn build:browser",
     "build:browser": "cs build --browser",

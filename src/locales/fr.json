@@ -26,6 +26,7 @@
     "trainingSearch": "Recherche de formation"
   },
   "wip": {
+    "inProgress": "Travaux en cours...",
     "comingSoon": "Bientôt sur vos écrans...",
     "text": "... votre bilan d’orientation avec des fonctionnalités de partage, de création de CV et lettres de motivation, des synthèses graphiques pour mieux vous connaitre, la connexion à de nouveaux contenus pédagogiques et sources de données, des notes sur votre recherche de métiers et formations, un catalogue de service pour vous accompagner dans votre orientation ..."
   },

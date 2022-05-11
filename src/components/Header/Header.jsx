@@ -29,19 +29,19 @@ const Title = () => {
   switch (pathname) {
     case '/softSkills':
       title = t('List.softSkills')
-      break;
+      break
     case '/jobExplorations':
       title = t('List.jobExplorations')
-      break;
+      break
     case '/skills':
       title = t('List.skills')
-      break;
+      break
     case '/trainingSearch':
       title = t('List.trainingSearch')
-      break;
+      break
     case '/wip':
-      title = t('Travaux en cours')
-      break;
+      title = t('wip.inProgress')
+      break
   }
 
   return <>{title}</>
