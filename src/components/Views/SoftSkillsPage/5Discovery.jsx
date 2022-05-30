@@ -11,7 +11,7 @@ import { useJsonFiles } from "../../Hooks/useJsonFiles";
 const FiveDiscovery = () => {
   const { t } = useI18n();
   const { jsonFiles } = useJsonFiles();
-  const data = jsonFiles['5Discovery']?.data || {};
+  const data = jsonFiles['5Discovery']?.data || [];
 
   return (
     <Accordion icon={icon} title={t("5DiscoveryTitle")}>
