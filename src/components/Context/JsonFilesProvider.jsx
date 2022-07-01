@@ -57,6 +57,11 @@ const jsonFilesDefault = {
     name: '5Discovery.md',
     data: [],
     dataLoaded: false
+  },
+  PALM: {
+    name: 'PALM.md',
+    data: [],
+    dataLoaded: false
   }
 }
 

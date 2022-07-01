@@ -1,32 +1,32 @@
-import React from "react";
+import React from 'react'
 
-import { Media, Img, Bd } from "cozy-ui/transpiled/react/Media";
-import Typography from "cozy-ui/transpiled/react/Typography";
-import Icon from "cozy-ui/transpiled/react/Icon";
+import { Media, Img, Bd } from 'cozy-ui/transpiled/react/Media'
+import Typography from 'cozy-ui/transpiled/react/Typography'
+import Icon from 'cozy-ui/transpiled/react/Icon'
 
-import EyeIcon from "../../../assets/icons/icon-eye.svg";
+import EyeIcon from '../../../assets/icons/icon-eye.svg'
 
 const styles = {
   imgContainer: {
-    paddingRight: "1rem"
+    paddingRight: '1rem'
   },
   img: {
-    width: "65px",
-    height: "60px"
+    width: '65px',
+    height: '60px'
   },
   keywords: {
-    marginLeft: "10px",
-    color: "#C4C4C4",
-    padding: "8px",
-    textTransform: "uppercase",
-    backgroundColor: "#18233F",
-    borderRadius: "6px",
-    fontSize: "12px"
+    marginLeft: '10px',
+    color: '#C4C4C4',
+    padding: '8px',
+    textTransform: 'uppercase',
+    backgroundColor: '#18233F',
+    borderRadius: '6px',
+    fontSize: '12px'
   },
   title: {
-    color: "#21BBEF"
+    color: '#21BBEF'
   }
-};
+}
 
 const EducationalContent = ({ date, keywords, picture, title, url }) => {
   return (
@@ -59,7 +59,7 @@ const EducationalContent = ({ date, keywords, picture, title, url }) => {
         </a>
       </Img>
     </Media>
-  );
-};
+  )
+}
 
-export default EducationalContent;
+export default EducationalContent

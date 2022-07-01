@@ -10,18 +10,24 @@ import Icon from 'cozy-ui/transpiled/react/Icon'
 const styles = {
   title: {
     textTransform: 'none'
+  },
+  content: {
+    padding: '0px 20px'
   }
 }
 
-const Accordion = ({ icon, title, children }) => {
+const Accordion = ({ icon, title, children, bgHeader, addStyles }) => {
   return (
-    <MuiAccordion expanded>
-      <AccordionSummary expandIcon={<Icon icon={icon} size={37} />}>
+    <MuiAccordion expanded style={addStyles}>
+      <AccordionSummary
+        expandIcon={<Icon icon={icon} size={37} />}
+        style={{ backgroundColor: bgHeader }}
+      >
         <Typography variant="h6" component="div" style={styles.title}>
           {title}
         </Typography>
       </AccordionSummary>
-      <AccordionDetails>{children}</AccordionDetails>
+      <AccordionDetails style={styles.content}>{children}</AccordionDetails>
     </MuiAccordion>
   )
 }

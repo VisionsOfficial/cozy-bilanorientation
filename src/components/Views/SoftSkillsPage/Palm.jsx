@@ -1,53 +1,53 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-import Grid from "cozy-ui/transpiled/react/MuiCozyTheme/Grid";
-import Accordion from "../../Accordion";
+import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
+import Accordion from '../../Accordion'
 
-import PalmMatching from "../../PalmMatching/PalmMatching";
+import PalmMatching from '../../PalmMatching/PalmMatching'
 
-import palmIcon from "../../../assets/icons/palm.svg";
-import { Input } from "@material-ui/core";
+import palmIcon from '../../../assets/icons/palm.svg'
+import { Input } from '@material-ui/core'
 
-const PALM_MATCHING_URL = "https://palm-app.io/vision-matchings/?email=";
+const PALM_MATCHING_URL = 'https://palm-app.io/vision-matchings/?email='
 
 const styles = {
   button: {
-    padding: "5px",
+    padding: '5px',
     margin: 5,
-    background: "rgb(33, 187, 239)",
-    color: "white",
+    background: 'rgb(33, 187, 239)',
+    color: 'white',
     fontSize: 18,
     borderRadius: 5,
-    border: "none",
-    cursor: "pointer"
+    border: 'none',
+    cursor: 'pointer'
   },
   h5: {
     padding: 25
   }
-};
+}
 
 const Palm = () => {
-  const [email, setEmail] = useState("");
-  const [step, setStep] = useState(0);
-  const [matchings, setMatchings] = useState([]);
+  const [email, setEmail] = useState('')
+  const [step, setStep] = useState(0)
+  const [matchings, setMatchings] = useState([])
 
   const tryLoadMatchings = async e => {
-    const res = await fetch(PALM_MATCHING_URL + email);
+    const res = await fetch(PALM_MATCHING_URL + email)
     if (res.status != 200)
-      return alert("Une erreur est survenue auprès de PALM");
+      return alert('Une erreur est survenue auprès de PALM')
 
-    const resMatchings = await res.json();
+    const resMatchings = await res.json()
     if (resMatchings.length === 0) {
-      setStep(2);
-      return;
+      setStep(2)
+      return
     }
 
-    setMatchings(resMatchings);
-    setStep(1);
-  };
+    setMatchings(resMatchings)
+    setStep(1)
+  }
 
   return (
-    <Accordion icon={palmIcon} title={"Mes matchings"}>
+    <Accordion icon={palmIcon} title={'Mes matchings'}>
       <Grid className="u-mv-1" container spacing={2}>
         {step === 0 && (
           <div style={styles.h5}>
@@ -93,7 +93,7 @@ const Palm = () => {
         )}
       </Grid>
     </Accordion>
-  );
-};
+  )
+}
 
-export default Palm;
+export default Palm

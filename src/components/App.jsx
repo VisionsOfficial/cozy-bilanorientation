@@ -21,11 +21,14 @@ import SoftSkillsPage from 'src/components/Views/SoftSkillsPage'
 import JobExplorationsPage from 'src/components/Views/JobExplorationsPage'
 import WipPage from 'src/components/Views/WipPage'
 import ExperiencesPage from 'src/components/Views/ExperiencesPage/ExperiencesPage'
+import JobsInTensions from './Views/JobsInTension'
+import HomePage from './Views/HomePage'
 import { useJsonFiles } from 'src/components/Hooks/useJsonFiles'
 
 const styles = {
   content: {
-    marginTop: '-55px'
+    marginTop: '-55px',
+    overflow: 'visible'
   }
 }
 
@@ -90,7 +93,7 @@ const App = () => {
                 </div>
               ) : (
                 <Switch>
-                  <Route path="/index" component={List} />
+                  <Route path="/index" component={HomePage} />
                   <Route path="/softSkills" component={SoftSkillsPage} />
                   <Route
                     path="/jobExplorations"
@@ -98,6 +101,7 @@ const App = () => {
                   />
                   <Route path="/skills" component={ExperiencesPage} />
                   <Route path="/wip" component={WipPage} />
+                  <Route path="/jobsintensions" component={JobsInTensions} />
                   <Redirect from="/" to="/index" />
                   <Redirect from="*" to="/index" />
                 </Switch>

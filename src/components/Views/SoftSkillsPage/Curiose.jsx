@@ -1,39 +1,39 @@
-import React from "react";
+import React from 'react'
 
-import { useI18n } from "cozy-ui/transpiled/react/I18n";
+import { useI18n } from 'cozy-ui/transpiled/react/I18n'
 
-import Accordion from "../../Accordion";
-import CurioseIcon from "../../../assets/icons/curiose.svg";
-import { useJsonFiles } from "../../Hooks/useJsonFiles";
+import Accordion from '../../Accordion'
+import CurioseIcon from '../../../assets/icons/curiose.svg'
+import { useJsonFiles } from '../../Hooks/useJsonFiles'
 
 const styles = {
   keywords: {
-    marginLeft: "10px",
-    color: "#C4C4C4",
-    padding: "8px",
-    textTransform: "uppercase",
-    backgroundColor: "#18233F",
-    borderRadius: "6px",
-    fontSize: "12px"
+    marginLeft: '10px',
+    color: '#C4C4C4',
+    padding: '8px',
+    textTransform: 'uppercase',
+    backgroundColor: '#18233F',
+    borderRadius: '6px',
+    fontSize: '12px'
   },
   list: {
-    listStyleType: "none"
+    listStyleType: 'none'
   },
   separator: {
     width: 40,
     height: 3,
-    background: "orange"
+    background: 'orange'
   }
-};
+}
 
 const Curiose = () => {
-  const { t } = useI18n();
-  const { jsonFiles } = useJsonFiles();
-  const data = jsonFiles.curiose?.data?.response || [];
+  const { t } = useI18n()
+  const { jsonFiles } = useJsonFiles()
+  const data = jsonFiles.curiose?.data?.response || []
 
   return (
-    <Accordion icon={CurioseIcon} title={t("curiose.jobs")}>
-      <div style={{ padding: "25px" }}>
+    <Accordion icon={CurioseIcon} title={t('curiose.jobs')}>
+      <div style={{ padding: '25px' }}>
         <h5>Bientôt disponible</h5>
       </div>
       {/* {data.length === 0 ? (
@@ -59,7 +59,7 @@ const Curiose = () => {
         </div>
       )} */}
     </Accordion>
-  );
-};
+  )
+}
 
-export default Curiose;
+export default Curiose

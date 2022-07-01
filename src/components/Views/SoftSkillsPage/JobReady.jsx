@@ -16,10 +16,10 @@ const JobReady = () => {
   console.log(datas)
 
   return (
-    <Accordion icon={JobReadyIcon} title={t("badges")}>
+    <Accordion icon={JobReadyIcon} title={t('badges')}>
       <Grid className="u-mv-1" container spacing={2}>
         {datas.length === 0 && (
-          <div style={{ padding: "25px" }}>
+          <div style={{ padding: '25px' }}>
             <h5>Données introuvables</h5>
           </div>
         )}
@@ -27,15 +27,15 @@ const JobReady = () => {
           datas.map(({ context: contexts, level, skill }, index) => (
             <Grid key={index} item xs={12} sm={4}>
               <Badge
-                title={skill.name || ""}
-                mainText={t("context") + ` : ${contexts.join(", ")}`}
-                subText={t("level") + ` : ${level}`}
+                title={skill.name || ''}
+                mainText={t('context') + ` : ${contexts.join(', ')}`}
+                subText={t('level') + ` : ${level}`}
               />
             </Grid>
           ))}
       </Grid>
     </Accordion>
-  );
+  )
 }
 
 export default JobReady
