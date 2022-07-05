@@ -14,13 +14,12 @@ const styles = {
     borderRadius: '15px'
   },
   badge: {
-    margin: '10px',
     padding: '20px 10px',
     borderRadius: '10px'
   }
 }
 
-const bgBadge = '#e7f9fb'
+const bgBadge = 'linear-gradient(85deg, #16f7b415, #21bbee15)'
 const getThirdElements = arr => arr.slice(0, 3)
 
 const Palm = () => {
@@ -31,14 +30,14 @@ const Palm = () => {
   return (
     <Accordion
       icon={icon}
-      title={t("Offres d'emplois des métiers en tension")}
+      title={t('jobsOffers')}
       addStyles={styles.card}
       bgHeader={'#FFF'}
     >
-      <Grid className="u-mv-1" container>
+      <Grid className="u-mv-1" container spacing={2}>
         {datas.map(
-          ({ mission_name, similarity, short_summary, email }, index) => (
-            <Grid key={index} item xs={12} sm={4}>
+          ({ mission_name, similarity, short_summary, email, url }, index) => (
+            <Grid key={index} item xs={12} sm={12} lg={6} xl={4}>
               <Badge
                 title={mission_name}
                 mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
@@ -47,6 +46,7 @@ const Palm = () => {
                 addStyles={styles.badge}
                 btn={true}
                 email={email}
+                url={url}
               />
             </Grid>
           )

@@ -12,10 +12,9 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles'
 
 const styles = {
   card: {
-    borderRadius: '15px',
+    borderRadius: '15px'
   },
   badge: {
-    margin: '10px',
     padding: '20px 10px',
     borderRadius: '10px'
   }
@@ -28,10 +27,15 @@ const Orientoi = () => {
   const { jsonFiles } = useJsonFiles()
   const datas = getThirdElements(jsonFiles.orientoi.data?.jobCards || [])
   return (
-    <Accordion icon={icon} title={t('Métiers en tension proposés/sélectionnés')} addStyles={styles.card} bgHeader={'#FFF'}>
-      <Grid className="u-mv-1" container>
+    <Accordion
+      icon={icon}
+      title={t('offersPorposed')}
+      addStyles={styles.card}
+      bgHeader={'#FFF'}
+    >
+      <Grid className="u-mv-1" container spacing={2}>
         {datas.map(({ name, positionnement }, index) => (
-          <Grid key={index} item xs={12} sm={4}>
+          <Grid key={index} item xs={12} sm={12} lg={6} xl={4}>
             <Badge
               title={name}
               mainText={t('positionning') + ` : ${positionnement}`}

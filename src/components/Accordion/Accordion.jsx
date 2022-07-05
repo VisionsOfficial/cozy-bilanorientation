@@ -12,7 +12,7 @@ const styles = {
     textTransform: 'none'
   },
   content: {
-    padding: '0px 20px'
+    padding: '0px 5px'
   }
 }
 

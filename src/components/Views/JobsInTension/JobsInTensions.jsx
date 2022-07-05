@@ -17,7 +17,9 @@ const JobsInTensions = () => {
   }
   return (
     <>
-      <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
+      <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
+        <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
+      </div>
       <Orientoi />
       <Inokufu />
       <Palm />

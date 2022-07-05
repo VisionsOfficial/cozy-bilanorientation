@@ -30,7 +30,9 @@ const HomePage = () => {
 
   return (
     <>
-      <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
+      <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
+        <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
+      </div>
       <List title={'Mes données'}>
         <ListItem
           link="/softSkills"

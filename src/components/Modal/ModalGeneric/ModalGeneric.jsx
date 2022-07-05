@@ -4,6 +4,8 @@ import ShareBilanBtn from '../../Button/ShareBilanBtn'
 
 // TMP
 import logoTmp from '../../../assets/icons/icon-check.svg'
+import logoVisions from '../../../assets/icons/logo_picto.svg'
+
 
 const regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
 
@@ -19,7 +21,7 @@ const ModalGeneric = ({ open = false, closeModal }) => {
       setConfirmation(true)
       setSaveEmail(emailRef.current.value)
     } else {
-      alert('mauvaise adresse email')
+      alert('adresse email erronée')
     }
   }
 
@@ -50,7 +52,7 @@ const ModalGeneric = ({ open = false, closeModal }) => {
       <div className="modal">
         <div className="modalHeader">
           <div className="modalLogo">
-            <Icon icon={logoTmp} className="modalImg" />
+            <Icon icon={logoVisions} className="modalImg" />
           </div>
           <div className="closeModal" onClick={closeModal}>
             <span>x</span>

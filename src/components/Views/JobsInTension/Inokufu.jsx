@@ -15,15 +15,13 @@ const styles = {
     borderRadius: '15px'
   },
   badge: {
-    margin: '10px',
-    padding: '20px 10px',
+    padding: '5px 10px',
     borderRadius: '10px',
-    justifyContent: 'space-evenly',
-    height: '70%'
+    height: '100%'
   }
 }
 
-const bgBadge = '#e4f7fd'
+const bgBadge = '#f3f4f6'
 const getLastElements = (arr, x) => arr.slice(Math.max(arr.length - x, 1))
 
 const Inokufu = () => {
@@ -38,9 +36,9 @@ const Inokufu = () => {
       addStyles={styles.card}
       bgHeader={'#FFF'}
     >
-      <Grid className="u-mv-1" container>
+      <Grid className="u-mv-1" container spacing={2}>
         {datas.map(({ title, keywords, picture, url }, index) => (
-          <Grid key={index} item xs={12} sm={4}>
+          <Grid key={index} item xs={12} sm={12} lg={6} xl={4} spacing={2}>
             <BadgeRow
               title={title}
               mainText={keywords}

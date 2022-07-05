@@ -18,9 +18,10 @@ const styles = {
     textAlign: 'center'
   },
   subText: {
-    fontWeight: 200,
+    fontWeight: 400,
     textAlign: 'center',
-    fontSize: '14px'
+    fontSize: '14px',
+    marginBottom: '10px'
   }
 }
 
@@ -32,6 +33,7 @@ const Badge = ({
   background = '#FFFFFF',
   addStyles,
   email,
+  url,
   btn = false
 }) => {
   const [open, setOpen] = useState(false)
@@ -51,7 +53,13 @@ const Badge = ({
       >
         <Icon style={styles.icon} icon={icon ? icon : IdeaIcon} size={40} />
         <Typography style={styles.title} variant="h6" component="div" noWrap>
-          {title}
+          {url ? (
+            <div onClick={() => window.open(url)} className="titleJobPalm">
+              {title}
+            </div>
+          ) : (
+            <div>{title}</div>
+          )}
         </Typography>
         <Typography className="u-mv-half" variant="body1">
           {mainText}

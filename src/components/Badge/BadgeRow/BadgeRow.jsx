@@ -8,11 +8,6 @@ import ShareBilanBtn from '../../Button/ShareBilanBtn'
 import ModalBilan from '../../Modal/ModalBilan/ModalBilan'
 
 const styles = {
-  icon: {
-    width: '40px',
-    height: '40px',
-    cursor: 'pointer'
-  },
   title: {
     textTransform: 'capitalize',
     color: '#21BBEF',
@@ -26,11 +21,8 @@ const styles = {
   },
   img: {
     width: '100px',
+    height: '75px',
     borderRadius: '10px'
-  },
-  textContent: {
-    margin: '10px',
-    width: '70%'
   }
 }
 
@@ -57,11 +49,19 @@ const BadgeRow = ({
   return (
     <>
       <div
-        className="u-flex u-flex-row u-flex-items-center"
+        className="u-flex u-flex-row u-flex-items-center badgeRow"
         style={{ background: background, ...addStyles }}
       >
-        <img src={picture} alt="" style={styles.img} />
-        <div style={styles.textContent}>
+        <div className="badgeRowImageContainer">
+          <img src={picture} alt="" style={styles.img} />
+          <Icon
+            style={styles.icon}
+            icon={icon ? icon : IdeaIcon}
+            size={40}
+            onClick={() => window.open(url)}
+          />
+        </div>
+        <div className="badgeRowTextContainer">
           <Typography style={styles.title} variant="h6" component="div" noWrap>
             {title}
           </Typography>
@@ -73,21 +73,19 @@ const BadgeRow = ({
           </Typography>
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'center'
+              margin: '10px 0px'
             }}
           >
             <ShareBilanBtn onClickFc={OpenModal} />
           </div>
         </div>
-        <Icon
-          style={styles.icon}
-          icon={icon ? icon : IdeaIcon}
-          size={40}
-          onClick={() => window.open(url)}
-        />
       </div>
-      <ModalBilan open={open} closeModal={closeModal} title={title} email={"doip@ml.u-cergy.fr"} />
+      <ModalBilan
+        open={open}
+        closeModal={closeModal}
+        title={title}
+        email={'doip@ml.u-cergy.fr'}
+      />
     </>
   )
 }
