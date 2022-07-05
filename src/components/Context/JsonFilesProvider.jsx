@@ -44,7 +44,7 @@ const jsonFilesDefault = {
     dataLoaded: false
   },
   pitangoo: {
-    name: 'Pitangoo.md',
+    name: 'PITANGOO.md',
     data: [],
     dataLoaded: false
   },
