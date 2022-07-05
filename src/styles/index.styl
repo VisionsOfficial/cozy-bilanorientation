@@ -49,6 +49,12 @@ centerFlex()
         text-transform: uppercase
         margin: 0px
         font-size: 15px
+    @media screen and (min-width: 771px) and (max-width: 1050px)
+        top: -55px !important
+    @media screen and (max-width: 770px)
+        position: initial !important
+        margin: 15px auto
+        width: max-content
     
 .modalContainer
     position: fixed
@@ -154,6 +160,12 @@ centerFlex()
                 margin-top: 50px
                 display: flex
                 justify-content: center
+#email
+    border-radius: 15px
+    border: 1px solid color-secondary
+    padding: 5px
+    padding-left: 10px
+    font-size: 17px
 .openModal
     display: block
 
@@ -164,6 +176,6 @@ centerFlex()
     span 
         font-weight: 500
 
-// .u-mh-2
-//     @media screen and (max-width: 770px)
-//         margin-top: 0 !important
+.u-mh-2
+    @media screen and (min-width: 770px)
+        margin-top: -55px !important

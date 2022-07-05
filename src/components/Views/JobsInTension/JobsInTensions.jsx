@@ -3,7 +3,7 @@ import Orientoi from './Orientoi'
 import Palm from './Palm'
 import Inokufu from './Inokufu'
 import ShareBilanBtn from '../../Button/ShareBilanBtn'
-import ModalBilan from '../../Modal/ModalBilan/ModalBilan'
+import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric'
 
 const JobsInTensions = () => {
   const [open, setOpen] = useState(false)
@@ -21,11 +21,7 @@ const JobsInTensions = () => {
       <Orientoi />
       <Inokufu />
       <Palm />
-      <ModalBilan
-        open={open}
-        closeModal={closeModal}
-        title={'Envoyer mon bilan général'}
-      />
+      <ModalGeneric open={open} closeModal={closeModal} />
     </>
   )
 }

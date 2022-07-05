@@ -2,7 +2,8 @@ import React from 'react'
 import Inokufu from '../JobsInTension/Inokufu'
 import Palm from '../JobsInTension/Palm'
 import Orientoi from '../JobsInTension/Orientoi'
-import Tridan from '../ExperiencesPage/Tridan'
+import Pitangoo from '../ExperiencesPage/Pitangoo'
+import JobReady from '../SoftSkillsPage/JobReady'
 
 const PublicPage = () => {
   return (
@@ -10,7 +11,8 @@ const PublicPage = () => {
       <Orientoi />
       <Inokufu />
       <Palm />
-      <Tridan />
+      <Pitangoo />
+      <JobReady />
     </>
   )
 }

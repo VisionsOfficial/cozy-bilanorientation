@@ -27,7 +27,7 @@ import PublicPage from './Views/publicPage/PublicPage'
 
 const styles = {
   content: {
-    marginTop: '-55px',
+    // marginTop: '-55px',
     overflow: 'visible'
   }
 }
@@ -101,7 +101,7 @@ const App = () => {
                   />
                   <Route path="/skills" component={ExperiencesPage} />
                   <Route path="/wip" component={WipPage} />
-                  <Route path="/jobsintensions" component={JobsInTensions} />
+                  <Route path="/jobsintension" component={JobsInTensions} />
                   <Route path="/bilanorientation" component={PublicPage} />
                   <Redirect from="/" to="/index" />
                   <Redirect from="*" to="/index" />

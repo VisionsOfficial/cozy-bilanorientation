@@ -14,7 +14,7 @@ import WorkIcon from '../../../assets/icons/icon-work.svg'
 import DefaultIcon from '../../../assets/icons/default_icon.svg'
 import PersonalDataIcon from '../../../assets/icons/icon-personal-data.svg'
 import SchoolIcon from '../../../assets/icons/icon-school.svg'
-import ModalBilan from '../../Modal/ModalBilan/ModalBilan'
+import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric'
 
 const HomePage = () => {
   const { t } = useI18n()
@@ -66,7 +66,7 @@ const HomePage = () => {
           text={'Ma recherche de formation'}
         />
         <ListItem
-          link="/jobsintensions"
+          link="/jobsintension"
           leftIcon={DefaultIcon}
           text={'Mes Matchings avec les métiers en tension'}
         />
@@ -77,11 +77,7 @@ const HomePage = () => {
           noDivider
         />
       </List>
-      <ModalBilan
-        open={open}
-        closeModal={closeModal}
-        title={'Envoyer mon bilan général'}
-      />
+      <ModalGeneric open={open} closeModal={closeModal} />
     </>
   )
 }

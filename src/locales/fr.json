@@ -23,7 +23,8 @@
     "skills": "Mes expériences",
     "jobExplorations": "Métiers que j'explore",
     "resumes": "CV et lettres de motivation",
-    "trainingSearch": "Recherche de formation"
+    "trainingSearch": "Recherche de formation",
+    "myReport": "Mon Bilan VisionsGalaxy"
   },
   "wip": {
     "inProgress": "Travaux en cours...",
@@ -52,5 +53,7 @@
   "5DiscoveryTitle": "5Discovery - Bientôt Disponible",
   "becominoTitle": "Becomino",
   "pitangooTitle": "PITANGOO",
-  "formationOffers": "Offres de formation"
+  "formationOffers": "Offres de formation",
+  "jobsInTension": "Mes Matchings avec les métiers en tension",
+  "public": "Ma page Publique"
 }

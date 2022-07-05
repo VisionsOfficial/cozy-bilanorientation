@@ -42,11 +42,14 @@ const Title = () => {
     case '/wip':
       title = t('wip.inProgress')
       break
-    case '/jobsintensions':
-      title = t('Mes Matchings avec les métiers en tension')
+    case '/jobsintension':
+      title = t('jobsInTension')
       break
     case '/index':
-      title = t('Mon Bilan VisionsGalaxy')
+      title = t('List.myReport')
+      break
+    case '/bilanorientation':
+      title = t('public')
       break
   }
 
@@ -59,6 +62,7 @@ const Header = () => {
   const history = useHistory()
 
   const showBackButton = pathname !== '/index' ? true : false
+  const showBackButtonPublic = pathname !== '/bilanorientation' ? true : false
 
   const goBack = useCallback(() => history.goBack(), [history])
   if (isMobile) return null
@@ -66,7 +70,7 @@ const Header = () => {
   return (
     <div style={styles.header} className="headerBackground">
       <div className="u-flex">
-        {showBackButton && (
+        {showBackButton && showBackButtonPublic && (
           <IconButton
             className="u-mr-1"
             style={styles.backButton}
