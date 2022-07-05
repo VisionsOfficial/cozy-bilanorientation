@@ -16,7 +16,6 @@ import Typography from 'cozy-ui/transpiled/react/Typography'
 import useBreakpoints from 'cozy-ui/transpiled/react/hooks/useBreakpoints'
 
 import Header from 'src/components/Header'
-import List from 'src/components/List'
 import SoftSkillsPage from 'src/components/Views/SoftSkillsPage'
 import JobExplorationsPage from 'src/components/Views/JobExplorationsPage'
 import WipPage from 'src/components/Views/WipPage'
@@ -24,6 +23,7 @@ import ExperiencesPage from 'src/components/Views/ExperiencesPage/ExperiencesPag
 import JobsInTensions from './Views/JobsInTension'
 import HomePage from './Views/HomePage'
 import { useJsonFiles } from 'src/components/Hooks/useJsonFiles'
+import PublicPage from './Views/publicPage/PublicPage'
 
 const styles = {
   content: {
@@ -102,6 +102,7 @@ const App = () => {
                   <Route path="/skills" component={ExperiencesPage} />
                   <Route path="/wip" component={WipPage} />
                   <Route path="/jobsintensions" component={JobsInTensions} />
+                  <Route path="/bilanorientation" component={PublicPage} />
                   <Redirect from="/" to="/index" />
                   <Redirect from="*" to="/index" />
                 </Switch>

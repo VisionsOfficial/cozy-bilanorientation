@@ -31,23 +31,26 @@ const Palm = () => {
   return (
     <Accordion
       icon={icon}
-      title={t("Offres d'emplois des métiers aéroportuaires")}
+      title={t("Offres d'emplois des métiers en tension")}
       addStyles={styles.card}
       bgHeader={'#FFF'}
     >
       <Grid className="u-mv-1" container>
-        {datas.map(({ mission_name, similarity, short_summary }, index) => (
-          <Grid key={index} item xs={12} sm={4}>
-            <Badge
-              title={mission_name}
-              mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
-              subText={short_summary}
-              background={bgBadge}
-              addStyles={styles.badge}
-              btn={true}
-            />
-          </Grid>
-        ))}
+        {datas.map(
+          ({ mission_name, similarity, short_summary, email }, index) => (
+            <Grid key={index} item xs={12} sm={4}>
+              <Badge
+                title={mission_name}
+                mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
+                subText={short_summary}
+                background={bgBadge}
+                addStyles={styles.badge}
+                btn={true}
+                email={email}
+              />
+            </Grid>
+          )
+        )}
       </Grid>
     </Accordion>
   )

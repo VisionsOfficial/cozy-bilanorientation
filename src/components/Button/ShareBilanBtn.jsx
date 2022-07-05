@@ -1,4 +1,7 @@
+import Icon from 'cozy-ui/transpiled/react/Icon'
 import React from 'react'
+
+import Arrow from '../../assets/icons/arrow-right-solid.svg'
 
 const ShareBilanBtn = ({
   absolute = false,
@@ -9,7 +12,7 @@ const ShareBilanBtn = ({
     <div
       style={{
         position: absolute ? 'absolute' : null,
-        top: absolute ? -60 : null,
+        top: absolute ? -83 : null,
         right: absolute ? 0 : null
       }}
       className="btnShare"
@@ -17,7 +20,7 @@ const ShareBilanBtn = ({
     >
       <p className="btnText">{textContent}</p>
       <div className="btnCircle">
-        <p className="btnArrow">&#x2192;</p>
+        <Icon icon={Arrow} />
       </div>
     </div>
   )
