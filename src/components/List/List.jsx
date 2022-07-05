@@ -22,7 +22,7 @@ const styles = {
     color: '#21bbee',
     background: '#17243f',
     marginBottom: '0px',
-    padding: '25px',
+    padding: '20px 25px',
     borderRadius: '20px 20px 0px 0px'
   },
   content: {

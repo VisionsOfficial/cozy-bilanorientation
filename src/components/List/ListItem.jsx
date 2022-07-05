@@ -16,16 +16,16 @@ const style = {
     textDecoration: 'none'
   },
   hover: {
-    background: 'linear-gradient(to right, #16f7b465, #21bbee65)'
+    background: 'linear-gradient(to right, #16f7b465, #21bbee65)',
+    icon: {
+      fill: '#17243f'
+    },
+    arrow: {
+      fill: '#17243f'
+    }
   },
   text: {
     fontWeight: 'bold'
-  },
-  icon: {
-    backgroundImage: 'linear-gradient(90deg, #71f2b8, #21bbee)',
-    webkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent'
   }
 }
 
@@ -41,15 +41,15 @@ const ListItem = ({ link, leftIcon, text, noDivider }) => {
       >
         <UiListItem button style={hovered ? style.hover : null}>
           <ListItemIcon>
-            <Icon icon={leftIcon} size={smallSize} />
+            <Icon icon={leftIcon} style={hovered ? style.hover.icon : null} />
           </ListItemIcon>
-          <ListItemText primary={text} style={style.text} />
+          <ListItemText primary={text} className="listItemText" />
           <ListItemSecondaryAction>
             <Icon
               icon={RightIcon}
               size={smallSize}
-              className="u-mr-1 u-coolGrey"
-              style={style.icon}
+              className="u-mr-1 iconGradient"
+              style={hovered ? style.hover.arrow : null}
             />
           </ListItemSecondaryAction>
         </UiListItem>

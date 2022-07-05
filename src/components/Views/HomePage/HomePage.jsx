@@ -68,7 +68,7 @@ const HomePage = () => {
         <ListItem
           link="/jobsintensions"
           leftIcon={DefaultIcon}
-          text={'Mes Matchings avec les métiers en tensions'}
+          text={'Mes Matchings avec les métiers en tension'}
         />
         <ListItem
           link="#"
@@ -77,7 +77,11 @@ const HomePage = () => {
           noDivider
         />
       </List>
-      <ModalBilan open={open} closeModal={closeModal} title={"Envoyer mon bilan général"} />
+      <ModalBilan
+        open={open}
+        closeModal={closeModal}
+        title={'Envoyer mon bilan général'}
+      />
     </>
   )
 }

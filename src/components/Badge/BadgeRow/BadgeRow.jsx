@@ -87,7 +87,7 @@ const BadgeRow = ({
           onClick={() => window.open(url)}
         />
       </div>
-      <ModalBilan open={open} closeModal={closeModal} title={title} />
+      <ModalBilan open={open} closeModal={closeModal} title={title} email={"doip@ml.u-cergy.fr"} />
     </>
   )
 }

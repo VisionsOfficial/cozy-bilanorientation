@@ -15,7 +15,7 @@ const styles = {
     height: '144px' // full height should be 184px
   },
   backButton: {
-    color: 'white'
+    color: '#17243f'
   }
 }
 
@@ -41,6 +41,12 @@ const Title = () => {
       break
     case '/wip':
       title = t('wip.inProgress')
+      break
+    case '/jobsintensions':
+      title = t('Mes Matchings avec les métiers en tension')
+      break
+    case '/index':
+      title = t('Mon Bilan VisionsGalaxy')
       break
   }
 
@@ -69,7 +75,7 @@ const Header = () => {
             <Icon icon={PerviousIcon} />
           </IconButton>
         )}
-        <Typography variant="h2" className="u-white">
+        <Typography variant="h2" style={{ color: '#17243f' }}>
           <Title />
         </Typography>
       </div>

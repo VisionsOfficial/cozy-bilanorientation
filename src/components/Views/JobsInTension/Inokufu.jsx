@@ -34,7 +34,7 @@ const Inokufu = () => {
   return (
     <Accordion
       icon={icon}
-      title={t('Offres de formation')}
+      title={t('formationOffers')}
       addStyles={styles.card}
       bgHeader={'#FFF'}
     >

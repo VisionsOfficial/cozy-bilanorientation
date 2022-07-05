@@ -31,6 +31,7 @@ const Badge = ({
   icon,
   background = '#FFFFFF',
   addStyles,
+  email,
   btn = false
 }) => {
   const [open, setOpen] = useState(false)
@@ -61,7 +62,12 @@ const Badge = ({
         {btn ? <ShareBilanBtn onClickFc={OpenModal} /> : null}
       </div>
       {btn ? (
-        <ModalBilan open={open} closeModal={closeModal} title={title} />
+        <ModalBilan
+          open={open}
+          closeModal={closeModal}
+          title={title}
+          email={email}
+        />
       ) : null}
     </>
   )
