@@ -1,57 +1,59 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-import Typography from 'cozy-ui/transpiled/react/Typography'
-import Icon from 'cozy-ui/transpiled/react/Icon'
+import Typography from "cozy-ui/transpiled/react/Typography";
+import Icon from "cozy-ui/transpiled/react/Icon";
 
-import IdeaIcon from '../../assets/icons/icon-idea.svg'
-import ShareBilanBtn from '../Button/ShareBilanBtn'
-import ModalBilan from '../Modal/ModalBilan/ModalBilan'
+import IdeaIcon from "../../assets/icons/icon-idea.svg";
+import ShareBilanBtn from "../Button/ShareBilanBtn";
+import ModalBilan from "../Modal/ModalBilan/ModalBilan";
 
 const styles = {
   icon: {
-    marginBottom: '0.5rem'
+    marginBottom: "0.5rem"
   },
   title: {
-    textTransform: 'capitalize',
-    color: '#21BBEF',
-    width: '100%',
-    textAlign: 'center'
+    textTransform: "capitalize",
+    color: "#21BBEF",
+    width: "100%",
+    textAlign: "center"
   },
   subText: {
     fontWeight: 400,
-    textAlign: 'center',
-    fontSize: '14px',
-    marginBottom: '10px'
+    textAlign: "center",
+    fontSize: "14px",
+    marginBottom: "10px"
   }
-}
+};
 
 const Badge = ({
   title,
   mainText,
   subText,
-  icon,
-  background = '#FFFFFF',
+  icon = null,
+  background = "#FFFFFF",
   addStyles,
   email,
   url,
   btn = false
 }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const OpenModal = () => {
-    setOpen(currentOpen => !currentOpen)
-  }
+    setOpen(currentOpen => !currentOpen);
+  };
 
   const closeModal = () => {
-    setOpen(currentOpen => !currentOpen)
-  }
+    setOpen(currentOpen => !currentOpen);
+  };
   return (
     <>
       <div
         className="u-flex u-flex-column u-flex-items-center"
         style={{ background: background, ...addStyles }}
       >
-        <Icon style={styles.icon} icon={icon ? icon : IdeaIcon} size={40} />
+        {icon !== null && (
+          <Icon style={styles.icon} icon={icon ? icon : IdeaIcon} size={40} />
+        )}
         <Typography style={styles.title} variant="h6" component="div" noWrap>
           {url ? (
             <div onClick={() => window.open(url)} className="titleJobPalm">
@@ -78,7 +80,7 @@ const Badge = ({
         />
       ) : null}
     </>
-  )
-}
+  );
+};
 
-export default Badge
+export default Badge;

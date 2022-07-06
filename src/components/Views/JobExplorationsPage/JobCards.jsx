@@ -11,7 +11,7 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles'
 const JobCards = () => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
-  const datas = jsonFiles.orientoi.data?.data?.jobCards || []
+  const datas = jsonFiles.orientoi.data?.jobCards || []
 
   return (
     <Accordion icon={icon} title={t('jobCards')}>

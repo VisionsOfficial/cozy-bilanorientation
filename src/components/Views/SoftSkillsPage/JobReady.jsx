@@ -11,9 +11,7 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles'
 const JobReady = () => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
-  console.log(jsonFiles)
   const datas = jsonFiles.jobready.data?.data?.[0]?.fields || []
-  console.log(datas)
 
   return (
     <Accordion icon={JobReadyIcon} title={t('badges')}>

@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
-import ShareBilanBtn from '../../Button/ShareBilanBtn'
-import Icon from 'cozy-ui/transpiled/react/Icon'
+import React, { useState } from "react";
+import ShareBilanBtn from "../../Button/ShareBilanBtn";
+import Icon from "cozy-ui/transpiled/react/Icon";
 
 // TMP
-import logoVisions from '../../../assets/icons/logo_picto.svg'
-import logoTmp from '../../../assets/icons/icon-check.svg'
+import logoVisions from "../../../assets/icons/logo_picto.svg";
+import logoTmp from "../../../assets/icons/icon-check.svg";
 
 const ModalBilan = ({ open = false, closeModal, title, email }) => {
-  const openModal = open === false ? '' : 'openModal'
+  const openModal = open === false ? "" : "openModal";
 
-  const [confirmation, setConfirmation] = useState(false)
+  const [confirmation, setConfirmation] = useState(false);
   const confirm = () => {
-    setConfirmation(true)
-  }
+    setConfirmation(true);
+  };
 
   if (!confirmation) {
     return (
@@ -31,14 +31,14 @@ const ModalBilan = ({ open = false, closeModal, title, email }) => {
             <p className="modalDesc">Votre bilan va être envoyé à {email}</p>
             <div className="modalBtn">
               <ShareBilanBtn
-                textContent={'Envoyer mon bilan'}
+                textContent={"Envoyer mon bilan"}
                 onClickFc={() => confirm()}
               />
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -53,13 +53,14 @@ const ModalBilan = ({ open = false, closeModal, title, email }) => {
           </div>
         </div>
         <div className="modalContent">
-          <h3 className="modalTitle">
-            Votre bilan a bien été envoyé à {email}
+          <h3 className="modalTitle" style={{ margin: "0 auto" }}>
+            Votre bilan a bien été envoyé à
           </h3>
+          <p style={{ margin: "0 auto", fontWeight: "bold" }}>{email}</p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ModalBilan
+export default ModalBilan;

@@ -18,16 +18,17 @@ const Pitangoo = () => {
       <Grid>
         {data.missions &&
           data.missions.map((m, i) => (
-            <div key={i}>
-              <p>{m.name}</p>
-              <ul>
+            <Grid key={i} item>
+              <div></div>
+              <h3>{m.name}</h3>
+              <ul style={{ listStyleType: "none" }}>
                 {m.tendencies.map((t, y) => (
                   <li key={`${i}_${y}`}>
-                    {t.name}: {t.score}
+                    {t.name} {t.score && <>: {t.score * 100} %</>}
                   </li>
                 ))}
               </ul>
-            </div>
+            </Grid>
           ))}
       </Grid>
     </Accordion>

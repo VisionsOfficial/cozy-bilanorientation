@@ -34,7 +34,8 @@ const BadgeRow = ({
   picture,
   url,
   background = '#FFFFFF',
-  addStyles
+  addStyles,
+  isPublicPage
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -73,10 +74,10 @@ const BadgeRow = ({
           </Typography>
           <div
             style={{
-              margin: '10px 0px'
+              margin: "10px 0px"
             }}
           >
-            <ShareBilanBtn onClickFc={OpenModal} />
+            {!isPublicPage && <ShareBilanBtn onClickFc={OpenModal} />}
           </div>
         </div>
       </div>
@@ -84,10 +85,10 @@ const BadgeRow = ({
         open={open}
         closeModal={closeModal}
         title={title}
-        email={'doip@ml.u-cergy.fr'}
+        email={"doip@ml.u-cergy.fr"}
       />
     </>
-  )
+  );
 }
 
 export default BadgeRow

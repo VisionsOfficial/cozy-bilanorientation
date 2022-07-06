@@ -49,7 +49,7 @@ const Title = () => {
       title = t('List.myReport')
       break
     case '/bilanorientation':
-      title = t('public')
+      title = t('publicPageTitle')
       break
   }
 

@@ -30,47 +30,47 @@ const HomePage = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
+      <div style={{ display: "flex", justifyContent: "center", margin: 10 }}>
         <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
       </div>
-      <List title={'Mes données'}>
+      <List title={"Mes données"}>
         <ListItem
           link="/softSkills"
           leftIcon={GraphCircleIcon}
-          text={t('List.softSkills')}
+          text={t("List.softSkills")}
         />
         <ListItem
           link="/wip"
           leftIcon={SchoolIcon}
-          text={t('List.schoolReports')}
+          text={t("List.schoolReports")}
         />
         <ListItem
           link="/jobExplorations"
           leftIcon={StarIcon}
-          text={t('List.jobExplorations')}
+          text={t("List.jobExplorations")}
         />
         <ListItem
           link="/wip"
           leftIcon={PersonalDataIcon}
-          text={t('List.resumes')}
+          text={t("List.resumes")}
         />
         <ListItem
           link="/skills"
           leftIcon={WorkIcon}
-          text={t('List.skills')}
+          text={t("List.skills")}
           noDivider
         />
       </List>
-      <List title={'Mes fonctionnalités'}>
-        <ListItem
-          link="/wip"
-          leftIcon={MagnifierIcon}
-          text={'Ma recherche de formation'}
-        />
+      <List title={"Mes fonctionnalités"}>
         <ListItem
           link="/jobsintension"
           leftIcon={DefaultIcon}
-          text={'Mes Matchings avec les métiers en tension'}
+          text={"Mes Matchings avec les métiers en tension"}
+        />
+        <ListItem
+          link="/wip"
+          leftIcon={MagnifierIcon}
+          text={"Ma recherche de formation"}
         />
         <ListItem
           link="#"
@@ -81,7 +81,7 @@ const HomePage = () => {
       </List>
       <ModalGeneric open={open} closeModal={closeModal} />
     </>
-  )
+  );
 }
 
 export default HomePage

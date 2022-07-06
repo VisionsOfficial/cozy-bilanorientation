@@ -1,38 +1,38 @@
-import React from 'react'
+import React from "react";
 
-import { useI18n } from 'cozy-ui/transpiled/react/I18n'
-import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
+import { useI18n } from "cozy-ui/transpiled/react/I18n";
+import Grid from "cozy-ui/transpiled/react/MuiCozyTheme/Grid";
 
-import Accordion from '../../Accordion'
-import Badge from '../../Badge'
-import icon from '../../../assets/icons/palm.svg'
+import Accordion from "../../Accordion";
+import Badge from "../../Badge";
+import icon from "../../../assets/icons/palm.svg";
 
-import { useJsonFiles } from '../../Hooks/useJsonFiles'
+import { useJsonFiles } from "../../Hooks/useJsonFiles";
 
 const styles = {
   card: {
-    borderRadius: '15px'
+    borderRadius: "15px"
   },
   badge: {
-    padding: '20px 10px',
-    borderRadius: '10px'
+    padding: "20px 10px",
+    borderRadius: "10px"
   }
-}
+};
 
-const bgBadge = 'linear-gradient(85deg, #16f7b415, #21bbee15)'
-const getThirdElements = arr => arr.slice(0, 3)
+const bgBadge = "linear-gradient(85deg, #16f7b415, #21bbee15)";
+const getThirdElements = arr => arr.slice(0, 3);
 
-const Palm = () => {
-  const { t } = useI18n()
-  const { jsonFiles } = useJsonFiles()
-  const datas = getThirdElements(jsonFiles.PALM.data || [])
+const Palm = ({ isPublicPage = false }) => {
+  const { t } = useI18n();
+  const { jsonFiles } = useJsonFiles();
+  const datas = getThirdElements(jsonFiles.PALM.data || []);
 
   return (
     <Accordion
       icon={icon}
-      title={t('jobsOffers')}
+      title={t("jobsOffers")}
       addStyles={styles.card}
-      bgHeader={'#FFF'}
+      bgHeader={"#FFF"}
     >
       <Grid className="u-mv-1" container spacing={2}>
         {datas.map(
@@ -44,7 +44,7 @@ const Palm = () => {
                 subText={short_summary}
                 background={bgBadge}
                 addStyles={styles.badge}
-                btn={true}
+                btn={!isPublicPage}
                 email={email}
                 url={url}
               />
@@ -53,7 +53,7 @@ const Palm = () => {
         )}
       </Grid>
     </Accordion>
-  )
-}
+  );
+};
 
-export default Palm
+export default Palm;
