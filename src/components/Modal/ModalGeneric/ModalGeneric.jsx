@@ -6,7 +6,7 @@ import ShareBilanBtn from "../../Button/ShareBilanBtn";
 import logoTmp from "../../../assets/icons/icon-check.svg";
 import logoVisions from "../../../assets/icons/logo_picto.svg";
 
-const regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/gm;
 const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
 
 const ModalGeneric = ({ open = false, closeModal }) => {

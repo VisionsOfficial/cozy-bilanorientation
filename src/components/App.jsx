@@ -71,6 +71,7 @@ const App = () => {
               className={cx({
                 'u-mh-2': !isMobile
               })}
+              id="main"
             >
               {!allDataStatus.isLoaded && !allDataStatus.isLoading ? (
                 <div className="u-mt-3 u-pt-2">

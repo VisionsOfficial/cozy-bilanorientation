@@ -7,7 +7,7 @@ import Accordion from '../../Accordion'
 import Badge from '../../Badge'
 import icon from '../../../assets/icons/orientoi.svg'
 
-import ThumbIcon from '../../../assets/icons/icon-thumb.svg'
+import ThumbIcon from '../../../assets/icons/icone-fond-metier.svg'
 import { useJsonFiles } from '../../Hooks/useJsonFiles'
 
 const styles = {

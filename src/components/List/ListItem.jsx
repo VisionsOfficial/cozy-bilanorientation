@@ -18,7 +18,7 @@ const style = {
   hover: {
     background: 'linear-gradient(to right, #16f7b465, #21bbee65)',
     icon: {
-      fill: '#17243f'
+      filter: 'brightness(0.2)'
     },
     arrow: {
       fill: '#17243f'
@@ -41,14 +41,14 @@ const ListItem = ({ link, leftIcon, text, noDivider }) => {
       >
         <UiListItem button style={hovered ? style.hover : null}>
           <ListItemIcon>
-            <Icon icon={leftIcon} style={hovered ? style.hover.icon : null} />
+            <Icon icon={leftIcon} style={hovered ? style.hover.icon : null} className="iconGradient" />
           </ListItemIcon>
           <ListItemText primary={text} className="listItemText" />
           <ListItemSecondaryAction>
             <Icon
               icon={RightIcon}
               size={smallSize}
-              className="u-mr-1 iconGradient"
+              className="u-mr-1 iconGradientArrow"
               style={hovered ? style.hover.arrow : null}
             />
           </ListItemSecondaryAction>

@@ -9,11 +9,6 @@ import Icon from 'cozy-ui/transpiled/react/Icon'
 import PerviousIcon from 'cozy-ui/transpiled/react/Icons/Previous'
 
 const styles = {
-  header: {
-    paddingLeft: '2rem',
-    paddingTop: '40px',
-    height: '144px' // full height should be 184px
-  },
   backButton: {
     color: '#17243f'
   }
@@ -65,10 +60,10 @@ const Header = () => {
   const showBackButtonPublic = pathname !== '/bilanorientation' ? true : false
 
   const goBack = useCallback(() => history.goBack(), [history])
-  if (isMobile) return null
+  // if (isMobile) return null
 
   return (
-    <div style={styles.header} className="headerBackground">
+    <div className="headerBackground">
       <div className="u-flex">
         {showBackButton && showBackButtonPublic && (
           <IconButton

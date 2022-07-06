@@ -6,14 +6,15 @@ import List from '../../List/List'
 import ListItem from '../../List/ListItem'
 import ShareBilanBtn from '../../Button/ShareBilanBtn'
 
-import GraphCircleIcon from 'cozy-ui/transpiled/react/icons/GraphCircle'
-import StarIcon from 'cozy-ui/transpiled/react/icons/Star'
-import MagnifierIcon from 'cozy-ui/transpiled/react/Icons/Magnifier'
+import iconSoftSkill from '../../../assets/icons/icone-etoile.svg'
+import iconBulletin from '../../../assets/icons/icon-bulletin.svg'
+import iconJobExplore from '../../../assets/icons/icon-metiers-explore.svg'
+import iconCV from '../../../assets/icons/cv.svg'
+import iconFormation from '../../../assets/icons/icon-formation.svg'
+import iconJobTension from '../../../assets/icons/icon-matching-metier.svg'
+import iconOffers from '../../../assets/icons/icon-matching-emploi.svg'
+import iconExperience from '../../../assets/icons/icon-experience.svg'
 
-import WorkIcon from '../../../assets/icons/icon-work.svg'
-import DefaultIcon from '../../../assets/icons/default_icon.svg'
-import PersonalDataIcon from '../../../assets/icons/icon-personal-data.svg'
-import SchoolIcon from '../../../assets/icons/icon-school.svg'
 import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric'
 
 const HomePage = () => {
@@ -36,27 +37,27 @@ const HomePage = () => {
       <List title={"Mes données"}>
         <ListItem
           link="/softSkills"
-          leftIcon={GraphCircleIcon}
+          leftIcon={iconSoftSkill}
           text={t("List.softSkills")}
         />
         <ListItem
           link="/wip"
-          leftIcon={SchoolIcon}
+          leftIcon={iconBulletin}
           text={t("List.schoolReports")}
         />
         <ListItem
           link="/jobExplorations"
-          leftIcon={StarIcon}
+          leftIcon={iconJobExplore}
           text={t("List.jobExplorations")}
         />
         <ListItem
           link="/wip"
-          leftIcon={PersonalDataIcon}
+          leftIcon={iconCV}
           text={t("List.resumes")}
         />
         <ListItem
           link="/skills"
-          leftIcon={WorkIcon}
+          leftIcon={iconExperience}
           text={t("List.skills")}
           noDivider
         />
@@ -64,17 +65,17 @@ const HomePage = () => {
       <List title={"Mes fonctionnalités"}>
         <ListItem
           link="/jobsintension"
-          leftIcon={DefaultIcon}
+          leftIcon={iconJobTension}
           text={"Mes Matchings avec les métiers en tension"}
         />
         <ListItem
           link="/wip"
-          leftIcon={MagnifierIcon}
+          leftIcon={iconFormation}
           text={"Ma recherche de formation"}
         />
         <ListItem
           link="#"
-          leftIcon={MagnifierIcon}
+          leftIcon={iconOffers}
           text={"Mes Matching avec les offres d'emploi"}
           noDivider
         />

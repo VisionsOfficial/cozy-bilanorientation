@@ -38,7 +38,7 @@ const Inokufu = ({ isPublicPage = false }) => {
     >
       <Grid className="u-mv-1" container spacing={2}>
         {datas.map(({ title, keywords, picture, url }, index) => (
-          <Grid key={index} item xs={12} sm={12} lg={6} xl={4} spacing={2}>
+          <Grid key={index} item xs={12} sm={12} lg={6} xl={4}>
             <BadgeRow
               title={title}
               mainText={keywords}

@@ -6,6 +6,7 @@ import Grid from "cozy-ui/transpiled/react/MuiCozyTheme/Grid";
 import Accordion from "../../Accordion";
 import Badge from "../../Badge";
 import icon from "../../../assets/icons/palm.svg";
+import iconJob from '../../../assets/icons/icon-emploi-fond.svg'
 
 import { useJsonFiles } from "../../Hooks/useJsonFiles";
 
@@ -42,6 +43,7 @@ const Palm = ({ isPublicPage = false }) => {
                 title={mission_name}
                 mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
                 subText={short_summary}
+                icon={iconJob}
                 background={bgBadge}
                 addStyles={styles.badge}
                 btn={!isPublicPage}

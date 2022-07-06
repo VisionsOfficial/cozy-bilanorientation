@@ -22,8 +22,26 @@ centerFlex()
 body
     width: 100% !important
 
+#main
+    @media screen and (min-width: 770px)
+        margin-top: -55px !important
+    @media screen and (max-width: 770px)
+        margin-top: -80px !important
+
 .headerBackground
-    background-image embedurl('../assets/icons/wallpaper.svg')
+    background-image embedurl('../assets/images/fond-bilan-cozy.png')
+    background-repeat: no-repeat
+    background-size: cover
+    padding-left: 2rem
+    padding-top: 40px
+    height: 144px
+    @media screen and (max-width: 770px)
+        height: 184px
+        padding-left: 0.5rem
+        padding-right: 0.5rem
+        padding-top: 20px   
+        h2
+            font-size: 28px
 
 .btnShare
     centerFlex()
@@ -175,15 +193,14 @@ body
     display: block
 
 .iconGradient
-    fill: #1dd7d6
+    width: 20px
+    height: 20px
+    &Arrow
+        fill: #1dd7d6
 
 .listItemText
     span 
         font-weight: 500
-
-.u-mh-2
-    @media screen and (min-width: 770px)
-        margin-top: -55px !important
 
 .badgeRow 
     // height: 80%
