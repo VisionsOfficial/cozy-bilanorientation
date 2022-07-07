@@ -1,7 +1,7 @@
 {
-  "name": "VisionsGalaxy",
+  "name": "Bilan d'orientation",
   "slug": "bilanorientation",
-  "icon": "iconVisions.svg",
+  "icon": "icon.svg",
   "categories": [],
   "version": "0.3.2",
   "licence": "AGPL-3.0",

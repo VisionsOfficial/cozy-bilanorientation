@@ -1,29 +1,29 @@
-import React, { useState, useRef } from "react";
-import Icon from "cozy-ui/transpiled/react/Icon";
-import ShareBilanBtn from "../../Button/ShareBilanBtn";
+import React, { useState, useRef } from 'react'
+import Icon from 'cozy-ui/transpiled/react/Icon'
+import ShareBilanBtn from '../../Button/ShareBilanBtn'
 
 // TMP
-import logoTmp from "../../../assets/icons/icon-check.svg";
-import logoVisions from "../../../assets/icons/logo_picto.svg";
+import logoTmp from '../../../assets/icons/icon-check.svg'
+import logoVisions from '../../../assets/icons/logo_picto.svg'
 
-const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/gm;
-const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
+const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/gm
+const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`
 
 const ModalGeneric = ({ open = false, closeModal }) => {
-  const openModal = open === false ? "" : "openModal";
+  const openModal = open === false ? '' : 'openModal'
 
-  const emailRef = useRef();
+  const emailRef = useRef()
 
-  const [confirmation, setConfirmation] = useState(false);
-  const [saveEmail, setSaveEmail] = useState("");
+  const [confirmation, setConfirmation] = useState(false)
+  const [saveEmail, setSaveEmail] = useState('')
   const confirm = () => {
     if (regex.test(emailRef.current.value)) {
-      setConfirmation(true);
-      setSaveEmail(emailRef.current.value);
+      setConfirmation(true)
+      setSaveEmail(emailRef.current.value)
     } else {
-      alert("adresse email erronée");
+      alert('adresse email erronée')
     }
-  };
+  }
 
   if (confirmation) {
     return (
@@ -38,25 +38,20 @@ const ModalGeneric = ({ open = false, closeModal }) => {
             </div>
           </div>
           <div className="modalContent">
-            <h3 className="modalTitle" style={{ margin: "0 auto" }}>
-              Votre bilan a bien été envoyé à
-            </h3>
-            <p style={{ margin: "0 auto", fontWeight: "bold" }}>{saveEmail}</p>
+            <h3 className="modalTitle">Votre bilan a bien été envoyé à</h3>
+            <p className="modalRecapEmail">{saveEmail}</p>
             <p>
               Vous pouvez également partager le lien suivant pour donner accès à
               votre bilan d'orientation : <br />
               <br />
-              <a
-                style={{ color: "black", textDecoration: "none" }}
-                href={"/#/bilanorientation"}
-              >
+              <a href={'/#/bilanorientation'} className="modalPublicLink">
                 {publicLinkTMP}
               </a>
             </p>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -84,14 +79,14 @@ const ModalGeneric = ({ open = false, closeModal }) => {
           />
           <div className="modalBtn">
             <ShareBilanBtn
-              textContent={"Envoyer mon bilan"}
+              textContent={'Envoyer mon bilan'}
               onClickFc={() => confirm()}
             />
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ModalGeneric;
+export default ModalGeneric
