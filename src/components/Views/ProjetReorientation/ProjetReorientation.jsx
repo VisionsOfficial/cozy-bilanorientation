@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
-import Orientoi from './Orientoi'
-import Palm from './Palm'
-import Inokufu from './Inokufu'
+import Orientoi from '../JobsInTension/Orientoi'
+import Inokufu from '../JobsInTension/Inokufu'
+import Pitangoo from './Pitangoo'
+import Curiose from './Curiose'
 import ShareBilanBtn from '../../Button/ShareBilanBtn'
 import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric'
 
-const JobsInTensions = () => {
+const styles = {
+  card: {
+    borderRadius: '15px'
+  }
+}
+
+const ProjetReorientation = () => {
   const [open, setOpen] = useState(false)
 
   const OpenModal = () => {
@@ -20,12 +27,18 @@ const JobsInTensions = () => {
       <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
         <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
       </div>
+      <Orientoi title={'myTalent'} talent={true} />
       <Orientoi title={'offersPorposed'} badge={true} />
       <Inokufu />
-      <Palm />
+      <Pitangoo headerBg={'#fff'} addStyles={styles.card} />
+      <Curiose
+        headerBg={'#fff'}
+        title={'curiose.personality'}
+        addStyles={styles.card}
+      />
       <ModalGeneric open={open} closeModal={closeModal} />
     </>
   )
 }
 
-export default JobsInTensions
+export default ProjetReorientation

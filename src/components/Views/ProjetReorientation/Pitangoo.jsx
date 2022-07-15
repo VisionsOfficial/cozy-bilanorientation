@@ -7,16 +7,22 @@ import Accordion from '../../Accordion'
 // import icon from "../../../assets/icons/pitangoo.svg";
 import icon from '../../../assets/icons/default_icon.svg'
 import { useJsonFiles } from '../../Hooks/useJsonFiles'
+import BadgeGraph from '../../Badge/BadgeGraph/BadgeGraph'
 
-const Pitangoo = () => {
+const Pitangoo = ({ headerBg, addStyles }) => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
-  const data = jsonFiles.pitangoo?.data?.data || []
+  // const data = jsonFiles.pitangoo || []
 
   return (
-    <Accordion icon={icon} title={t('pitangooTitle')}>
+    <Accordion
+      icon={icon}
+      title={t('pitangooTitle')}
+      bgHeader={headerBg}
+      addStyles={addStyles}
+    >
       <Grid>
-        {data.missions &&
+        {/* {data.missions &&
           data.missions.map((m, i) => (
             <Grid key={i} item>
               <div></div>
@@ -29,7 +35,8 @@ const Pitangoo = () => {
                 ))}
               </ul>
             </Grid>
-          ))}
+          ))} */}
+          <BadgeGraph />
       </Grid>
     </Accordion>
   )

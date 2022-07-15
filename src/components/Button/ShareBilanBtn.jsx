@@ -12,7 +12,7 @@ const ShareBilanBtn = ({
     <div
       style={{
         position: absolute ? 'absolute' : null,
-        top: absolute ? -83 : null,
+        top: absolute ? -50 : null,
         right: absolute ? 0 : null
       }}
       className="btnShare"

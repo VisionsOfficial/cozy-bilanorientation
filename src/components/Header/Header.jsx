@@ -46,6 +46,9 @@ const Title = () => {
     case '/bilanorientation':
       title = t('publicPageTitle')
       break
+    case '/projetreorientation':
+      title = t('projectReo')
+      break
   }
 
   return <>{title}</>

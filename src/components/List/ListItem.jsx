@@ -29,7 +29,14 @@ const style = {
   }
 }
 
-const ListItem = ({ link, leftIcon, text, noDivider }) => {
+const ListItem = ({
+  link,
+  leftIcon,
+  text,
+  noFill = false,
+  size,
+  noDivider
+}) => {
   const [hovered, setHovered] = useState(false)
   return (
     <>
@@ -41,7 +48,15 @@ const ListItem = ({ link, leftIcon, text, noDivider }) => {
       >
         <UiListItem button style={hovered ? style.hover : null}>
           <ListItemIcon>
-            <Icon icon={leftIcon} style={hovered ? style.hover.icon : null} className="iconGradient" />
+            <Icon
+              icon={leftIcon}
+              style={
+                (hovered && noFill == false) || size !== undefined
+                  ? { ...style.hover.icon, ...size }
+                  : null
+              }
+              className="iconGradient"
+            />
           </ListItemIcon>
           <ListItemText primary={text} className="listItemText" />
           <ListItemSecondaryAction>

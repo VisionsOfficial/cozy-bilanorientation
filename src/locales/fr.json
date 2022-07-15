@@ -47,6 +47,7 @@
     }
   },
   "curiose.jobs": "Mes pistes métiers - Curiose",
+  "curiose.personality": "Mes traits de personalité",
   "studyAdvisorTitle": "StudyAdvisor",
   "interviewAppTitle": "InterviewApp",
   "tridanTitle": "Tridan",
@@ -57,5 +58,7 @@
   "jobsInTension": "Mes Matchings avec les métiers en tension",
   "jobsOffers": "Offres d'emplois des métiers en tension",
   "offersPorposed": "Métiers en tension proposés/sélectionnés",
-  "publicPageTitle": "Récapitulatif du Bilan"
+  "publicPageTitle": "Récapitulatif du Bilan",
+  "myTalent": "Mes talents de personne",
+  "projectReo": "Mon projet de RéOrientation"
 }

@@ -21,6 +21,7 @@ import JobExplorationsPage from 'src/components/Views/JobExplorationsPage'
 import WipPage from 'src/components/Views/WipPage'
 import ExperiencesPage from 'src/components/Views/ExperiencesPage/ExperiencesPage'
 import JobsInTensions from './Views/JobsInTension'
+import ProjetReorientation from './Views/ProjetReorientation'
 import HomePage from './Views/HomePage'
 import { useJsonFiles } from 'src/components/Hooks/useJsonFiles'
 import PublicPage from './Views/publicPage/PublicPage'
@@ -104,6 +105,10 @@ const App = () => {
                   <Route path="/wip" component={WipPage} />
                   <Route path="/jobsintension" component={JobsInTensions} />
                   <Route path="/bilanorientation" component={PublicPage} />
+                  <Route
+                    path="/projetreorientation"
+                    component={ProjetReorientation}
+                  />
                   <Redirect from="/" to="/index" />
                   <Redirect from="*" to="/index" />
                 </Switch>
