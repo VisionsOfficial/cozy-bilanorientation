@@ -1,19 +1,11 @@
 import React, { useState } from 'react'
 
 import Typography from 'cozy-ui/transpiled/react/Typography'
-import Icon from 'cozy-ui/transpiled/react/Icon'
 
-import IdeaIcon from '../../../assets/icons/icon-idea.svg'
 import ShareBilanBtn from '../../Button/ShareBilanBtn'
 import ModalBilan from '../../Modal/ModalBilan/ModalBilan'
 
 const styles = {
-  title: {
-    textTransform: 'capitalize',
-    color: '#21BBEF',
-    width: '100%',
-    whiteSpace: 'break-spaces'
-  },
   subText: {
     fontWeight: 200,
     textAlign: 'center',
@@ -55,15 +47,15 @@ const BadgeRow = ({
       >
         <div className="badgeRowImageContainer">
           <img src={picture} alt="" style={styles.img} />
-          <Icon
-            style={styles.icon}
-            icon={icon ? icon : IdeaIcon}
-            size={40}
-            onClick={() => window.open(url)}
-          />
         </div>
         <div className="badgeRowTextContainer">
-          <Typography style={styles.title} variant="h6" component="div" noWrap>
+          <Typography
+            className="badgeRowTitle"
+            variant="h6"
+            component="div"
+            onClick={() => window.open(url)}
+            noWrap
+          >
             {title}
           </Typography>
           <Typography className="u-mv-half" variant="body1">
@@ -74,7 +66,7 @@ const BadgeRow = ({
           </Typography>
           <div
             style={{
-              margin: "10px 0px"
+              margin: '10px 0px'
             }}
           >
             {!isPublicPage && <ShareBilanBtn onClickFc={OpenModal} />}
@@ -85,10 +77,10 @@ const BadgeRow = ({
         open={open}
         closeModal={closeModal}
         title={title}
-        email={"doip@ml.u-cergy.fr"}
+        email={'doip@ml.u-cergy.fr'}
       />
     </>
-  );
+  )
 }
 
 export default BadgeRow

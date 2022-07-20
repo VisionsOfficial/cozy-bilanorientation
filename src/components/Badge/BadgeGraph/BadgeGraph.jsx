@@ -1,66 +1,20 @@
-import React from "react";
+import React from 'react'
 
-const BadgeGraph = () => {
+import RowGraph from '../../Graph/RowGraph'
+
+const BadgeGraph = ({ data }) => {
   return (
     <div className="badgeGraph">
-      <h3>Baromètre de l'estime de soi</h3>
+      <h3>{data.name}</h3>
       <div className="contentGraph">
-        <div>
-          <p className="legendGraph">Lorem ipsum</p>
-          <p className="legendGraph">Dolor sit</p>
-          <p className="legendGraph">Consectetuer</p>
-          <p className="legendGraph">Sed diam</p>
-          <p className="legendGraph">Sed diam</p>
-        </div>
         <div className="boxGraph">
-          <div className="rowGraph">
-            <div className="cel" style={{borderTop: 'none'}}></div>
-            <div className="cel" style={{borderTop: 'none'}}></div>
-            <div className="cel" style={{borderTop: 'none'}}></div>
-            <div className="cel" style={{borderTop: 'none'}}></div>
-            <div className="cel" style={{borderTop: 'none'}}></div>
-            <div className="meterGraph" style={{ width: 80 + "%" }}></div>
-          </div>
-          <div className="rowGraph">
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="meterGraph" style={{ width: 70 + "%" }}></div>
-          </div>
-          <div className="rowGraph">
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="meterGraph" style={{ width: 60 + "%" }}></div>
-          </div>
-          <div className="rowGraph">
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="meterGraph" style={{ width: 50 + "%" }}></div>
-          </div>
-          <div className="rowGraph">
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="meterGraph" style={{ width: 40 + "%" }}></div>
-          </div>
-          <div className="rowGraph">
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="cel"></div>
-            <div className="meterGraph" style={{ width: 30 + "%" }}></div>
-          </div>
+          {data.tendencies.map((tendencie, index) => (
+            <RowGraph
+              key={index}
+              percentage={tendencie.score * 100}
+              name={tendencie.name}
+            />
+          ))}
           <p className="numberGraph" style={{ right: 187 }}>
             1
           </p>
@@ -78,7 +32,7 @@ const BadgeGraph = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BadgeGraph;
+export default BadgeGraph

@@ -28,7 +28,7 @@ const ProjetReorientation = () => {
         <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
       </div>
       <Orientoi title={'myTalent'} talent={true} />
-      <Orientoi title={'offersPorposed'} badge={true} />
+      <Orientoi title={'offersPorposed'} badge={true} showType={true} />
       <Inokufu />
       <Pitangoo headerBg={'#fff'} addStyles={styles.card} />
       <Curiose

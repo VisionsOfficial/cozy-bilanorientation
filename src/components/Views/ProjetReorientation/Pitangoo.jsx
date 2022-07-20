@@ -9,10 +9,12 @@ import icon from '../../../assets/icons/default_icon.svg'
 import { useJsonFiles } from '../../Hooks/useJsonFiles'
 import BadgeGraph from '../../Badge/BadgeGraph/BadgeGraph'
 
+const getLastElements = (arr, x) => arr.slice(Math.max(arr.length - x, 1))
+
 const Pitangoo = ({ headerBg, addStyles }) => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
-  // const data = jsonFiles.pitangoo || []
+  const data = getLastElements(jsonFiles.pitangoo?.data?.data.missions || [], 1)
 
   return (
     <Accordion
@@ -21,23 +23,12 @@ const Pitangoo = ({ headerBg, addStyles }) => {
       bgHeader={headerBg}
       addStyles={addStyles}
     >
-      <Grid>
-        {/* {data.missions &&
-          data.missions.map((m, i) => (
-            <Grid key={i} item>
-              <div></div>
-              <h3>{m.name}</h3>
-              <ul style={{ listStyleType: 'none' }}>
-                {m.tendencies.map((t, y) => (
-                  <li key={`${i}_${y}`}>
-                    {t.name} {t.score && <>: {t.score * 100} %</>}
-                  </li>
-                ))}
-              </ul>
-            </Grid>
-          ))} */}
-          <BadgeGraph />
-      </Grid>
+      {data &&
+        data.map((element, index) => (
+          <Grid key={index} item>
+            <BadgeGraph data={element} />
+          </Grid>
+        ))}
     </Accordion>
   )
 }

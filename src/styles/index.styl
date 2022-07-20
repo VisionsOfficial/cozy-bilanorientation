@@ -4,6 +4,7 @@ color-secondary = #17243f;
 color-tertiary = #1c2057;
 color-quaternary = #16f7b4;
 gradient = linear-gradient(to right, #16f7b4, #21bbee);
+gradient-reverse = linear-gradient(to right, #21bbee, #16f7b4);
 gradient-top = linear-gradient(to top, #16f7b4, #21bbee);
 gradient-opacity = linear-gradient(to right, #16f7b465, #21bbee65);
 soft-shadow = rgba(100, 100, 111, 0.2) 0px 7px 15px 0px;
@@ -241,6 +242,15 @@ body
     justify-content: space-evenly
     height: 100%
     margin-left: 10px
+    .badgeRowTitle
+        text-transform: capitalize
+        color: color-primary
+        width: 100%
+        white-space: break-spaces
+        cursor pointer
+        transition: all 0.1s
+        &:hover
+            transform: scale(1.03)
 
 .titleJobPalm
     cursor: pointer
@@ -285,30 +295,37 @@ body
 
 
 .badgeGraph
-    margin-bottom: 20px
+    background: #f4fcfe
+    padding: 0px 20px 40px 20px
+    border-radius: 5px
+    margin: 20px auto
+    h3
+        padding-top: 10px
     .contentGraph
         centerFlex()
-        .legendGraph
-            height: 32.2px
-            margin: 0
+        padding-left: 150px
         .boxGraph
             width 235px
-            height: 200px
+            height: max-content
             border-left: 4px solid black
             border-bottom: 4px solid black
             display: flex
             flex-direction: column 
+            justify-content: flex-end
             position relative
             .rowGraph
                 z-index: 100
                 position relative
                 display: flex
+                &:nth-child(1)
+                    .cel
+                        border-top: none
                 .meterGraph
-                    background: gradient
-                    height: 80%
+                    background: gradient-reverse
+                    height: 70%
                     width 0%
                     position: absolute
-                    top: 5px
+                    top: 5.5px
                 .cel 
                     width: 46px
                     height: 32.2px
@@ -316,9 +333,70 @@ body
                     border-right: 1px solid rgba(128, 128, 128, 0.300)
                     pointer-events: none
                     z-index: -1
+                .legendGraph
+                    height: 32.2px
+                    max-width: 150px
+                    margin: 0
+                    position: absolute
+                    left: -160px
+                    bottom: -4px
             .numberGraph
                 position: absolute
-                right: -5px
+                right: -3px
                 bottom: -45px
                 display: flex
                 font-weight: 600
+
+.badgePersonality
+    background: #f1f2f4
+    padding: 15px
+    .headerPersonality
+        centerFlex()
+        justify-content: flex-start
+        .iconPersonality
+            centerFlex()
+            svg 
+                width: 40px
+                height: 40px
+        .headlinePersonality
+            margin-left: 20px
+            centerFlex()
+            flex-direction: column
+            align-items: flex-start
+            h3
+                margin: 0px
+            p
+                color: color-primary
+                font-weight: bold
+                margin: 0px
+    .contentPersonality
+        font-weight: 500
+        .dropdownPersonality
+            .dropdownContainer
+                .dropdownElement
+                    display: flex
+                    align-items: flex-start
+                    cursor: pointer
+                    background: gradient-opacity
+                    border-radius: 10px
+                    padding: 5px 15px
+                    margin: 10px 0
+                    min-height: 31px
+                    .dropdownText
+                        width 100%
+                        overflow: hidden
+                        p
+                            font-weight: bold
+                            margin: 5px 0
+                        .hideElement
+                            height: 0px
+                            margin: 0
+                    .iconDropdown
+                        background: color-secondary
+                        border-radius: 50%
+                        min-width 20px
+                        min-height: 20px
+                        margin: 5px 0
+                        centerFlex()
+                        svg
+                            fill: color-quaternary
