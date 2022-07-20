@@ -13,8 +13,6 @@ const Curiose = ({ title, headerBg, addStyles }) => {
   const { jsonFiles } = useJsonFiles()
   const data = jsonFiles.curiose?.data || []
 
-  console.log(data)
-
   return (
     <Accordion
       icon={CurioseIcon}

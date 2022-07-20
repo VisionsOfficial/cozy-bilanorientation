@@ -17,16 +17,32 @@ const styles = {
   },
   badge: {
     padding: '20px 10px',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    margin: '10px',
+    minWidth: '260px',
+    width: '30%'
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    width: '100%'
   }
 }
 const bgBadge = '#f4fcfe'
 const getThirdElements = arr => arr.slice(0, 3)
 
-const Orientoi = ({ title, badge = false, talent = false, showType = false }) => {
+const Orientoi = ({
+  title,
+  badge = false,
+  talent = false,
+  showType = false
+}) => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
   const datas = getThirdElements(jsonFiles.orientoi.data?.jobCards || [])
+  const badges = jsonFiles.orientoi.data?.badges || []
+
   return (
     <Accordion
       icon={icon}
@@ -35,21 +51,33 @@ const Orientoi = ({ title, badge = false, talent = false, showType = false }) =>
       bgHeader={'#FFF'}
     >
       <Grid className="u-mv-1" container spacing={2}>
-        {datas.map(({ name, positionnement, type }, index) => (
-          <Grid key={index} item xs={12} sm={12} lg={6} xl={4}>
-            {badge ? (
-              <Badge
-                title={name}
-                mainText={t('positionning') + ` : ${positionnement}`}
-                subText={showType ? 'Type : ' + type : null}
-                icon={ThumbIcon}
-                background={bgBadge}
-                addStyles={styles.badge}
-              />
-            ) : null}
-            {talent ? <BadgeTalent name={'Concentré'} percentage={30} /> : null}
-          </Grid>
-        ))}
+        <Grid
+          item
+          style={styles.container}
+        >
+          {badge ? (
+            <>
+              {datas.map(({ name, positionnement, type }, index) => (
+                <Badge
+                  key={index}
+                  title={name}
+                  mainText={t('positionning') + ` : ${positionnement}`}
+                  subText={showType ? 'Type : ' + type : null}
+                  icon={ThumbIcon}
+                  background={bgBadge}
+                  addStyles={styles.badge}
+                />
+              ))}
+            </>
+          ) : null}
+          {talent ? (
+            <>
+              {Object.entries(badges).map(([key, value], index) => (
+                <BadgeTalent key={index} name={key} percentage={value} />
+              ))}
+            </>
+          ) : null}
+        </Grid>
       </Grid>
     </Accordion>
   )
