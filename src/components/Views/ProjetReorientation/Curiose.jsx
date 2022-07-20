@@ -8,26 +8,6 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles'
 import BadgePersonality from '../../Badge/BadgePersonality'
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
 
-// const styles = {
-//   keywords: {
-//     marginLeft: '10px',
-//     color: '#C4C4C4',
-//     padding: '8px',
-//     textTransform: 'uppercase',
-//     backgroundColor: '#18233F',
-//     borderRadius: '6px',
-//     fontSize: '12px'
-//   },
-//   list: {
-//     listStyleType: 'none'
-//   },
-//   separator: {
-//     width: 40,
-//     height: 3,
-//     background: 'orange'
-//   }
-// }
-
 const Curiose = ({ title, headerBg, addStyles }) => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()

@@ -5,6 +5,7 @@ import Pitangoo from './Pitangoo'
 import Curiose from './Curiose'
 import ShareBilanBtn from '../../Button/ShareBilanBtn'
 import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric'
+import JobReady from './JobReady'
 
 const styles = {
   card: {
@@ -36,6 +37,7 @@ const ProjetReorientation = () => {
         title={'curiose.personality'}
         addStyles={styles.card}
       />
+      <JobReady headerBg={'#FFF'} addStyles={styles.card} title={'softSkillsCV'} />
       <ModalGeneric open={open} closeModal={closeModal} />
     </>
   )

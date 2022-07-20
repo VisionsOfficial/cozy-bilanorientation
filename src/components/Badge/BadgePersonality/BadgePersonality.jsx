@@ -1,19 +1,19 @@
-import React, { useState, useRef } from "react";
-import Icon from "cozy-ui/transpiled/react/Icon";
+import React, { useState, useRef } from 'react'
+import Icon from 'cozy-ui/transpiled/react/Icon'
 
 // IMG
-import iconPersonality from "../../../assets/icons/icon-curiose-trait-perso.svg";
-import DropdownIcon from "cozy-ui/transpiled/react/Icons/Dropdown";
-import { largeSize } from "cozy-ui/transpiled/react/MuiCozyTheme/ListItemIcon";
+import iconPersonality from '../../../assets/icons/icon-curiose-trait-perso.svg'
+import DropdownIcon from 'cozy-ui/transpiled/react/Icons/Dropdown'
+import { largeSize } from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItemIcon'
 
 const BadgePersonality = () => {
   const [toggled, setToggled] = useState(false)
 
   const refHideText = useRef(null)
 
-    const showElement = () => {
-        setToggled(!toggled)
-    }
+  const showElement = () => {
+    setToggled(!toggled)
+  }
 
   return (
     <div className="badgePersonality">
@@ -38,12 +38,15 @@ const BadgePersonality = () => {
           mus. Morbi sit amet nibh vitae elit feugiat imperdiet vitae hendrerit
           risus.
         </p>
-        <div className="dropdownPersonality" onClick={() => showElement()}>
+        <div className="dropdownPersonality">
           <div className="dropdownContainer">
-            <div className="dropdownElement">
+            <div className="dropdownElement" onClick={() => showElement()}>
               <div className="dropdownText">
                 <p>Tes caractéristiques principales</p>
-                <p className="hideElement">
+                <p
+                  className={`hideElement ${toggled ? 'showElement' : ''}`}
+                  ref={refHideText}
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Phasellus finibus enim in justo facilisis, at placerat tellus
                   facilisis. Sed consectetur rutrum purus, hendrerit rhoncus
@@ -56,7 +59,7 @@ const BadgePersonality = () => {
                   hendrerit risus.
                 </p>
               </div>
-              <div className="iconDropdown">
+              <div className={`iconDropdown ${toggled ? 'rotateIcon' : ''}`}>
                 <Icon icon={DropdownIcon} />
               </div>
             </div>
@@ -80,7 +83,7 @@ const BadgePersonality = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BadgePersonality;
+export default BadgePersonality

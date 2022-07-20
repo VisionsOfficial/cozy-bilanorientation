@@ -350,6 +350,7 @@ body
 .badgePersonality
     background: #f1f2f4
     padding: 15px
+    border-radius 10px
     .headerPersonality
         centerFlex()
         justify-content: flex-start
@@ -391,6 +392,9 @@ body
                         .hideElement
                             height: 0px
                             margin: 0
+                        .showElement
+                            height: max-content
+                            margin-top: 20px
                     .iconDropdown
                         background: color-secondary
                         border-radius: 50%
@@ -400,3 +404,50 @@ body
                         centerFlex()
                         svg
                             fill: color-quaternary
+                    .rotateIcon
+                        transform: rotate(180deg)
+
+.importCVContainer
+    centerFlex()
+    flex-direction: column
+    width 100%
+    svg
+        width: 50px
+        height: 50px
+    .importCV
+        text-align: center
+        span
+            font-weight: bold
+
+.btnImportContainer
+    centerFlex()
+    background: gradient
+    border: none
+    padding: 8px 15px
+    border-radius: 20px
+    box-shadow: soft-shadow
+    cursor pointer
+    transition: transform 0.3s
+    input
+        background: transparent
+        border: none
+        text-transform: uppercase
+        font-weight: bold
+        cursor pointer
+    .arrowBtn
+        background: color-secondary
+        centerFlex()
+        min-width 20px
+        min-height: 20px
+        border-radius: 50%
+        svg
+            width: 10px
+            height: 10px
+            fill: white
+    &:hover
+        background: color-secondary
+        transform: scale(1.05)
+        input
+            color: white
+        .arrowBtn
+            background: gradient
