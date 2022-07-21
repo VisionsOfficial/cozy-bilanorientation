@@ -26,7 +26,8 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
+    paddingBottom: 20
   }
 }
 const bgBadge = '#f4fcfe'
@@ -51,10 +52,7 @@ const Orientoi = ({
       bgHeader={'#FFF'}
     >
       <Grid className="u-mv-1" container spacing={2}>
-        <Grid
-          item
-          style={styles.container}
-        >
+        <Grid item style={styles.container}>
           {badge ? (
             <>
               {datas.map(({ name, positionnement, type }, index) => (
@@ -68,6 +66,9 @@ const Orientoi = ({
                   addStyles={styles.badge}
                 />
               ))}
+              <p className="sourceData">
+                Source de données : <span>Orientoi</span>
+              </p>
             </>
           ) : null}
           {talent ? (
@@ -75,6 +76,9 @@ const Orientoi = ({
               {Object.entries(badges).map(([key, value], index) => (
                 <BadgeTalent key={index} name={key} percentage={value} />
               ))}
+              <p className="sourceData">
+                Source de données : <span>Orientoi</span>
+              </p>
             </>
           ) : null}
         </Grid>

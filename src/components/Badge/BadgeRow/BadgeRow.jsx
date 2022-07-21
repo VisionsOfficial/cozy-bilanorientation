@@ -4,6 +4,7 @@ import Typography from 'cozy-ui/transpiled/react/Typography'
 
 import ShareBilanBtn from '../../Button/ShareBilanBtn'
 import ModalBilan from '../../Modal/ModalBilan/ModalBilan'
+import FindOutMore from '../../Button/FindOutMoreBtn/FindOutMore'
 
 const styles = {
   subText: {
@@ -27,7 +28,8 @@ const BadgeRow = ({
   url,
   background = '#FFFFFF',
   addStyles,
-  isPublicPage
+  isPublicPage,
+  showMore
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -69,7 +71,8 @@ const BadgeRow = ({
               margin: '10px 0px'
             }}
           >
-            {!isPublicPage && <ShareBilanBtn onClickFc={OpenModal} />}
+            {!isPublicPage && !showMore && <ShareBilanBtn onClickFc={OpenModal} />}
+            {showMore && <FindOutMore textContent={'En savoir +'} />}
           </div>
         </div>
       </div>

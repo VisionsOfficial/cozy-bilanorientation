@@ -28,16 +28,20 @@ const ProjetReorientation = () => {
       <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
         <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
       </div>
-      <Orientoi title={'myTalent'} talent={true} />
-      <Orientoi title={'offersPorposed'} badge={true} showType={true} />
+      <Orientoi title={'JobExplore'} badge={true} showType={true} />
       <Inokufu />
+      <Orientoi title={'myTalent'} talent={true} />
       <Pitangoo headerBg={'#fff'} addStyles={styles.card} />
       <Curiose
         headerBg={'#fff'}
         title={'curiose.personality'}
         addStyles={styles.card}
       />
-      <JobReady headerBg={'#FFF'} addStyles={styles.card} title={'softSkillsCV'} />
+      <JobReady
+        headerBg={'#FFF'}
+        addStyles={styles.card}
+        title={'softSkillsCV'}
+      />
       <ModalGeneric open={open} closeModal={closeModal} />
     </>
   )

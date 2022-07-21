@@ -25,10 +25,13 @@ const Pitangoo = ({ headerBg, addStyles }) => {
     >
       {data &&
         data.map((element, index) => (
-          <Grid key={index} item>
+          <Grid key={index} style={{ paddingBottom: 30 }}>
             <BadgeGraph data={element} />
           </Grid>
         ))}
+      <p className="sourceData">
+        Source de données : <span>Pitangoo</span>
+      </p>
     </Accordion>
   )
 }

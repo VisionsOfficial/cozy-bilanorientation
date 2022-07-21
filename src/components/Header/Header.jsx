@@ -7,6 +7,7 @@ import Typography from 'cozy-ui/transpiled/react/Typography'
 import IconButton from 'cozy-ui/transpiled/react/IconButton'
 import Icon from 'cozy-ui/transpiled/react/Icon'
 import PerviousIcon from 'cozy-ui/transpiled/react/Icons/Previous'
+import backgroundImage from '../../assets/images/EN-TETE-VG.jpg'
 
 const styles = {
   backButton: {
@@ -66,7 +67,14 @@ const Header = () => {
   // if (isMobile) return null
 
   return (
-    <div className="headerBackground">
+    <div
+      className="headerBackground"
+      style={
+        pathname === '/index'
+          ? { backgroundImage: `url(${backgroundImage})` }
+          : null
+      }
+    >
       <div className="u-flex">
         {showBackButton && showBackButtonPublic && (
           <IconButton

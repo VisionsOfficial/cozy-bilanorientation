@@ -36,9 +36,22 @@ const Inokufu = ({ isPublicPage = false }) => {
       addStyles={styles.card}
       bgHeader={'#FFF'}
     >
-      <Grid className="u-mv-1" container spacing={2}>
+      <Grid
+        className="u-mv-1"
+        container
+        spacing={2}
+        style={{ paddingBottom: 20 }}
+      >
         {datas.map(({ title, keywords, picture, url }, index) => (
-          <Grid key={index} item xs={12} sm={12} lg={6} xl={4}>
+          <Grid
+            key={index}
+            item
+            xs={12}
+            sm={12}
+            lg={6}
+            xl={4}
+            style={{ paddingBottom: 20 }}
+          >
             <BadgeRow
               title={title}
               mainText={keywords}
@@ -48,9 +61,13 @@ const Inokufu = ({ isPublicPage = false }) => {
               background={bgBadge}
               addStyles={styles.badge}
               isPublicPage={isPublicPage}
+              showMore={true}
             />
           </Grid>
         ))}
+        <p className="sourceData">
+          Source de données : <span>Inokufu</span>
+        </p>
       </Grid>
     </Accordion>
   )

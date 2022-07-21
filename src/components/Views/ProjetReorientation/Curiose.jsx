@@ -24,6 +24,9 @@ const Curiose = ({ title, headerBg, addStyles }) => {
         <Grid className="u-mv-1" container spacing={2}>
           <Grid item xs={12} sm={12} lg={6} xl={4}>
             <BadgePersonality />
+            <p className="sourceData">
+              Source de données : <span>Curiose.</span>
+            </p>
           </Grid>
         </Grid>
       </div>
