@@ -473,3 +473,65 @@ body
         text-transform: uppercase
         color: color-secondary
         font-weight: normal
+
+.talentPersoContainer
+    centerFlex()
+    width 100%
+    justify-content: space-around
+    flex-wrap: wrap
+
+.donutsChartContainer
+    centerFlex()
+    position relative
+    min-width: 230px
+    min-height: 230px
+    width: 230px
+    height: 230px
+    margin-right: 50px
+    .iconHead
+        position: absolute
+        margin: auto
+        left: 0
+        right: 0
+        text-align: center
+        width 80px
+        height: 80px
+        top: 50%;
+        bottom: 50%;
+    .progessRing
+        width 200px !important
+        height: 200px !important
+        svg
+            overflow: visible
+            circle
+                stroke-width: 10
+    .iconDonuts
+        position: absolute
+        top: 50%;
+        bottom: 50%;
+        margin: auto
+        left: 0
+        right: 0
+        text-align: center
+
+.tabBadgePersoContainer
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    justify-items: flex-start
+    align-items: flex-start
+    height: 100%
+    .tabBadgePerso
+        centerFlex()
+        width max-content
+        .iconTabPerso
+            border-radius: 5px
+            centerFlex()
+            padding: 5px
+            margin-right: 10px
+            svg
+                width: 30px
+                height: 30px
+        .iconInformation
+            span
+                color: color-primary
+                font-weight: bold

@@ -10,6 +10,7 @@ import icon from '../../../assets/icons/orientoi.svg'
 
 import ThumbIcon from '../../../assets/icons/icone-fond-metier.svg'
 import { useJsonFiles } from '../../Hooks/useJsonFiles'
+import DonutsChart from '../../Graph/DonutsChart/DonutsChart'
 
 const styles = {
   card: {
@@ -73,9 +74,10 @@ const Orientoi = ({
           ) : null}
           {talent ? (
             <>
-              {Object.entries(badges).map(([key, value], index) => (
+              {/* {Object.entries(badges).map(([key, value], index) => (
                 <BadgeTalent key={index} name={key} percentage={value} />
-              ))}
+              ))} */}
+              <DonutsChart badges={badges} />
               <p className="sourceData">
                 Source de données : <span>Orientoi</span>
               </p>
