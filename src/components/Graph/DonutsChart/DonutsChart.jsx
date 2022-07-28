@@ -2,8 +2,10 @@ import React from 'react'
 import Icon from 'cozy-ui/transpiled/react/Icon'
 import Box from '@material-ui/core/Box'
 import { Doughnut } from 'react-chartjs-2'
-import { Chart, ArcElement, Legend, Title, SubTitle } from 'chart.js'
-Chart.register(ArcElement, Legend, Title, SubTitle)
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import 'chartjs-plugin-labels'
+import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js'
+ChartJS.register(ArcElement, Tooltip, ChartDataLabels)
 
 // ICON
 import iconHead from '../../../assets/icons/icone-tete.svg'
@@ -63,12 +65,40 @@ const DonutsChart = ({ badges }) => {
       ([key, value]) => (
         valueDonuts.push(value),
         colorDonuts.push(badgeProperties(key).color),
-        keyDonuts.push(key)
+        keyDonuts.push(` ${key} `)
       )
     )
   }
 
   badgeValue()
+
+  var options = {
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          let datasets = ctx.chart.data.datasets
+
+          if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+            let percentage = value + '%'
+            return percentage
+          } else {
+            return percentage
+          }
+        },
+        color: 'white'
+      },
+      labels: {
+        render: 'image',
+        images: [
+          {
+            src: 'https://i.stack.imgur.com/9EMtU.png',
+            width: 20,
+            height: 20
+          }
+        ]
+      }
+    }
+  }
 
   return (
     <div className="talentPersoContainer">
@@ -76,24 +106,17 @@ const DonutsChart = ({ badges }) => {
         <Icon icon={iconHead} className="iconHead" />
         <Doughnut
           data={{
+            labels: keyDonuts,
             datasets: [
               {
-                label: keyDonuts,
                 data: valueDonuts,
-                backgroundColor: colorDonuts
+                backgroundColor: colorDonuts,
+                icons: ['&#9728;']
               }
-            ],
-            options: {
-              responsive: true,
-              plugins: {
-                datalabels: {
-                  formatter: value => {
-                    return value + '%'
-                  }
-                }
-              }
-            }
+            ]
           }}
+          options={options}
+          redraw={true}
         />
       </Box>
       <div className="tabBadgePersoContainer">

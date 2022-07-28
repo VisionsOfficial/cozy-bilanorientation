@@ -5,8 +5,8 @@ import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
 
 import Accordion from '../../Accordion'
 import Badge from '../../Badge'
-import BadgeTalent from '../../Badge/BadgeTalent/BadgeTalent'
 import icon from '../../../assets/icons/orientoi.svg'
+// import BadgeTalent from '../../Badge/BadgeTalent/BadgeTalent'
 
 import ThumbIcon from '../../../assets/icons/icone-fond-metier.svg'
 import { useJsonFiles } from '../../Hooks/useJsonFiles'

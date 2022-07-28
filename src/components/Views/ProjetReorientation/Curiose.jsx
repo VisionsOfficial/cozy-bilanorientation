@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { useI18n } from 'cozy-ui/transpiled/react/I18n'
 
@@ -8,10 +8,17 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles'
 import BadgePersonality from '../../Badge/BadgePersonality'
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
 
-const Curiose = ({ title, headerBg, addStyles }) => {
+const Curiose = ({ title, headerBg, addStyles, code, setCurioseCode }) => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
   const data = jsonFiles.curiose?.data || []
+
+  const refInput = useRef(null)
+
+  const getCode = () => {
+    if (!refInput) return
+    setCurioseCode(refInput.current.value)
+  }
 
   return (
     <Accordion
@@ -20,15 +27,25 @@ const Curiose = ({ title, headerBg, addStyles }) => {
       bgHeader={headerBg}
       addStyles={addStyles}
     >
-      <div style={{ padding: '25px' }}>
-        <Grid className="u-mv-1" container spacing={2}>
-          <Grid item xs={12} sm={12} lg={6} xl={4}>
-            <BadgePersonality />
-            <p className="sourceData">
-              Source de données : <span>Curiose.</span>
-            </p>
+      <div style={{ padding: '25px', width: '100%' }}>
+        {code ? (
+          <Grid className="u-mv-1" container spacing={2}>
+            <Grid item xs={12} sm={12} lg={6} xl={4}>
+              <BadgePersonality />
+              <p className="sourceData">
+                Source de données : <span>Curiose.</span>
+              </p>
+            </Grid>
           </Grid>
-        </Grid>
+        ) : (
+          <div className="codeContainer">
+            <div className="codeInput">
+              <label htmlFor="code">Entrer votre code Curiose.</label>
+              <input type="text" name="code" id="code" ref={refInput} />
+            </div>
+            <button onClick={getCode}>Entrer</button>
+          </div>
+        )}
       </div>
     </Accordion>
   )

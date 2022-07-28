@@ -28,7 +28,6 @@ const BadgeGraph = ({ data }) => {
             4
           </p>
           <p className="numberGraph">5</p>
-          <div className="numberGraph"></div>
         </div>
       </div>
     </div>

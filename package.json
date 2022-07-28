@@ -44,6 +44,8 @@
   "dependencies": {
     "@material-ui/core": "4",
     "chart.js": "^3.8.0",
+    "chartjs-plugin-datalabels": "^2.0.0",
+    "chartjs-plugin-labels": "^1.1.0",
     "cozy-client": "^27.14.4",
     "cozy-scripts": "5.13.0",
     "cozy-ui": "^60.10.0",
