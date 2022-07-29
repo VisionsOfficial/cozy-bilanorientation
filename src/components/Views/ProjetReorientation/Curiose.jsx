@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { useI18n } from 'cozy-ui/transpiled/react/I18n'
 
@@ -8,16 +8,21 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles'
 import BadgePersonality from '../../Badge/BadgePersonality'
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
 
-const Curiose = ({ title, headerBg, addStyles, code, setCurioseCode }) => {
+const validCodes = ['testing123', 'code2']
+
+const Curiose = ({ title, headerBg, addStyles }) => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
   const data = jsonFiles.curiose?.data || []
 
-  const refInput = useRef(null)
+  const [revealData, setRevealData] = useState(false)
+  const codeInputRef = useRef(null)
 
-  const getCode = () => {
-    if (!refInput) return
-    setCurioseCode(refInput.current.value)
+  const verifyCode = () => {
+    if (!codeInputRef) return
+    const code = codeInputRef.current.value
+    if (validCodes.includes(code)) setRevealData(true)
+    else alert('Code invalide')
   }
 
   return (
@@ -28,7 +33,7 @@ const Curiose = ({ title, headerBg, addStyles, code, setCurioseCode }) => {
       addStyles={addStyles}
     >
       <div style={{ padding: '25px', width: '100%' }}>
-        {code ? (
+        {revealData ? (
           <Grid className="u-mv-1" container spacing={2}>
             <Grid item xs={12} sm={12} lg={6} xl={4}>
               <BadgePersonality />
@@ -40,10 +45,12 @@ const Curiose = ({ title, headerBg, addStyles, code, setCurioseCode }) => {
         ) : (
           <div className="codeContainer">
             <div className="codeInput">
-              <label htmlFor="code">Entrer votre code Curiose.</label>
-              <input type="text" name="code" id="code" ref={refInput} />
+              <label htmlFor="code">
+                Entrez votre code Curiose pour visualiser vos données.
+              </label>
+              <input type="text" name="code" id="code" ref={codeInputRef} />
             </div>
-            <button onClick={getCode}>Entrer</button>
+            <button onClick={verifyCode}>Entrer</button>
           </div>
         )}
       </div>

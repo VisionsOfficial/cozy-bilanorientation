@@ -566,6 +566,7 @@ body
     .tabBadgePerso
         centerFlex()
         width max-content
+        margin: 10px 0
         .iconTabPerso
             border-radius: 5px
             centerFlex()
@@ -575,9 +576,11 @@ body
                 width: 30px
                 height: 30px
         .iconInformation
+            margin-left: 5px
             span
                 color: color-primary
                 font-weight: bold
+                margin-left: 5px
 
 .codeContainer
     centerFlex()
@@ -593,7 +596,7 @@ body
             border-radius: 20px
             padding-left: 10px
             &:focus
-                border: 2px solid color-quaternary
+                outline-color: color-quaternary
     button
         background: color-secondary
         color: white
@@ -603,3 +606,10 @@ body
         font-weight: bold
         padding: 4px 10px
         cursor pointer
+        transition: background, transform 0.2s
+        &:active
+            transform: scale(0.9)
+        &:hover
+            background: gradient
+            color: color-secondary
+            transform: scale(1.1)

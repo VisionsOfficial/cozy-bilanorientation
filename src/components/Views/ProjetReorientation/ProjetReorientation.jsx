@@ -15,7 +15,6 @@ const styles = {
 
 const ProjetReorientation = () => {
   const [open, setOpen] = useState(false)
-  const [curioseCode, setCurioseCode] = useState('')
 
   const OpenModal = () => {
     setOpen(currentOpen => !currentOpen)
@@ -38,8 +37,6 @@ const ProjetReorientation = () => {
         headerBg={'#fff'}
         title={'curiose.personality'}
         addStyles={styles.card}
-        code={curioseCode === 'ABCD' ? true : false}
-        setCurioseCode={setCurioseCode}
       />
       <JobReady
         headerBg={'#FFF'}
