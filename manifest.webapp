@@ -37,6 +37,11 @@
     "mocks todos": {
       "description": "TO REMOVE: only used as demonstration about Cozy App data interactions",
       "type": "io.mocks.todos"
+    },
+    "visionstrust": {
+      "description": "Communication with Visions API to show elements regarding VisionsGalaxy",
+      "type": "com.visionstrust",
+      "verbs": ["GET", "POST"]
     }
   }
 }

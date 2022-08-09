@@ -17,13 +17,15 @@ const ModalGeneric = ({ open = false, closeModal }) => {
   const [confirmation, setConfirmation] = useState(false)
   const [saveEmail, setSaveEmail] = useState('')
   const confirm = () => {
-    if (regex.test(emailRef.current.value)) {
-      setConfirmation(true)
-      setSaveEmail(emailRef.current.value)
-    } else {
-      alert('adresse email erronée')
-    }
-  }
+    setConfirmation(true);
+    setSaveEmail(emailRef.current.value);
+    // if (regex.test(emailRef.current.value)) {
+    //   setConfirmation(true);
+    //   setSaveEmail(emailRef.current.value);
+    // } else {
+    //   alert("adresse email erronée");
+    // }
+  };
 
   if (confirmation) {
     return (

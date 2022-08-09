@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-import { useI18n } from 'cozy-ui/transpiled/react/I18n'
+import { useI18n } from "cozy-ui/transpiled/react/I18n";
 
-import List from '../../List/List'
-import ListItem from '../../List/ListItem'
-import ShareBilanBtn from '../../Button/ShareBilanBtn'
+import List from "../../List/List";
+import ListItem from "../../List/ListItem";
+import ShareBilanBtn from "../../Button/ShareBilanBtn";
 
 import iconSoftSkill from '../../../assets/icons/icone-etoile.svg'
 import iconBulletin from '../../../assets/icons/icon-bulletin.svg'
@@ -17,6 +17,16 @@ import iconExperience from '../../../assets/icons/icon-experience.svg'
 import iconReorientation from '../../../assets/icons/icon-reorientation.svg'
 
 import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric'
+import GraphCircleIcon from "cozy-ui/transpiled/react/icons/GraphCircle";
+import StarIcon from "cozy-ui/transpiled/react/icons/Star";
+import MagnifierIcon from "cozy-ui/transpiled/react/Icons/Magnifier";
+
+import WorkIcon from "../../../assets/icons/icon-work.svg";
+import DefaultIcon from "../../../assets/icons/default_icon.svg";
+import PersonalDataIcon from "../../../assets/icons/icon-personal-data.svg";
+import SchoolIcon from "../../../assets/icons/icon-school.svg";
+import { testVisions } from "../../../utils/remoteDoctypes";
+import { useClient } from "cozy-client";
 
 const style = {
   medium: {
@@ -27,16 +37,27 @@ const style = {
 }
 
 const HomePage = () => {
-  const { t } = useI18n()
-  const [open, setOpen] = useState(false)
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
 
   const OpenModal = () => {
-    setOpen(currentOpen => !currentOpen)
-  }
+    setOpen(currentOpen => !currentOpen);
+  };
 
   const closeModal = () => {
-    setOpen(currentOpen => !currentOpen)
-  }
+    setOpen(currentOpen => !currentOpen);
+  };
+
+  // TMP
+  const client = useClient();
+  const test = async () => {
+    try {
+      const res = await testVisions(client, 'GET', 'com.visionstrust')
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+  };
 
   return (
     <>
@@ -93,8 +114,9 @@ const HomePage = () => {
         />
       </List>
       <ModalGeneric open={open} closeModal={closeModal} />
+      <button onClick={() => test()}>TEST</button>
     </>
   )
 }
 
-export default HomePage
+export default HomePage;
