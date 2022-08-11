@@ -1,10 +1,12 @@
-export const testVisions = async (client, method, remoteDoctype) => {
+const REMOTE_DOCTYPE = "com.visionstrust";
+
+export const visionsTrustApiPOST = async (client, path, body = {}) => {
   try {
     const res = await client
       .getStackClient()
-      .fetchJSON("POST", `/remote/${remoteDoctype}`, {
-        data: JSON.stringify({ test: 1, data: 2 }),
-        path: "cozy"
+      .fetchJSON("POST", `/remote/${REMOTE_DOCTYPE}`, {
+        data: JSON.stringify(body),
+        path
       });
     return res;
   } catch (err) {

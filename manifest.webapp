@@ -1,5 +1,5 @@
 {
-  "name": "Bilan d'orientation",
+  "name": "VisionsGalaxy",
   "slug": "bilanorientation",
   "icon": "icon.svg",
   "categories": [],
@@ -42,6 +42,18 @@
       "description": "Communication with Visions API to show elements regarding VisionsGalaxy",
       "type": "com.visionstrust",
       "verbs": ["GET", "POST"]
+    },
+    "visions": {
+      "description": "General Visions related information",
+      "type": "visions.cozy",
+      "verbs": ["ALL"]
+    },
+    "mail": {
+      "description": "Send emails to orientation experts",
+      "type": "io.cozy.jobs",
+      "verbs": ["POST"],
+      "selector": "worker",
+      "values": ["sendmail"]
     }
   }
 }
