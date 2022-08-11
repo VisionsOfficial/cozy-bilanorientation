@@ -1,23 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useClient } from "cozy-client";
+import React, { useState, useRef, useEffect } from 'react';
+import { useClient } from 'cozy-client';
 
-import Icon from "cozy-ui/transpiled/react/Icon";
-import logoVisions from "../../../assets/icons/logo_picto.svg";
+import Icon from 'cozy-ui/transpiled/react/Icon';
+import logoVisions from '../../../assets/icons/logo_picto.svg';
 import {
   getVisionsCozyDocument,
   updateVisionsCozyDocument
-} from "../../../utils/visions.cozy";
-import { visionsTrustApiPOST } from "../../../utils/remoteDoctypes";
+} from '../../../utils/visions.cozy';
+import { visionsTrustApiPOST } from '../../../utils/remoteDoctypes';
 
 // TODO : CHANGE THIS TO COZY'S NEW ID SYSTEM
-const EMAIL = "felix@visionspol.eu";
+const EMAIL = 'felix@visionspol.eu';
 
 const MissingPhoneNumberModal = ({ open = false }) => {
   const inputRef = useRef();
   const client = useClient();
 
   const [isOpen, setIsOpen] = useState(open);
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberLoading, setPhoneNumberLoading] = useState(true);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
 
@@ -28,11 +28,11 @@ const MissingPhoneNumberModal = ({ open = false }) => {
     if (inputRef.current.value) {
       const phoneNumber = inputRef.current.value;
       setHasPhoneNumber(phoneNumber);
-      await visionsTrustApiPOST(client, "user-phone-number", {
+      await visionsTrustApiPOST(client, 'user-phone-number', {
         email: EMAIL,
         phoneNumber
       });
-      await updateVisionsCozyDocument(client, "user", {
+      await updateVisionsCozyDocument(client, 'user', {
         phoneNumber
       });
     }
@@ -51,17 +51,17 @@ const MissingPhoneNumberModal = ({ open = false }) => {
   // Check if phoneNumber is registered
   useEffect(() => {
     const getPhoneNumber = async () => {
-      const userInfo = await getVisionsCozyDocument(client, "user");
+      const userInfo = await getVisionsCozyDocument(client, 'user');
       if (userInfo?.phoneNumber) return setHasPhoneNumber(userInfo.phoneNumber);
 
       // Here we don't have the phone number stored in the cozy
-      const visionsUserInfo = await visionsTrustApiPOST(client, "user", {
+      const visionsUserInfo = await visionsTrustApiPOST(client, 'user', {
         email: EMAIL
       });
 
       if (visionsUserInfo?.user?.phoneNumber) {
         // Save phoneNumber to cozy file
-        await updateVisionsCozyDocument(client, "user", {
+        await updateVisionsCozyDocument(client, 'user', {
           phoneNumber: visionsUserInfo.user.phoneNumber
         });
         return setHasPhoneNumber(visionsUserInfo.user.phoneNumber);
@@ -71,7 +71,7 @@ const MissingPhoneNumberModal = ({ open = false }) => {
       setPhoneNumberLoading(false);
     };
 
-    getPhoneNumber().catch(err => {
+    getPhoneNumber().catch(() => {
       setPhoneNumberError(true);
       setPhoneNumberLoading(false);
     });
@@ -79,24 +79,24 @@ const MissingPhoneNumberModal = ({ open = false }) => {
 
   // DEV
   const removePhoneNumber = async () => {
-    await updateVisionsCozyDocument(client, "user", { phoneNumber: undefined });
-    setPhoneNumber("");
+    await updateVisionsCozyDocument(client, 'user', { phoneNumber: undefined });
+    setPhoneNumber('');
     setPhoneNumberError(false);
     setPhoneNumberLoading(false);
   };
 
   return (
-    <div className={`modalContainer ${isOpen ? "openModal" : ""}`}>
-      <div className="modal">
-        <div className="modalHeader">
-          <div className="modalLogo">
-            <Icon icon={logoVisions} className="modalImg" />
+    <div className={`modalContainer ${isOpen ? 'openModal' : ''}`}>
+      <div className='modal'>
+        <div className='modalHeader'>
+          <div className='modalLogo'>
+            <Icon icon={logoVisions} className='modalImg' />
           </div>
-          <div className="closeModal" onClick={() => closeModal()}>
+          <div className='closeModal' onClick={() => closeModal()}>
             <span>x</span>
           </div>
         </div>
-        <div className="modalContent">
+        <div className='modalContent'>
           {!confirmation &&
             phoneNumber &&
             !phoneNumberError &&
@@ -116,18 +116,18 @@ const MissingPhoneNumberModal = ({ open = false }) => {
             !phoneNumber &&
             !phoneNumberError && (
               <>
-                <h3 className="modalTitle">
+                <h3 className='modalTitle'>
                   Veuillez renseigner votre numéro de téléphone
                 </h3>
-                <label htmlFor="phoneNumber">Numéro de téléphone</label>
+                <label htmlFor='phoneNumber'>Numéro de téléphone</label>
                 <input
                   ref={inputRef}
-                  type="tel"
-                  name="phoneNumber"
-                  id="phoneNumber"
+                  type='tel'
+                  name='phoneNumber'
+                  id='phoneNumber'
                   required={true}
                 />
-                <div className="modalBtn">
+                <div className='modalBtn'>
                   <button onClick={() => confirm()}>Valider</button>
                 </div>
               </>

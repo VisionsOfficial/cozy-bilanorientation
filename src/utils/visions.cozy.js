@@ -7,9 +7,9 @@
 // settings: Application related settings
 // user: Various user related data
 
-import { Q } from "cozy-client";
+import { Q } from 'cozy-client';
 
-const DOCTYPE = "visions.cozy";
+const DOCTYPE = 'visions.cozy';
 
 /**
  * Fetches the document of the set category
@@ -46,7 +46,7 @@ export const createVisionsCozyDocument = async (
   fields = {}
 ) => {
   const response = await client.save({
-    _type: "visions.cozy",
+    _type: 'visions.cozy',
     category: category,
     ...fields
   });
