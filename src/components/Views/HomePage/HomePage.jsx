@@ -25,7 +25,6 @@ import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric';
 // import DefaultIcon from "../../../assets/icons/default_icon.svg";
 // import PersonalDataIcon from "../../../assets/icons/icon-personal-data.svg";
 // import SchoolIcon from "../../../assets/icons/icon-school.svg";
-// import MissingPhoneNumberModal from "../../Modal/MissingPhoneNumberModal/MissingPhoneNumberModal";
 
 const style = {
   medium: {
@@ -102,11 +101,6 @@ const HomePage = () => {
         />
       </List>
       <ModalGeneric open={open} closeModal={closeModal} />
-
-      {/* <MissingPhoneNumberModal
-        open={true}
-        closeModal={() => console.log("CLOSE MODAL")}
-      /> */}
     </>
   );
 };

@@ -3,13 +3,13 @@
   "slug": "bilanorientation",
   "icon": "icon.svg",
   "categories": [],
-  "version": "0.3.2",
+  "version": "0.3.3",
   "licence": "AGPL-3.0",
   "editor": "visions",
   "source": "https://github.com/VisionsOfficial/cozy-bilanorientation.git",
   "developer": {
-    "name": "FelixBole",
-    "url": ""
+    "name": "Visions",
+    "url": "https://visionspol.eu"
   },
   "routes": {
     "/": {
@@ -42,6 +42,16 @@
       "description": "Communication with Visions API to show elements regarding VisionsGalaxy",
       "type": "com.visionstrust",
       "verbs": ["GET", "POST"]
+    },
+    "inokufu": {
+      "description": "Communication with the Inokufu Learning Objects API to retrieve appropriate offers",
+      "type": "com.inokufu.api",
+      "verbs": ["GET"]
+    },
+    "palm": {
+      "description": "Communication with the PALM matching API to retrieve appropriate offers",
+      "type": "io.vision.palm-app",
+      "verbs": ["POST"]
     },
     "visions": {
       "description": "General Visions related information",
