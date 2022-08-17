@@ -7,33 +7,33 @@ import ListItem from '../../List/ListItem';
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 
 import iconSoftSkill from '../../../assets/icons/icone-etoile.svg';
-import iconBulletin from '../../../assets/icons/icon-bulletin.svg';
 import iconJobExplore from '../../../assets/icons/icon-metiers-explore.svg';
 import iconCV from '../../../assets/icons/cv.svg';
 import iconFormation from '../../../assets/icons/icon-formation.svg';
 import iconJobTension from '../../../assets/icons/icon-matching-metier.svg';
 import iconOffers from '../../../assets/icons/icon-matching-emploi.svg';
 import iconExperience from '../../../assets/icons/icon-experience.svg';
-import iconReorientation from '../../../assets/icons/icon-reorientation.svg';
+import iconSkills from '../../../assets/icons/ICON-competence.svg';
+import iconCareer from '../../../assets/icons/ICON-CARRIERE-PRO.svg';
+import iconProProfil from '../../../assets/icons/icone-profil-pro.svg';
+
+import iconBO from '../../../assets/icons/ICON-BO.svg';
+import iconREO from '../../../assets/icons/ICON-REO.svg';
 
 import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric';
 // import GraphCircleIcon from "cozy-ui/transpiled/react/icons/GraphCircle";
 // import StarIcon from "cozy-ui/transpiled/react/icons/Star";
 // import MagnifierIcon from "cozy-ui/transpiled/react/Icons/Magnifier";
 
-// import WorkIcon from "../../../assets/icons/icon-work.svg";
-// import DefaultIcon from "../../../assets/icons/default_icon.svg";
-// import PersonalDataIcon from "../../../assets/icons/icon-personal-data.svg";
-// import SchoolIcon from "../../../assets/icons/icon-school.svg";
 // import MissingPhoneNumberModal from "../../Modal/MissingPhoneNumberModal/MissingPhoneNumberModal";
 
-const style = {
-  medium: {
-    width: 30,
-    height: 30,
-    filter: 'initial'
-  }
-};
+// const style = {
+//   medium: {
+//     width: 30,
+//     height: 30,
+//     filter: 'initial'
+//   }
+// };
 
 const HomePage = () => {
   const { t } = useI18n();
@@ -52,52 +52,48 @@ const HomePage = () => {
       <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
         <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
       </div>
+      <List title={"Mon Bilan d'Orientation"} icon={iconBO}>
+        <ListItem link='#' leftIcon={iconJobTension} text={'Mes résultats'} />
+        <ListItem
+          link='#'
+          leftIcon={iconOffers}
+          text={
+            "Mes propositions de métiers en tensions, d'offres d'emploi et de formations"
+          }
+          latest={true}
+        />
+      </List>
+      <List title={'Mon Bilan de RéOrientation'} icon={iconREO}>
+        <ListItem link='#' leftIcon={iconJobTension} text={'Mes résultats'} />
+        <ListItem
+          link='#'
+          leftIcon={iconFormation}
+          text={'Mes propositions de formations'}
+        />
+      </List>
       <List title={'Mes données'}>
         <ListItem
           link='/softSkills'
           leftIcon={iconSoftSkill}
           text={t('List.softSkills')}
         />
-        <ListItem
-          link='/wip'
-          leftIcon={iconBulletin}
-          text={t('List.schoolReports')}
-        />
+        <ListItem link='#' leftIcon={iconCareer} text={t('List.career')} />
         <ListItem
           link='/jobExplorations'
           leftIcon={iconJobExplore}
           text={t('List.jobExplorations')}
         />
         <ListItem link='/wip' leftIcon={iconCV} text={t('List.resumes')} />
+        <ListItem link='#' leftIcon={iconSkills} text={t('List.skills')} />
+        <ListItem
+          link='#'
+          leftIcon={iconProProfil}
+          text={t('List.professionnalProfile')}
+        />
         <ListItem
           link='/skills'
           leftIcon={iconExperience}
-          text={t('List.skills')}
-          noDivider
-        />
-      </List>
-      <List title={'Mes fonctionnalités'}>
-        <ListItem
-          link='/jobsintension'
-          leftIcon={iconJobTension}
-          text={'Mes Matchings avec les métiers en tension'}
-        />
-        <ListItem
-          link='/wip'
-          leftIcon={iconFormation}
-          text={'Ma recherche de formation'}
-        />
-        <ListItem
-          link='#'
-          leftIcon={iconOffers}
-          text={"Mes Matching avec les offres d'emploi"}
-        />
-        <ListItem
-          link='projetreorientation'
-          leftIcon={iconReorientation}
-          text={'Mon projet de RéOrientation'}
-          noFill={true}
-          size={style.medium}
+          text={t('List.experiences')}
           noDivider
         />
       </List>

@@ -7,7 +7,7 @@ import Typography from 'cozy-ui/transpiled/react/Typography'
 import IconButton from 'cozy-ui/transpiled/react/IconButton'
 import Icon from 'cozy-ui/transpiled/react/Icon'
 import PerviousIcon from 'cozy-ui/transpiled/react/Icons/Previous'
-import backgroundImage from '../../assets/images/EN-TETE-VG.jpg'
+import backgroundImage from '../../assets/images/en-tete-vg.svg'
 
 const styles = {
   backButton: {

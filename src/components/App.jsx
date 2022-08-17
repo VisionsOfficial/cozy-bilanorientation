@@ -29,7 +29,8 @@ import PublicPage from './Views/publicPage/PublicPage'
 const styles = {
   content: {
     // marginTop: '-55px',
-    overflow: 'visible'
+    overflow: 'visible',
+    paddingBottom: 50
   }
 }
 
@@ -50,7 +51,7 @@ const App = () => {
             </MuiCozyTheme>
           </BarCenter>
         )}
-        <Main style={{ display: 'block' }}>
+        <Main style={{ display: 'block', backgroundColor: '#f4fcfe' }}>
           <Header />
           {allDataStatus.isLoading && !allDataStatus.isLoaded ? (
             <>

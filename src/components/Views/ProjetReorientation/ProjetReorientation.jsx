@@ -1,28 +1,28 @@
-import React, { useState } from 'react'
-import Orientoi from '../JobsInTension/Orientoi'
-import Inokufu from '../JobsInTension/Inokufu'
-import Pitangoo from './Pitangoo'
-import Curiose from './Curiose'
-import ShareBilanBtn from '../../Button/ShareBilanBtn'
-import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric'
-import JobReady from './JobReady'
+import React, { useState } from 'react';
+import Orientoi from '../JobsInTension/Orientoi';
+import Inokufu from '../JobsInTension/Inokufu';
+import Pitangoo from './Pitangoo';
+import Curiose from './Curiose';
+import ShareBilanBtn from '../../Button/ShareBilanBtn';
+import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric';
+import JobReady from './JobReady';
 
 const styles = {
   card: {
     borderRadius: '15px'
   }
-}
+};
 
 const ProjetReorientation = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const OpenModal = () => {
-    setOpen(currentOpen => !currentOpen)
-  }
+    setOpen(currentOpen => !currentOpen);
+  };
 
   const closeModal = () => {
-    setOpen(currentOpen => !currentOpen)
-  }
+    setOpen(currentOpen => !currentOpen);
+  };
 
   return (
     <>
@@ -45,7 +45,7 @@ const ProjetReorientation = () => {
       />
       <ModalGeneric open={open} closeModal={closeModal} />
     </>
-  )
-}
+  );
+};
 
-export default ProjetReorientation
+export default ProjetReorientation;

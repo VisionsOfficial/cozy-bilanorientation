@@ -7,6 +7,7 @@ gradient = linear-gradient(to right, #16f7b4, #21bbee);
 gradient-reverse = linear-gradient(to right, #21bbee, #16f7b4);
 gradient-top = linear-gradient(to top, #16f7b4, #21bbee);
 gradient-opacity = linear-gradient(to right, #16f7b465, #21bbee65);
+blue-gradient = linear-gradient(to right, color-tertiary, color-secondary);
 soft-shadow = rgba(100, 100, 111, 0.2) 0px 7px 15px 0px;
 
 // Mixin
@@ -25,19 +26,19 @@ body
 
 #main
     @media screen and (min-width: 770px)
-        margin-top: -139px !important
+        margin-top: -90px !important
     @media screen and (max-width: 1023px)
-        margin-top: -130px !important
+        margin-top: -80px !important
     @media screen and (max-width: 770px)
-        margin-top: -130px !important
+        margin-top: -110px !important
 
 .headerBackground
-    background-image embedurl('../assets/images/EN-TETE-reorientation.jpg')
+    background-image embedurl('../assets/images/en-tete-reo.svg')
     background-repeat: no-repeat
-    background-size: auto
+    background-size: cover
     padding-left: 2rem
     padding-top: 40px
-    height: 200px
+    height: 160px
     @media screen and (max-width: 770px)
         padding-left: 0.5rem
         padding-right: 0.5rem
@@ -84,7 +85,7 @@ body
         margin: 0px
         font-size: 14px
     @media screen and (min-width: 771px) and (max-width: 1050px)
-        top: -36px !important
+        top: -55px !important
     @media screen and (max-width: 770px)
         position: initial !important
         // margin: 15px auto
@@ -213,14 +214,40 @@ body
     display: block
 
 .iconGradient
-    width: 20px
-    height: 20px
+    width: 22px
+    height: 22px
     &Arrow
         fill: #1dd7d6
 
 .listItemText
     span 
-        font-weight: 500
+        font-weight: 600
+    display: flex
+    align-items: center
+
+.newListItem
+    &::after
+        content: 'NEW'
+        background: gradient
+        color: color-secondary
+        font-weight: bold
+        padding: 4px 8px
+        border-radius: 5px
+        margin-left: 30px
+        margin-right: 5px
+        animation: pulse 2s linear infinite
+        @media screen and (max-width 600px)
+            font-size: 12px
+            margin-left: 5px
+            padding: 3px 6px
+
+@keyframes pulse
+    0% 
+        opacity 1
+    50%
+        opacity: 0.1
+    100%
+        opacity 1
 
 .badgeRow 
     // height: 80%
@@ -613,3 +640,25 @@ body
             background: gradient
             color: color-secondary
             transform: scale(1.1)
+
+.titleSectionHomePage
+    centerFlex()
+    justify-content: flex-start
+    height: 60px
+    width: 100%
+    border-radius: 20px 20px 0 0
+    background: blue-gradient
+    h3
+        color: color-primary
+        margin: 0
+        margin-left: 20px
+        font-weight: 600
+    svg
+        margin-left: 20px
+        width: 40px
+        height: 40px
+    @media screen and (max-width: 430px)
+        h3 
+            margin-left: 10px
+        svg
+            margin-left: 10px

@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import UiListItem from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItem'
+import UiListItem from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItem';
 import ListItemIcon, {
   smallSize
-} from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItemIcon'
-import Icon from 'cozy-ui/transpiled/react/Icon'
-import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
-import ListItemSecondaryAction from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItemSecondaryAction'
-import Divider from 'cozy-ui/transpiled/react/MuiCozyTheme/Divider'
-import RightIcon from 'cozy-ui/transpiled/react/Icons/Right'
+} from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItemIcon';
+import Icon from 'cozy-ui/transpiled/react/Icon';
+import ListItemText from 'cozy-ui/transpiled/react/ListItemText';
+import ListItemSecondaryAction from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItemSecondaryAction';
+import Divider from 'cozy-ui/transpiled/react/MuiCozyTheme/Divider';
+import RightIcon from 'cozy-ui/transpiled/react/Icons/Right';
 
 const style = {
   link: {
@@ -27,7 +27,7 @@ const style = {
   text: {
     fontWeight: 'bold'
   }
-}
+};
 
 const ListItem = ({
   link,
@@ -35,9 +35,10 @@ const ListItem = ({
   text,
   noFill = false,
   size,
-  noDivider
+  noDivider,
+  latest = false
 }) => {
-  const [hovered, setHovered] = useState(false)
+  const [hovered, setHovered] = useState(false);
   return (
     <>
       <Link
@@ -55,27 +56,30 @@ const ListItem = ({
                   ? { ...style.hover.icon, ...size }
                   : null
               }
-              className="iconGradient"
+              className='iconGradient'
             />
           </ListItemIcon>
-          <ListItemText primary={text} className="listItemText" />
+          <ListItemText
+            primary={text}
+            className={`listItemText ${latest ? 'newListItem' : ''}`}
+          />
           <ListItemSecondaryAction>
             <Icon
               icon={RightIcon}
               size={smallSize}
-              className="u-mr-1 iconGradientArrow"
+              className='u-mr-1 iconGradientArrow'
               style={hovered ? style.hover.arrow : null}
             />
           </ListItemSecondaryAction>
         </UiListItem>
       </Link>
-      {!noDivider && <Divider variant="inset" />}
+      {!noDivider && <Divider variant='inset' />}
     </>
-  )
-}
+  );
+};
 
 ListItem.defaultProps = {
   hasDivider: false
-}
+};
 
-export default ListItem
+export default ListItem;

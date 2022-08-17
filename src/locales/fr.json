@@ -20,11 +20,14 @@
   "List": {
     "softSkills": "Mes motivations et compétences douces",
     "schoolReports": "Mes bulletins scolaires et diplômes",
-    "skills": "Mes expériences",
+    "skills": "Compétences",
     "jobExplorations": "Métiers que j'explore",
     "resumes": "CV et lettres de motivation",
     "trainingSearch": "Recherche de formation",
-    "myReport": "Mon Bilan VisionsGalaxy"
+    "myReport": "Mon Bilan VisionsGalaxy",
+    "career": "Carrière professionnelle",
+    "experiences": "Expériences",
+    "professionnalProfile": "Profil professionnel"
   },
   "wip": {
     "inProgress": "Travaux en cours...",

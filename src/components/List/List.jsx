@@ -1,7 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 // import { useI18n } from "cozy-ui/transpiled/react/I18n"
-import NavigationList from 'cozy-ui/transpiled/react/NavigationList'
+import NavigationList from 'cozy-ui/transpiled/react/NavigationList';
+import Icon from 'cozy-ui/transpiled/react/Icon';
+import { largeSize } from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItemIcon';
 // import NavigationList, {
 //   NavigationListHeader,
 //   NavigationListSection
@@ -10,20 +12,11 @@ import NavigationList from 'cozy-ui/transpiled/react/NavigationList'
 // import StarIcon from "cozy-ui/transpiled/react/icons/Star";
 // import MagnifierIcon from "cozy-ui/transpiled/react/Icons/Magnifier";
 
-// import WorkIcon from "../../assets/icons/icon-work.svg";
-// import DefaultIcon from "../../assets/icons/default_icon.svg";
-// import PersonalDataIcon from "../../assets/icons/icon-personal-data.svg";
-// import SchoolIcon from "../../assets/icons/icon-school.svg";
-
-// import ListItem from "./ListItem";
-
 const styles = {
-  title: {
-    color: '#21bbee',
-    background: '#17243f',
-    marginBottom: '0px',
-    padding: '18px 25px',
-    borderRadius: '20px 20px 0px 0px'
+  card: {
+    margin: '10px 0 20px 0',
+    boxShadow: 'rgba(100, 100, 111, 0.3) 0px 0px 10px',
+    borderRadius: 20
   },
   content: {
     marginTop: '0px',
@@ -31,64 +24,25 @@ const styles = {
     borderRadius: '0px 0px 20px 20px',
     overflow: 'hidden'
   }
-}
+};
 
-const List = ({ title, children }) => {
+const List = ({ icon, title, children }) => {
   // const { t } = useI18n()
 
   return (
-    <NavigationList>
-      <h3 style={styles.title}>{title}</h3>
-      <div className="u-bg-white" style={styles.content}>
+    <NavigationList style={styles.card}>
+      <div className='titleSectionHomePage'>
+        {icon ? <Icon icon={icon} size={largeSize} /> : <></>}
+        <h3>{title}</h3>
+      </div>
+      <div className='u-bg-white' style={styles.content}>
         <div>{children}</div>
       </div>
       {/* <NavigationListSection style={styles.content}>
         <div className="u-bg-white">{children}</div>
       </NavigationListSection> */}
     </NavigationList>
-    // <NavigationList>
-    //   <NavigationListSection>
-    //     <div className="u-bg-white">
-    //       <ListItem
-    //         link="/softSkills"
-    //         leftIcon={GraphCircleIcon}
-    //         text={t('List.softSkills')}
-    //       />
-    //       <ListItem
-    //         link="/wip"
-    //         leftIcon={SchoolIcon}
-    //         text={t('List.schoolReports')}
-    //       />
-    //       <ListItem
-    //         link="/skills"
-    //         leftIcon={WorkIcon}
-    //         text={t('List.skills')}
-    //       />
-    //       <ListItem
-    //         link="/jobExplorations"
-    //         leftIcon={StarIcon}
-    //         text={t('List.jobExplorations')}
-    //       />
-    //       <ListItem
-    //         link="/wip"
-    //         leftIcon={PersonalDataIcon}
-    //         text={t('List.resumes')}
-    //       />
-    //       <ListItem
-    //         link="/wip"
-    //         leftIcon={MagnifierIcon}
-    //         text={t('List.trainingSearch')}
-    //       />
-    //       <ListItem
-    //         link="/jobsintensions"
-    //         leftIcon={DefaultIcon}
-    //         text={t('Métiers en tensions')}
-    //         noDivider
-    //       />
-    //     </div>
-    //   </NavigationListSection>
-    // </NavigationList>
-  )
-}
+  );
+};
 
-export default List
+export default List;
