@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Typography from 'cozy-ui/transpiled/react/Typography';
 
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
-import ModalBilan from '../../Modal/ModalBilan/ModalBilan';
+import GlobalModal from '../../Modal/GlobalModal';
 
 const styles = {
   subText: {
@@ -21,7 +21,8 @@ const BadgeRow = ({
   url,
   addStyles,
   isPublicPage = false,
-  btn = true
+  btn = true,
+  offerData = null
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -67,11 +68,11 @@ const BadgeRow = ({
           </div>
         </div>
       </div>
-      <ModalBilan
+      <GlobalModal
+        method={0}
+        offerData={offerData}
         open={open}
         closeModal={closeModal}
-        title={title}
-        email={'doip@ml.u-cergy.fr'}
       />
     </>
   );
