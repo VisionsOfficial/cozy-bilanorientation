@@ -25,7 +25,7 @@ const styles = {
   }
 };
 
-const InokufuAPI = ({ provider = 'visions', keywords }) => {
+const InokufuAPI = ({ provider = 'visions', keywords, mappingData }) => {
   const client = useClient();
   const { t } = useI18n();
 
@@ -34,6 +34,14 @@ const InokufuAPI = ({ provider = 'visions', keywords }) => {
   const [error, setError] = useState(false);
 
   const [extraDataToggled, setExtraDataToggled] = useState(false);
+
+  const getOfferMappingData = url => {
+    if (!mappingData) return null;
+    const idx = mappingData?.of?.findIndex(o => o['lien redirection'] === url);
+    if (idx === -1) return null;
+
+    return mappingData.of[idx];
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -102,6 +110,7 @@ const InokufuAPI = ({ provider = 'visions', keywords }) => {
                   picture={offer.picture}
                   url={offer.url}
                   addStyles={styles.badge}
+                  offerData={getOfferMappingData(offer.url)}
                 />
               </Grid>
             ))}
@@ -112,8 +121,6 @@ const InokufuAPI = ({ provider = 'visions', keywords }) => {
         </p>
       </Grid>
     </Accordion>
-    // <div>
-    // </div>
   );
 };
 

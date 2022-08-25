@@ -68,12 +68,16 @@ const BadgeRow = ({
           </div>
         </div>
       </div>
-      <GlobalModal
-        method={0}
-        offerData={offerData}
-        open={open}
-        closeModal={closeModal}
-      />
+      {offerData !== null ? (
+        <GlobalModal
+          method={0}
+          offerData={offerData}
+          open={open}
+          closeModal={closeModal}
+        />
+      ) : (
+        <div>TODO</div>
+      )}
     </>
   );
 };
