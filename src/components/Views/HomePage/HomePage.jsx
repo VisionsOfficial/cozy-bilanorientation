@@ -53,9 +53,13 @@ const HomePage = () => {
         <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
       </div>
       <List title={"Mon Bilan d'Orientation"} icon={iconBO}>
-        <ListItem link='#' leftIcon={iconJobTension} text={'Mes résultats'} />
         <ListItem
-          link='#'
+          link='/wip'
+          leftIcon={iconJobTension}
+          text={'Mes résultats'}
+        />
+        <ListItem
+          link='/jobsintension'
           leftIcon={iconOffers}
           text={
             "Mes propositions de métiers en tensions, d'offres d'emploi et de formations"
@@ -64,9 +68,13 @@ const HomePage = () => {
         />
       </List>
       <List title={'Mon Bilan de RéOrientation'} icon={iconREO}>
-        <ListItem link='#' leftIcon={iconJobTension} text={'Mes résultats'} />
         <ListItem
-          link='#'
+          link='/wip'
+          leftIcon={iconJobTension}
+          text={'Mes résultats'}
+        />
+        <ListItem
+          link='/wip'
           leftIcon={iconFormation}
           text={'Mes propositions de formations'}
         />
@@ -77,21 +85,25 @@ const HomePage = () => {
           leftIcon={iconSoftSkill}
           text={t('List.softSkills')}
         />
-        <ListItem link='#' leftIcon={iconCareer} text={t('List.career')} />
+        <ListItem link='/wip' leftIcon={iconCareer} text={t('List.career')} />
         <ListItem
           link='/jobExplorations'
           leftIcon={iconJobExplore}
           text={t('List.jobExplorations')}
         />
         <ListItem link='/wip' leftIcon={iconCV} text={t('List.resumes')} />
-        <ListItem link='#' leftIcon={iconSkills} text={t('List.skills')} />
         <ListItem
-          link='#'
+          link='/skills'
+          leftIcon={iconSkills}
+          text={t('List.skills')}
+        />
+        <ListItem
+          link='/wip'
           leftIcon={iconProProfil}
           text={t('List.professionnalProfile')}
         />
         <ListItem
-          link='/skills'
+          link='/wip'
           leftIcon={iconExperience}
           text={t('List.experiences')}
           noDivider

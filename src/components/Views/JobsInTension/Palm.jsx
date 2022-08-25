@@ -1,26 +1,26 @@
-import React from "react";
+import React from 'react';
 
-import { useI18n } from "cozy-ui/transpiled/react/I18n";
-import Grid from "cozy-ui/transpiled/react/MuiCozyTheme/Grid";
+import { useI18n } from 'cozy-ui/transpiled/react/I18n';
+import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
-import Accordion from "../../Accordion";
-import Badge from "../../Badge";
-import icon from "../../../assets/icons/palm.svg";
-import iconJob from '../../../assets/icons/icon-emploi-fond.svg'
+import Accordion from '../../Accordion';
+import Badge from '../../Badge';
+import icon from '../../../assets/icons/palm.svg';
+import iconJob from '../../../assets/icons/icon-emploi-fond.svg';
 
-import { useJsonFiles } from "../../Hooks/useJsonFiles";
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
 
 const styles = {
   card: {
-    borderRadius: "15px"
+    borderRadius: '15px'
   },
   badge: {
-    padding: "20px 10px",
-    borderRadius: "10px"
+    padding: '20px 10px',
+    borderRadius: '10px'
   }
 };
 
-const bgBadge = "linear-gradient(85deg, #16f7b415, #21bbee15)";
+const bgBadge = 'linear-gradient(85deg, #16f7b415, #21bbee15)';
 const getThirdElements = arr => arr.slice(0, 3);
 
 const Palm = ({ isPublicPage = false }) => {
@@ -31,11 +31,12 @@ const Palm = ({ isPublicPage = false }) => {
   return (
     <Accordion
       icon={icon}
-      title={t("jobsOffers")}
+      title={t('jobsOffers')}
       addStyles={styles.card}
-      bgHeader={"#FFF"}
+      bgHeader={'#FFF'}
+      btnSeeMore={true}
     >
-      <Grid className="u-mv-1" container spacing={2}>
+      <Grid className='u-mv-1' container spacing={2}>
         {datas.map(
           ({ mission_name, similarity, short_summary, email, url }, index) => (
             <Grid key={index} item xs={12} sm={12} lg={6} xl={4}>

@@ -30,7 +30,7 @@ body
     @media screen and (max-width: 1023px)
         margin-top: -80px !important
     @media screen and (max-width: 770px)
-        margin-top: -110px !important
+        margin-top: -120px !important
 
 .headerBackground
     background-image embedurl('../assets/images/en-tete-reo.svg')
@@ -40,11 +40,15 @@ body
     padding-top: 40px
     height: 160px
     @media screen and (max-width: 770px)
+        centerFlex()
+        align-items: baseline
         padding-left: 0.5rem
         padding-right: 0.5rem
-        padding-top: 20px   
+        padding-top: 10px   
         h2
-            font-size: 28px
+            font-size: 24px
+    @media screen and (max-width: 500px)
+        height: 200px
 
 .btnShare
     centerFlex()
@@ -85,10 +89,10 @@ body
         margin: 0px
         font-size: 14px
     @media screen and (min-width: 771px) and (max-width: 1050px)
-        top: -55px !important
+        top: -40px !important
     @media screen and (max-width: 770px)
         position: initial !important
-        // margin: 15px auto
+        margin-top: 30px
     
 .modalContainer
     position: fixed
@@ -662,3 +666,43 @@ body
             margin-left: 10px
         svg
             margin-left: 10px
+
+.titleHeaderPage
+    color: color-secondary
+    @media screen and (min-width: 1000px)
+        width: 60%
+
+.containerDoceo
+    background: gradient
+    border-radius: 15px
+    padding: 20px
+    box-shadow: soft-shadow
+
+    .textDoceo
+        width 68%
+        margin-right: 10px
+        font-weight: 500
+
+        .headerDoceo
+            font-weight: bold
+            font-size: 18px
+
+    .illustrationDoceo
+        width 30%
+        svg
+            height: 200px
+            width: 100%
+
+    @media screen and (max-width 1020px)
+        centerFlex()
+        flex-direction: column-reverse
+        text-align: center
+        .textDoceo
+            div
+                margin: auto
+        
+        .illustrationDoceo
+            width: 100%
+
+.btnDisplayNone
+    display: none
