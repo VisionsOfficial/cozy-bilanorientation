@@ -25,16 +25,6 @@ import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric';
 // import StarIcon from "cozy-ui/transpiled/react/icons/Star";
 // import MagnifierIcon from "cozy-ui/transpiled/react/Icons/Magnifier";
 
-// import MissingPhoneNumberModal from "../../Modal/MissingPhoneNumberModal/MissingPhoneNumberModal";
-
-// const style = {
-//   medium: {
-//     width: 30,
-//     height: 30,
-//     filter: 'initial'
-//   }
-// };
-
 const HomePage = () => {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
@@ -110,11 +100,6 @@ const HomePage = () => {
         />
       </List>
       <ModalGeneric open={open} closeModal={closeModal} />
-
-      {/* <MissingPhoneNumberModal
-        open={true}
-        closeModal={() => console.log("CLOSE MODAL")}
-      /> */}
     </>
   );
 };
