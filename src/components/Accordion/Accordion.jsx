@@ -6,7 +6,6 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import Typography from 'cozy-ui/transpiled/react/Typography';
 import Icon from 'cozy-ui/transpiled/react/Icon';
-import FindOutMore from '../Button/FindOutMoreBtn/FindOutMore';
 
 const styles = {
   title: {
@@ -20,19 +19,29 @@ const Accordion = ({
   children,
   bgHeader,
   addStyles,
-  btnSeeMore = false
+  btnSeeMore = false,
+  seeMoreFC = () => {},
+  seeMoreToggled
 }) => {
   return (
     <MuiAccordion expanded style={addStyles}>
       <AccordionSummary
         expandIcon={<Icon icon={icon} size={37} />}
-        style={{ backgroundColor: bgHeader }}
+        style={{
+          backgroundColor: bgHeader,
+          position: 'relative',
+          marginRight: 100
+        }}
       >
         <Typography variant='h6' component='div' style={styles.title}>
           {title}
         </Typography>
         {btnSeeMore ? (
-          <FindOutMore textContent={'voir +'} hasIcon={false} />
+          <div className='btnSeeMore'>
+            <div className='btnShare' onClick={() => seeMoreFC()}>
+              <p className='btnText'>Voir {seeMoreToggled ? '-' : '+'}</p>
+            </div>
+          </div>
         ) : (
           <></>
         )}

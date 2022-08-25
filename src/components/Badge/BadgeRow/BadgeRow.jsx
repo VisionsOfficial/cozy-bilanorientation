@@ -4,18 +4,12 @@ import Typography from 'cozy-ui/transpiled/react/Typography';
 
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 import ModalBilan from '../../Modal/ModalBilan/ModalBilan';
-import FindOutMore from '../../Button/FindOutMoreBtn/FindOutMore';
 
 const styles = {
   subText: {
     fontWeight: 200,
     textAlign: 'center',
     fontSize: '14px'
-  },
-  img: {
-    width: '100px',
-    height: '75px',
-    borderRadius: '10px'
   }
 };
 
@@ -23,13 +17,11 @@ const BadgeRow = ({
   title,
   mainText,
   subText,
-  icon,
   picture,
   url,
-  background = '#FFFFFF',
   addStyles,
-  isPublicPage,
-  showMore
+  isPublicPage = false,
+  btn = true
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -45,10 +37,10 @@ const BadgeRow = ({
     <>
       <div
         className='u-flex u-flex-row u-flex-items-center badgeRow'
-        style={{ background: background, ...addStyles }}
+        style={addStyles}
       >
         <div className='badgeRowImageContainer'>
-          <img src={picture} alt='' style={styles.img} />
+          <img src={picture} alt='' />
         </div>
         <div className='badgeRowTextContainer'>
           <Typography
@@ -71,10 +63,7 @@ const BadgeRow = ({
               margin: '10px 0px'
             }}
           >
-            {!isPublicPage && !showMore && (
-              <ShareBilanBtn onClickFc={OpenModal} />
-            )}
-            {showMore && <FindOutMore textContent={'En savoir +'} />}
+            {btn && !isPublicPage && <ShareBilanBtn onClickFc={OpenModal} />}
           </div>
         </div>
       </div>

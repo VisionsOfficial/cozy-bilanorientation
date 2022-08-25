@@ -34,7 +34,6 @@ const Palm = ({ isPublicPage = false }) => {
       title={t('jobsOffers')}
       addStyles={styles.card}
       bgHeader={'#FFF'}
-      btnSeeMore={true}
     >
       <Grid className='u-mv-1' container spacing={2}>
         {datas.map(

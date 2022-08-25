@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-import { useI18n } from 'cozy-ui/transpiled/react/I18n'
-import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
+import { useI18n } from 'cozy-ui/transpiled/react/I18n';
+import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
-import Accordion from '../../Accordion'
-import BadgeRow from '../../Badge/BadgeRow/BadgeRow'
-import icon from '../../../assets/icons/inokufu.svg'
+import Accordion from '../../Accordion';
+import BadgeRow from '../../Badge/BadgeRow/BadgeRow';
+import icon from '../../../assets/icons/inokufu.svg';
 
-import EyeIcon from '../../../assets/icons/icon-eye.svg'
-import { useJsonFiles } from '../../Hooks/useJsonFiles'
+import EyeIcon from '../../../assets/icons/icon-eye.svg';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
 
 const styles = {
   card: {
@@ -19,15 +19,15 @@ const styles = {
     borderRadius: '10px',
     height: '100%'
   }
-}
+};
 
-const bgBadge = '#f3f4f6'
-const getLastElements = (arr, x) => arr.slice(Math.max(arr.length - x, 1))
+const bgBadge = '#f3f4f6';
+const getLastElements = (arr, x) => arr.slice(Math.max(arr.length - x, 1));
 
 const Inokufu = ({ isPublicPage = false }) => {
-  const { t } = useI18n()
-  const { jsonFiles } = useJsonFiles()
-  const datas = getLastElements(jsonFiles.inokufu.data?.data || [], 3)
+  const { t } = useI18n();
+  const { jsonFiles } = useJsonFiles();
+  const datas = getLastElements(jsonFiles.inokufu.data?.data || [], 3);
 
   return (
     <Accordion
@@ -37,7 +37,7 @@ const Inokufu = ({ isPublicPage = false }) => {
       bgHeader={'#FFF'}
     >
       <Grid
-        className="u-mv-1"
+        className='u-mv-1'
         container
         spacing={2}
         style={{ paddingBottom: 20 }}
@@ -65,12 +65,12 @@ const Inokufu = ({ isPublicPage = false }) => {
             />
           </Grid>
         ))}
-        <p className="sourceData">
+        <p className='sourceData'>
           Source de données : <span>Inokufu</span>
         </p>
       </Grid>
     </Accordion>
-  )
-}
+  );
+};
 
-export default Inokufu
+export default Inokufu;

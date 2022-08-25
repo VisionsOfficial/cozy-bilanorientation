@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Orientoi from './Orientoi';
 import Palm from './Palm';
-import Inokufu from './Inokufu';
+import InokufuAPI from '../../PartnerApis/InokufuAPI/InokufuAPI';
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric';
 import Doceo from './Doceo';
@@ -29,7 +29,7 @@ const JobsInTensions = () => {
         <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
       </div>
       <Orientoi title={'offersPorposed'} badge={true} />
-      <Inokufu />
+      <InokufuAPI keywords={'anglais,italien,photoshop'} />
       <Palm />
       <Doceo />
       <ModalGeneric open={open} closeModal={closeModal} />
