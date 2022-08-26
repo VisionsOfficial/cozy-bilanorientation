@@ -21,7 +21,7 @@ const ModalBilan = ({
 
   if (!confirmation) {
     return (
-      <div className={`modalContainer ${openModal}`}>
+      <div className={`backdrop ${openModal}`}>
         <div className='modal'>
           <div className='modalHeader'>
             <div className='modalLogo'>
@@ -47,7 +47,7 @@ const ModalBilan = ({
   }
 
   return (
-    <div className={`modalContainer ${openModal}`}>
+    <div className={`backdrop ${openModal}`}>
       <div className='modal'>
         <div className='modalHeader'>
           <div className='modalLogo'>

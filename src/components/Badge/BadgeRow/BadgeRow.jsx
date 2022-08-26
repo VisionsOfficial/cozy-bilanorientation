@@ -4,79 +4,96 @@ import Typography from 'cozy-ui/transpiled/react/Typography';
 
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 import GlobalModal from '../../Modal/GlobalModal';
+import GenericButton from '../../Button/GenericButton/GenericButton';
+
+import iconInfo from '../../../assets/icons/icon-info.svg';
+
+import '../../../styles/badgerow.styl';
+import Icon from 'cozy-ui/transpiled/react/Icon';
 
 const styles = {
   subText: {
-    fontWeight: 200,
-    textAlign: 'center',
     fontSize: '14px'
   }
 };
 
 const BadgeRow = ({
-  title,
-  mainText,
-  subText,
-  picture,
-  url,
+  offerAPI,
   addStyles,
   isPublicPage = false,
   btn = true,
-  offerData = null
+  offerDataMapping = null
 }) => {
   const [open, setOpen] = useState(false);
 
-  const OpenModal = () => {
-    setOpen(currentOpen => !currentOpen);
-  };
+  const OpenModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
 
-  const closeModal = () => {
-    setOpen(currentOpen => !currentOpen);
+  const getShortTitle = title => {
+    if (title.includes(' | ')) return title.split(' | ')[0].trim();
+    else if (title.includes(' - ')) return title.split(' - ')[0].trim();
+    return title;
   };
 
   return (
     <>
-      <div
-        className='u-flex u-flex-row u-flex-items-center badgeRow'
-        style={addStyles}
-      >
+      <div className='badgeRow' style={addStyles}>
         <div className='badgeRowImageContainer'>
-          <img src={picture} alt='' />
+          <img
+            src={
+              offerDataMapping !== null
+                ? offerDataMapping.vignettes
+                : offerAPI.picture
+            }
+            alt=''
+          />
         </div>
         <div className='badgeRowTextContainer'>
           <Typography
             className='badgeRowTitle'
             variant='h6'
             component='div'
-            onClick={() => window.open(url)}
             noWrap
           >
-            {title}
+            {getShortTitle(offerAPI.title)}
+            <Icon icon={iconInfo} onClick={() => window.open(offerAPI.url)} />
           </Typography>
           <Typography className='u-mv-half' variant='body1'>
-            {mainText}
+            {offerDataMapping !== null ? offerDataMapping.OF : ''}
           </Typography>
-          <Typography style={styles.subText} variant='body1'>
-            {subText}
+          <Typography
+            style={styles.subText}
+            className='textLineClamp'
+            variant='body1'
+          >
+            {offerAPI.description}
           </Typography>
           <div
             style={{
               margin: '10px 0px'
             }}
           >
-            {btn && !isPublicPage && <ShareBilanBtn onClickFc={OpenModal} />}
+            {btn && !isPublicPage && offerDataMapping !== null && (
+              <ShareBilanBtn onClickFc={OpenModal} />
+            )}
+            {offerDataMapping === null && (
+              <GenericButton
+                textContent={"En cours d'implémentation"}
+                disabled={true}
+                hasArrow={false}
+              />
+            )}
           </div>
         </div>
       </div>
-      {offerData !== null ? (
+      {offerDataMapping !== null ? (
         <GlobalModal
-          method={0}
-          offerData={offerData}
+          offerData={offerDataMapping}
           open={open}
           closeModal={closeModal}
         />
       ) : (
-        <div>TODO</div>
+        <div></div>
       )}
     </>
   );

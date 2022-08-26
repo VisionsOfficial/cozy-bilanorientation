@@ -7,6 +7,7 @@ import Accordion from '../../Accordion';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
 import BadgeRow from '../../Badge/BadgeRow';
+import Loader from '../../Loader';
 
 // IMG
 import icon from '../../../assets/icons/inokufu.svg';
@@ -68,14 +69,6 @@ const InokufuAPI = ({ provider = 'visions', keywords, mappingData }) => {
     setExtraDataToggled(!extraDataToggled);
   };
 
-  if (error)
-    return <div>Une erreur est survenue lors du chargement des données</div>;
-
-  if (loading)
-    return (
-      <div>Veuillez patienter, nous récupérons les offres adaptées...</div>
-    );
-
   return (
     <Accordion
       icon={icon}
@@ -86,40 +79,48 @@ const InokufuAPI = ({ provider = 'visions', keywords, mappingData }) => {
       seeMoreFC={toggleViewMore}
       seeMoreToggled={extraDataToggled}
     >
-      <Grid>
-        {data.slice(0, 3).map((offer, index) => (
-          <Grid key={index} item xs={12} sm={12}>
-            <BadgeRow
-              title={offer.title}
-              mainText={offer.description}
-              icon={EyeIcon}
-              picture={offer.picture}
-              url={offer.url}
-              addStyles={styles.badge}
-            />
-          </Grid>
-        ))}
-        {data.length > 3 && (
-          <div className={extraDataToggled ? '' : 'inoHideExtraData'}>
-            {data.slice(3).map((offer, index) => (
-              <Grid key={index} item xs={12} sm={12}>
-                <BadgeRow
-                  title={offer.title}
-                  mainText={offer.description}
-                  icon={EyeIcon}
-                  picture={offer.picture}
-                  url={offer.url}
-                  addStyles={styles.badge}
-                  offerData={getOfferMappingData(offer.url)}
-                />
-              </Grid>
+      {error && (
+        <div>Une erreur est survenue lors du chargement des données</div>
+      )}
+      {loading ? (
+        <Loader
+          text={'Veuillez patienter, nous récupérons les offres adaptées...'}
+        />
+      ) : (
+        <Grid className='containerBadgeRow'>
+          {data.slice(0, 2).map((offer, index) => (
+            <Grid key={index} item>
+              <BadgeRow
+                offerAPI={offer}
+                icon={EyeIcon}
+                addStyles={styles.badge}
+                offerDataMapping={getOfferMappingData(offer.url)}
+              />
+            </Grid>
+          ))}
+          {data.length > 2 &&
+            data.slice(2, 8).map((offer, index) => (
+              <div key={index}>
+                <Grid
+                  item
+                  className={
+                    extraDataToggled ? 'carouselData' : 'inoHideExtraData'
+                  }
+                >
+                  <BadgeRow
+                    offerAPI={offer}
+                    icon={EyeIcon}
+                    addStyles={styles.badge}
+                    offerDataMapping={getOfferMappingData(offer.url)}
+                  />
+                </Grid>
+              </div>
             ))}
-          </div>
-        )}
-        <p className='sourceData'>
-          Source de données : <span>Inokufu</span>
-        </p>
-      </Grid>
+          <p className='sourceData'>
+            Source de données : <span>Inokufu</span>
+          </p>
+        </Grid>
+      )}
     </Accordion>
   );
 };

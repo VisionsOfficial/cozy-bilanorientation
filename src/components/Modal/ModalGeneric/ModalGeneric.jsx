@@ -29,7 +29,7 @@ const ModalGeneric = ({ open = false, closeModal }) => {
 
   if (confirmation) {
     return (
-      <div className={`modalContainer ${openModal}`}>
+      <div className={`backdrop ${openModal}`}>
         <div className="modal">
           <div className="modalHeader">
             <div className="modalLogo">
@@ -57,7 +57,7 @@ const ModalGeneric = ({ open = false, closeModal }) => {
   }
 
   return (
-    <div className={`modalContainer ${openModal}`}>
+    <div className={`backdrop ${openModal}`}>
       <div className="modal">
         <div className="modalHeader">
           <div className="modalLogo">

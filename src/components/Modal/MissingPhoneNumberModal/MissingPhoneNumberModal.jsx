@@ -86,7 +86,7 @@ const MissingPhoneNumberModal = ({ open = false }) => {
   };
 
   return (
-    <div className={`modalContainer ${isOpen ? 'openModal' : ''}`}>
+    <div className={`backdrop ${isOpen ? 'openModal' : ''}`}>
       <div className='modal'>
         <div className='modalHeader'>
           <div className='modalLogo'>
