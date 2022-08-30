@@ -1,17 +1,34 @@
 import React from 'react';
 import GenericButton from '../../../Button/GenericButton/GenericButton';
 
-const RedirectLandingPageModal = ({ offerData }) => {
-  if (offerData) {
+const RedirectLandingPageModal = ({ offerDataMapping }) => {
+  const redirect = () => {
+    if (offerDataMapping['lien redirection']) {
+      window.open(offerDataMapping['lien redirection']);
+    } else {
+      alert(`Aucun lien n'a été fourni par ${offerDataMapping.OF}`);
+    }
+  };
+
+  if (offerDataMapping) {
     return (
-      <section className='contentJobufoModal'>
+      <section className='contentEmailModal'>
         <div>
           <header>
-            <h3>{offerData.OF}</h3>
+            <h3>
+              Vous êtes intéressé par la formation {offerDataMapping.formation}
+            </h3>
           </header>
-          <p>Vous serez rediriger vers un site externe</p>
+          <p>
+            En cliquant sur le bouton ci-dessous, vous serez redirigé vers la
+            page de présentation de l&apos;offre gérée par{' '}
+            <b>{offerDataMapping.OF}</b>.
+          </p>
         </div>
-        <GenericButton textContent={'Accepter la redirection'} />
+        <GenericButton
+          textContent={'Aller à la formation'}
+          onClickFc={redirect}
+        />
       </section>
     );
   } else {

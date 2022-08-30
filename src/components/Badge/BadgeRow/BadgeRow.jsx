@@ -40,12 +40,8 @@ const BadgeRow = ({
       <div className='badgeRow' style={addStyles}>
         <div className='badgeRowImageContainer'>
           <img
-            src={
-              offerDataMapping !== null
-                ? offerDataMapping.vignettes
-                : offerAPI.picture
-            }
-            alt=''
+            src={offerDataMapping?.vignettes || offerAPI?.picture || ''}
+            alt={`Vignette formation`}
           />
         </div>
         <div className='badgeRowTextContainer'>
@@ -76,7 +72,7 @@ const BadgeRow = ({
             {btn && !isPublicPage && offerDataMapping !== null && (
               <ShareBilanBtn onClickFc={OpenModal} />
             )}
-            {offerDataMapping === null && (
+            {offerDataMapping === null && !isPublicPage && (
               <GenericButton
                 textContent={"En cours d'implémentation"}
                 disabled={true}
@@ -86,9 +82,9 @@ const BadgeRow = ({
           </div>
         </div>
       </div>
-      {offerDataMapping !== null ? (
+      {offerDataMapping !== null && !isPublicPage ? (
         <GlobalModal
-          offerData={offerDataMapping}
+          offerDataMapping={offerDataMapping}
           open={open}
           closeModal={closeModal}
         />

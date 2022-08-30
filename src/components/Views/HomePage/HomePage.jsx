@@ -44,7 +44,7 @@ const HomePage = () => {
       </div>
       <List title={"Mon Bilan d'Orientation"} icon={iconBO}>
         <ListItem
-          link='/wip'
+          link='/results/bo'
           leftIcon={iconJobTension}
           text={'Mes résultats'}
         />

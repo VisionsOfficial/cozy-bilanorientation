@@ -16,6 +16,11 @@
       "folder": "/",
       "index": "index.html",
       "public": false
+    },
+    "/": {
+      "folder": "/",
+      "index": "index.html",
+      "public": true
     }
   },
   "permissions": {

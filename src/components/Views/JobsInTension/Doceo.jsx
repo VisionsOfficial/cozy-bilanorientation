@@ -20,13 +20,13 @@ const Doceo = () => {
     <Grid className='u-mv-1 containerDoceo' container>
       <div className='textDoceo'>
         <p className='headerDoceo'>
-          Vous avez de l'expérience professionnelle ? <br />
-          Devenez formateur dans votre domain d'expertise !
+          Vous avez de l&apos;expérience professionnelle ? <br />
+          Devenez formateur dans votre domaine d&apos;expertise !
         </p>
         <p>
           Complétez votre activité ou travailler à temps plein en tant que
           formateur grâce à la formation de Doceo (éligible au CPF) <br />
-          Doceo vous accompagnera jusqu'au bout de votre projet, de votre
+          Doceo vous accompagnera jusqu&apos;au bout de votre projet, de votre
           formation en 3 mois à la mise en relation avec vos futures clients !
         </p>
         <ShareBilanBtn onClickFc={OpenModal} />

@@ -8,7 +8,7 @@ const GenericButton = ({
   hasArrow = true,
   textContent,
   type,
-  onClickFc,
+  onClickFc = () => {},
   disabled = false
 }) => {
   return (

@@ -1,16 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-import { useI18n } from 'cozy-ui/transpiled/react/I18n'
-import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
+import { useI18n } from 'cozy-ui/transpiled/react/I18n';
+import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
-import Accordion from '../../Accordion'
-import Badge from '../../Badge'
-import icon from '../../../assets/icons/orientoi.svg'
+import Accordion from '../../Accordion';
+import Badge from '../../Badge';
+import icon from '../../../assets/icons/orientoi.svg';
 // import BadgeTalent from '../../Badge/BadgeTalent/BadgeTalent'
 
-import ThumbIcon from '../../../assets/icons/icone-fond-metier.svg'
-import { useJsonFiles } from '../../Hooks/useJsonFiles'
-import DonutsChart from '../../Graph/DonutsChart/DonutsChart'
+import ThumbIcon from '../../../assets/icons/icone-fond-metier.svg';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
+import DonutsChart from '../../Graph/DonutsChart/DonutsChart';
 
 const styles = {
   card: {
@@ -30,9 +30,9 @@ const styles = {
     width: '100%',
     paddingBottom: 20
   }
-}
-const bgBadge = '#f4fcfe'
-const getThirdElements = arr => arr.slice(0, 3)
+};
+const bgBadge = '#f4fcfe';
+const getThirdElements = arr => arr.slice(0, 3);
 
 const Orientoi = ({
   title,
@@ -40,10 +40,10 @@ const Orientoi = ({
   talent = false,
   showType = false
 }) => {
-  const { t } = useI18n()
-  const { jsonFiles } = useJsonFiles()
-  const datas = getThirdElements(jsonFiles.orientoi.data?.jobCards || [])
-  const badges = jsonFiles.orientoi.data?.badges || []
+  const { t } = useI18n();
+  const { jsonFiles } = useJsonFiles();
+  const datas = getThirdElements(jsonFiles.orientoi.data?.jobCards || []);
+  const badges = jsonFiles.orientoi.data?.badges || [];
 
   return (
     <Accordion
@@ -52,7 +52,7 @@ const Orientoi = ({
       addStyles={styles.card}
       bgHeader={'#FFF'}
     >
-      <Grid className="u-mv-1" container spacing={2}>
+      <Grid className='u-mv-1' container spacing={2}>
         <Grid item style={styles.container}>
           {badge ? (
             <>
@@ -67,7 +67,7 @@ const Orientoi = ({
                   addStyles={styles.badge}
                 />
               ))}
-              <p className="sourceData">
+              <p className='sourceData'>
                 Source de données : <span>Orientoi</span>
               </p>
             </>
@@ -78,7 +78,7 @@ const Orientoi = ({
                 <BadgeTalent key={index} name={key} percentage={value} />
               ))} */}
               <DonutsChart badges={badges} />
-              <p className="sourceData">
+              <p className='sourceData'>
                 Source de données : <span>Orientoi</span>
               </p>
             </>
@@ -86,7 +86,7 @@ const Orientoi = ({
         </Grid>
       </Grid>
     </Accordion>
-  )
-}
+  );
+};
 
-export default Orientoi
+export default Orientoi;

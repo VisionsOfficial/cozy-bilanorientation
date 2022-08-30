@@ -36,23 +36,28 @@ const Palm = ({ isPublicPage = false }) => {
       bgHeader={'#FFF'}
     >
       <Grid className='u-mv-1' container spacing={2}>
-        {datas.map(
-          ({ mission_name, similarity, short_summary, email, url }, index) => (
-            <Grid key={index} item xs={12} sm={12} lg={6} xl={4}>
-              <Badge
-                title={mission_name}
-                mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
-                subText={short_summary}
-                icon={iconJob}
-                background={bgBadge}
-                addStyles={styles.badge}
-                btn={!isPublicPage}
-                email={email}
-                url={url}
-              />
-            </Grid>
-          )
-        )}
+        {datas
+          .slice(0, 2)
+          .map(
+            (
+              { mission_name, similarity, short_summary, email, url },
+              index
+            ) => (
+              <Grid key={index} item xs={12} sm={12} lg={6} xl={6}>
+                <Badge
+                  title={mission_name}
+                  mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
+                  subText={short_summary}
+                  icon={iconJob}
+                  background={bgBadge}
+                  addStyles={styles.badge}
+                  btn={!isPublicPage}
+                  email={email}
+                  url={url}
+                />
+              </Grid>
+            )
+          )}
       </Grid>
     </Accordion>
   );

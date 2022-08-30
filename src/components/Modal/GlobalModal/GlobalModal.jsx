@@ -7,32 +7,37 @@ import RedirectLandingPageModal from '../MethodModal/RedirectLandingPageModal';
 
 import logoTmp from '../../../assets/icons/icon-check.svg';
 
-const GlobalModal = ({ open = false, closeModal, offerData }) => {
+const GlobalModal = ({ open = false, closeModal, offerDataMapping }) => {
   const contentModal = method => {
     switch (parseInt(method)) {
       case 1:
-        return <EmailModal offerData={offerData} />;
+        return <EmailModal offerDataMapping={offerDataMapping} />;
       case 2:
-        return <JobufoModal offerData={offerData} />;
+        return <JobufoModal offerDataMapping={offerDataMapping} />;
       case 3:
-        return <JobufoAndQuestion offerData={offerData} />;
+        return <JobufoAndQuestion offerDataMapping={offerDataMapping} />;
       case 4:
-        return <RedirectLandingPageModal offerData={offerData} />;
+        return <RedirectLandingPageModal offerDataMapping={offerDataMapping} />;
       default:
         break;
     }
   };
 
-  const handleClick = () => {
+  const handleBackdropClick = () => {
     closeModal();
   };
 
   return (
     <div
       className={`backdrop ${open ? 'openModal' : ''}`}
-      onClick={() => handleClick()}
+      onClick={() => handleBackdropClick()}
     >
-      <div className='modal'>
+      <div
+        className='modal'
+        onClick={e => {
+          e.stopPropagation();
+        }}
+      >
         <div className='modalHeader'>
           <div className='modalLogo'>
             <Icon icon={logoTmp} className='modalImg' />
@@ -41,7 +46,9 @@ const GlobalModal = ({ open = false, closeModal, offerData }) => {
             <span>x</span>
           </div>
         </div>
-        <div className='modalContent'>{contentModal(offerData.Methode)}</div>
+        <div className='modalContent'>
+          {contentModal(offerDataMapping.Methode)}
+        </div>
       </div>
     </div>
   );

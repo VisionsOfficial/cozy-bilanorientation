@@ -25,6 +25,7 @@ import ProjetReorientation from './Views/ProjetReorientation';
 import HomePage from './Views/HomePage';
 import { useJsonFiles } from 'src/components/Hooks/useJsonFiles';
 import PublicPage from './Views/publicPage/PublicPage';
+import BilanOrientationResultsPage from './Views/Results/BilanOrientationResultsPage';
 
 const styles = {
   content: {
@@ -106,6 +107,10 @@ const App = () => {
                   <Route path='/wip' component={WipPage} />
                   <Route path='/jobsintension' component={JobsInTensions} />
                   <Route path='/bilanorientation' component={PublicPage} />
+                  <Route
+                    path='/results/bo'
+                    component={BilanOrientationResultsPage}
+                  />
                   <Route
                     path='/projetreorientation'
                     component={ProjetReorientation}

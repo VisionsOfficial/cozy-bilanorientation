@@ -1,21 +1,21 @@
-import React, { useState, useRef } from "react";
-import Icon from "cozy-ui/transpiled/react/Icon";
-import ShareBilanBtn from "../../Button/ShareBilanBtn";
+import React, { useState, useRef } from 'react';
+import Icon from 'cozy-ui/transpiled/react/Icon';
+import ShareBilanBtn from '../../Button/ShareBilanBtn';
 
 // TMP
-import logoTmp from "../../../assets/icons/icon-check.svg";
-import logoVisions from "../../../assets/icons/logo_picto.svg";
+import logoTmp from '../../../assets/icons/icon-check.svg';
+import logoVisions from '../../../assets/icons/logo_picto.svg';
 
-const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/gm;
+// const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/gm;
 const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
 
 const ModalGeneric = ({ open = false, closeModal }) => {
-  const openModal = open === false ? "" : "openModal";
+  const openModal = open === false ? '' : 'openModal';
 
   const emailRef = useRef();
 
   const [confirmation, setConfirmation] = useState(false);
-  const [saveEmail, setSaveEmail] = useState("");
+  const [saveEmail, setSaveEmail] = useState('');
   const confirm = () => {
     setConfirmation(true);
     setSaveEmail(emailRef.current.value);
@@ -30,23 +30,26 @@ const ModalGeneric = ({ open = false, closeModal }) => {
   if (confirmation) {
     return (
       <div className={`backdrop ${openModal}`}>
-        <div className="modal">
-          <div className="modalHeader">
-            <div className="modalLogo">
-              <Icon icon={logoTmp} className="modalImg" />
+        <div className='modal'>
+          <div className='modalHeader'>
+            <div className='modalLogo'>
+              <Icon icon={logoTmp} className='modalImg' />
             </div>
-            <div className="closeModal" onClick={closeModal}>
+            <div className='closeModal' onClick={closeModal}>
               <span>x</span>
             </div>
           </div>
-          <div className="modalContent">
-            <h3 className="modalTitle">Votre bilan a bien été envoyé à</h3>
-            <p className="modalRecapEmail">{saveEmail}</p>
+          <div
+            className='modalContent'
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            <h3 className='modalTitle'>Votre bilan a bien été envoyé à</h3>
+            <p className='modalRecapEmail'>{saveEmail}</p>
             <p>
               Vous pouvez également partager le lien suivant pour donner accès à
-              votre bilan d'orientation : <br />
+              votre bilan d&apos;orientation : <br />
               <br />
-              <a href={"/#/bilanorientation"} className="modalPublicLink">
+              <a href={'/#/bilanorientation'} className='modalPublicLink'>
                 {publicLinkTMP}
               </a>
             </p>
@@ -58,30 +61,34 @@ const ModalGeneric = ({ open = false, closeModal }) => {
 
   return (
     <div className={`backdrop ${openModal}`}>
-      <div className="modal">
-        <div className="modalHeader">
-          <div className="modalLogo">
-            <Icon icon={logoVisions} className="modalImg" />
+      <div className='modal'>
+        <div className='modalHeader'>
+          <div className='modalLogo'>
+            <Icon icon={logoVisions} className='modalImg' />
           </div>
-          <div className="closeModal" onClick={closeModal}>
+          <div className='closeModal' onClick={closeModal}>
             <span>x</span>
           </div>
         </div>
-        <div className="modalContent">
-          <h3 className="modalTitle">
-            Veuillez informer l'adresse email vers laquelle envoyer votre Bilan
+        <div
+          className='modalContent'
+          style={{ display: 'flex', flexDirection: 'column' }}
+        >
+          <h3 className='modalTitle' style={{ paddingBottom: '5px' }}>
+            Veuillez informer l&apos;adresse email vers laquelle envoyer votre
+            Bilan
           </h3>
-          <label htmlFor="email">Adresse Email :</label>
           <input
             ref={emailRef}
-            type="email"
-            name="email"
-            id="email"
+            type='email'
+            name='email'
+            id='email'
             required={true}
+            placeholder='Adresse Email'
           />
-          <div className="modalBtn">
+          <div className='modalBtn'>
             <ShareBilanBtn
-              textContent={"Envoyer mon bilan"}
+              textContent={'Envoyer mon bilan'}
               onClickFc={() => confirm()}
             />
           </div>
