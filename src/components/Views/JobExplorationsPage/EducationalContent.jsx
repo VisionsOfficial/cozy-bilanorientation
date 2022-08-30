@@ -12,7 +12,8 @@ const styles = {
   },
   img: {
     width: '65px',
-    height: '60px'
+    height: '60px',
+    borderRadius: 5
   },
   keywords: {
     marginLeft: '10px',

@@ -24,7 +24,12 @@ const EducationalContents = () => {
             item
             xs={12}
             sm={6}
-            style={{ background: '#f3f4f6' }}
+            style={{
+              background: '#f3f4f6',
+              borderRadius: 10,
+              margin: 10,
+              maxWidth: 'calc(50% - 30px)'
+            }}
           >
             <EducationalContent
               date={date}
