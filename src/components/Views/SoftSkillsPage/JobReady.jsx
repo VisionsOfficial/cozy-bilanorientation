@@ -1,21 +1,30 @@
-import React from 'react'
+import React from 'react';
 
-import { useI18n } from 'cozy-ui/transpiled/react/I18n'
-import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
+import { useI18n } from 'cozy-ui/transpiled/react/I18n';
+import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
-import Accordion from '../../Accordion'
-import Badge from '../../Badge'
-import JobReadyIcon from '../../../assets/icons/jobready.svg'
-import { useJsonFiles } from '../../Hooks/useJsonFiles'
+import Accordion from '../../Accordion';
+import Badge from '../../Badge';
+import JobReadyIcon from '../../../assets/icons/jobready.svg';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
+import iconIdea from '../../../assets/icons/icon-JR-soft-skills.svg';
+
+const styles = {
+  badge: {
+    background: '#f3f4f6',
+    borderRadius: 10,
+    padding: '10px 5px'
+  }
+};
 
 const JobReady = () => {
-  const { t } = useI18n()
-  const { jsonFiles } = useJsonFiles()
-  const datas = jsonFiles.jobready.data?.data?.[0]?.fields || []
+  const { t } = useI18n();
+  const { jsonFiles } = useJsonFiles();
+  const datas = jsonFiles.jobready.data?.data?.[0]?.fields || [];
 
   return (
     <Accordion icon={JobReadyIcon} title={t('badges')}>
-      <Grid className="u-mv-1" container spacing={2}>
+      <Grid className='u-mv-1' container spacing={2}>
         {datas.length === 0 && (
           <div style={{ padding: '25px' }}>
             <h5>Données introuvables</h5>
@@ -28,12 +37,14 @@ const JobReady = () => {
                 title={skill.name || ''}
                 mainText={t('context') + ` : ${contexts.join(', ')}`}
                 subText={t('level') + ` : ${level}`}
+                icon={iconIdea}
+                addStyles={styles.badge}
               />
             </Grid>
           ))}
       </Grid>
     </Accordion>
-  )
-}
+  );
+};
 
-export default JobReady
+export default JobReady;

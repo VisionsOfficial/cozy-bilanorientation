@@ -50,6 +50,9 @@ const Title = () => {
     case '/projetreorientation':
       title = t('projectReo');
       break;
+    case '/results/bo':
+      title = "Mes Résultats du Bilan d'Orientation";
+      break;
   }
 
   return <>{title}</>;

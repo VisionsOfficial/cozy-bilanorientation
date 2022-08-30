@@ -1,14 +1,16 @@
 import React from 'react';
-import InokufuAPI from '../../PartnerApis/InokufuAPI/InokufuAPI';
 import Orientoi from '../JobsInTension/Orientoi';
 import JobReady from '../SoftSkillsPage/JobReady';
+import EducationalContents from '../JobExplorationsPage/EducationalContents';
+import JobCards from '../JobExplorationsPage/JobCards';
 
 const BilanOrientationResultsPage = () => {
   return (
     <>
       <JobReady />
-      <Orientoi title={'JobExplore'} badge={true} showType={true} />
-      <InokufuAPI />
+      <JobCards />
+      <EducationalContents />
+      <Orientoi title={'myTalent'} talent={true} />
     </>
   );
 };

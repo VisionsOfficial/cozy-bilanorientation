@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-import { Media, Img, Bd } from 'cozy-ui/transpiled/react/Media'
-import Typography from 'cozy-ui/transpiled/react/Typography'
-import Icon from 'cozy-ui/transpiled/react/Icon'
+import { Media, Img, Bd } from 'cozy-ui/transpiled/react/Media';
+import Typography from 'cozy-ui/transpiled/react/Typography';
+import Icon from 'cozy-ui/transpiled/react/Icon';
 
-import EyeIcon from '../../../assets/icons/icon-eye.svg'
+import EyeIcon from '../../../assets/icons/icone-oeil-avec-fond.svg';
 
 const styles = {
   imgContainer: {
@@ -26,7 +26,7 @@ const styles = {
   title: {
     color: '#21BBEF'
   }
-}
+};
 
 const EducationalContent = ({ date, keywords, picture, title, url }) => {
   return (
@@ -37,29 +37,29 @@ const EducationalContent = ({ date, keywords, picture, title, url }) => {
             <img src={picture} style={styles.img} />
           </Img>
           <Bd>
-            <div className="u-flex u-flex-items-center">
-              <Typography variant="caption">{date}</Typography>
+            <div className='u-flex u-flex-items-center'>
+              <Typography variant='caption'>{date}</Typography>
               <Typography
                 style={styles.keywords}
-                variant="body1"
-                component="span"
+                variant='body1'
+                component='span'
               >
                 {keywords}
               </Typography>
             </div>
-            <Typography style={styles.title} variant="h6" component="div">
+            <Typography style={styles.title} variant='h6' component='div'>
               {title}
             </Typography>
           </Bd>
         </Media>
       </Bd>
       <Img style={styles.imgContainer}>
-        <a href={url} target="_blank" rel="noopener noreferrer">
+        <a href={url} target='_blank' rel='noopener noreferrer'>
           <Icon icon={EyeIcon} size={40} />
         </a>
       </Img>
     </Media>
-  )
-}
+  );
+};
 
-export default EducationalContent
+export default EducationalContent;

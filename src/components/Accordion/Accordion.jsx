@@ -17,14 +17,14 @@ const Accordion = ({
   icon,
   title,
   children,
-  bgHeader,
+  bgHeader = '#FFF',
   addStyles,
   btnSeeMore = false,
   seeMoreFC = () => {},
   seeMoreToggled
 }) => {
   return (
-    <MuiAccordion expanded style={addStyles}>
+    <MuiAccordion expanded style={addStyles} className='mainAccordion'>
       <AccordionSummary
         expandIcon={<Icon icon={icon} size={37} />}
         style={{

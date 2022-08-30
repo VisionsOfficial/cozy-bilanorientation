@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-import JobCards from './JobCards'
-import EducationalContents from './EducationalContents'
-import Palm from '../SoftSkillsPage/Palm'
-import Becomino from './Becomino'
+import JobCards from './JobCards';
+import EducationalContents from './EducationalContents';
+import Palm from '../SoftSkillsPage/Palm';
+import Becomino from './Becomino';
 
 const JobExplorationsPage = () => {
   //
@@ -14,7 +14,7 @@ const JobExplorationsPage = () => {
       <Becomino />
       <Palm />
     </>
-  )
-}
+  );
+};
 
-export default JobExplorationsPage
+export default JobExplorationsPage;
