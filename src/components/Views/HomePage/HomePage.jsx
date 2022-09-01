@@ -59,7 +59,7 @@ const HomePage = () => {
       </List>
       <List title={'Mon Bilan de RéOrientation'} icon={iconREO}>
         <ListItem
-          link='/wip'
+          link='/projetreorientation'
           leftIcon={iconJobTension}
           text={'Mes résultats'}
         />

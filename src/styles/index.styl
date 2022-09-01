@@ -171,6 +171,7 @@ body
         .modalContent
             display: flex
             justify-content: center
+            flex-direction: column
             margin-top: 50px
             padding: 15px
             min-height: 340px
@@ -656,6 +657,7 @@ body
     right: -80px
     top: 17px
     div
+        margin-top: 0 !important
         background: gradient
         color: color-secondary
         padding: 6px 20px
@@ -665,39 +667,6 @@ body
 
 .inoHideExtraData
     display: none
-
-.genericButton
-    centerFlex()
-    text-transform: uppercase
-    color: white
-    background: color-secondary
-    border-radius: 30px
-    cursor: pointer
-    font-weight: bold
-    transition: transform 0.3s
-    padding: 8px 15px
-    width auto
-    border: none
-    p
-        margin: 0px
-        margin-right: 5px
-        font-size: 14px
-    &Circle
-        centerFlex()
-        background: gradient
-        border-radius: 50%
-        width: 25px
-        height: 25px
-        max-width: 25px
-        max-height: 25px
-    &:hover
-        transform: scale(1.03)
-        background: gradient
-        color: color-secondary
-        .genericButtonCircle
-            background: color-secondary
-            svg
-                fill: white
 
 .contentEmailModal
     display: flex
@@ -715,3 +684,41 @@ body
     svg
         color: color-quaternary
         margin-bottom: 5px
+
+
+.inokufuCard
+    centerFlex()
+    justify-content: flex-start
+    background: rgb(243, 244, 246)
+    margin: 5px !important
+    border-radius: 10px
+    width 30%
+    min-width: 280px
+    &Picture
+        centerFlex()
+        width: 100px
+        margin-right: 20px
+        @media screen and (max-width 410px)
+            width: 60px
+        img
+            width: 100%
+            border-radius: 5px
+            object-fit: contain
+    &Content
+        display: flex
+        align-items: flex-start
+        flex-direction: column
+        justify-content: space-between
+        &Title
+            color: color-primary
+            font-weight: bold
+
+        p   
+            margin: 5px 0
+
+        button
+            margin-top: 10px
+
+.inokufuEducationalContent
+    @media screen and (max-width 700px)
+        max-width: calc(100% - 30px) !important

@@ -1,7 +1,7 @@
-import React from 'react'
-import InterviewApp from './InterviewApp'
-import Pitangoo from './Pitangoo'
-import Tridan from './Tridan'
+import React from 'react';
+import InterviewApp from './InterviewApp';
+import Pitangoo from './Pitangoo';
+import Tridan from './Tridan';
 
 const ExperiencesPage = () => {
   return (
@@ -10,7 +10,7 @@ const ExperiencesPage = () => {
       <Tridan />
       <InterviewApp />
     </>
-  )
-}
+  );
+};
 
-export default ExperiencesPage
+export default ExperiencesPage;

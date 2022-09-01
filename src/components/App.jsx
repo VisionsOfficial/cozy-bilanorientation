@@ -3,7 +3,6 @@ import React from 'react';
 import { Route, Switch, Redirect, HashRouter } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 import cx from 'classnames';
-
 import { useClient } from 'cozy-client';
 import { Layout, Main, Content } from 'cozy-ui/transpiled/react/Layout';
 import Sprite from 'cozy-ui/transpiled/react/Icon/Sprite';
@@ -15,7 +14,12 @@ import Spinner from 'cozy-ui/transpiled/react/Spinner';
 import Typography from 'cozy-ui/transpiled/react/Typography';
 import useBreakpoints from 'cozy-ui/transpiled/react/hooks/useBreakpoints';
 
+// Components Logic
+import { useJsonFiles } from 'src/components/Hooks/useJsonFiles';
 import Header from 'src/components/Header';
+
+// View Components
+import CVAndCoverLetter from './Views/CVAndCoverLetter/CVAndCoverLetter';
 import SoftSkillsPage from 'src/components/Views/SoftSkillsPage';
 import JobExplorationsPage from 'src/components/Views/JobExplorationsPage';
 import WipPage from 'src/components/Views/WipPage';
@@ -23,7 +27,6 @@ import ExperiencesPage from 'src/components/Views/ExperiencesPage/ExperiencesPag
 import JobsInTensions from './Views/JobsInTension';
 import ProjetReorientation from './Views/ProjetReorientation';
 import HomePage from './Views/HomePage';
-import { useJsonFiles } from 'src/components/Hooks/useJsonFiles';
 import PublicPage from './Views/publicPage/PublicPage';
 import BilanOrientationResultsPage from './Views/Results/BilanOrientationResultsPage';
 
@@ -99,6 +102,7 @@ const App = () => {
                 <Switch>
                   <Route path='/index' component={HomePage} />
                   <Route path='/softSkills' component={SoftSkillsPage} />
+                  <Route path='/resumes' component={CVAndCoverLetter} />
                   <Route
                     path='/jobExplorations'
                     component={JobExplorationsPage}

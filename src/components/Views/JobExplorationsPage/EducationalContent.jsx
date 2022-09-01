@@ -16,13 +16,14 @@ const styles = {
     borderRadius: 5
   },
   keywords: {
-    marginLeft: '10px',
+    margin: '10px 0',
     color: '#C4C4C4',
     padding: '8px',
     textTransform: 'uppercase',
     backgroundColor: '#18233F',
     borderRadius: '6px',
-    fontSize: '12px'
+    fontSize: '12px',
+    width: 'fit-content'
   },
   title: {
     color: '#21BBEF'
@@ -40,14 +41,10 @@ const EducationalContent = ({ date, keywords, picture, title, url }) => {
           <Bd>
             <div className='u-flex u-flex-items-center'>
               <Typography variant='caption'>{date}</Typography>
-              <Typography
-                style={styles.keywords}
-                variant='body1'
-                component='span'
-              >
-                {keywords}
-              </Typography>
             </div>
+            <Typography style={styles.keywords} variant='body1'>
+              {keywords}
+            </Typography>
             <Typography style={styles.title} variant='h6' component='div'>
               {title}
             </Typography>

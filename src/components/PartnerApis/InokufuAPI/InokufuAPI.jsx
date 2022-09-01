@@ -146,22 +146,21 @@ const InokufuAPI = ({
           ))}
           {data.length > 2 &&
             data.slice(2, 8).map((offer, index) => (
-              <div key={index}>
-                <Grid
-                  item
-                  className={
-                    extraDataToggled ? 'carouselData' : 'inoHideExtraData'
-                  }
-                >
-                  <BadgeRow
-                    offerAPI={offer}
-                    icon={EyeIcon}
-                    addStyles={styles.badge}
-                    offerDataMapping={getOfferMappingData(offer.url)}
-                    isPublicPage={isPublicPage}
-                  />
-                </Grid>
-              </div>
+              <Grid
+                key={index}
+                item
+                className={
+                  extraDataToggled ? 'carouselData' : 'inoHideExtraData'
+                }
+              >
+                <BadgeRow
+                  offerAPI={offer}
+                  icon={EyeIcon}
+                  addStyles={styles.badge}
+                  offerDataMapping={getOfferMappingData(offer.url)}
+                  isPublicPage={isPublicPage}
+                />
+              </Grid>
             ))}
           <p className='sourceData'>
             Source de données : <span>Inokufu</span>

@@ -6,12 +6,7 @@ import Icon from 'cozy-ui/transpiled/react/Icon';
 import logoVisions from '../../../assets/icons/logo_picto.svg';
 import logoTmp from '../../../assets/icons/icon-check.svg';
 
-const ModalBilan = ({
-  open = false,
-  closeModal,
-  title,
-  email,
-}) => {
+const ModalBilan = ({ open = false, closeModal, title, email }) => {
   const openModal = open === false ? '' : 'openModal';
 
   const [confirmation, setConfirmation] = useState(false);

@@ -63,7 +63,8 @@
   "offersPorposed": "Métiers en tension proposés/sélectionnés",
   "publicPageTitle": "Récapitulatif du Bilan",
   "myTalent": "Mes talents de personne",
-  "projectReo": "Mon projet de RéOrientation",
+  "resultsReo": "Mes Résultats du Bilan de RéOrientation",
+  "resultsBo": "Mes Résultats du Bilan d'Orientation",
   "softSkillsCV": "Mes soft skills qui ressortent de mon CV ou de ma lettre de motivation",
   "JobExplore": "Métiers, secteurs et contextes professionnels que j'explore"
 }

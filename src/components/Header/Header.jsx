@@ -48,10 +48,13 @@ const Title = () => {
       title = t('publicPageTitle');
       break;
     case '/projetreorientation':
-      title = t('projectReo');
+      title = t('resultsReo');
       break;
     case '/results/bo':
-      title = "Mes Résultats du Bilan d'Orientation";
+      title = t('resultsBo');
+      break;
+    case '/resumes':
+      title = t('List.resumes');
       break;
   }
 

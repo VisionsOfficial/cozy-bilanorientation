@@ -23,7 +23,7 @@ const EducationalContents = () => {
             key={index}
             item
             xs={12}
-            sm={6}
+            className='inokufuEducationalContent'
             style={{
               background: '#f3f4f6',
               borderRadius: 10,

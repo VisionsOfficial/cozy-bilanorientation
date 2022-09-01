@@ -1,3 +1,52 @@
+@import './variable';
+@import './mixin';
+
+.genericButton
+    centerFlex()
+    text-transform: uppercase
+    color: white
+    background: color-secondary
+    border-radius: 30px
+    cursor: pointer
+    font-weight: bold
+    transition: transform 0.3s
+    padding: 8px 15px
+    width auto
+    border: none
+    p
+        margin: 0px
+        margin-right: 5px
+        font-size: 14px
+    &Circle
+        centerFlex()
+        background: gradient
+        border-radius: 50%
+        width: 25px
+        height: 25px
+        max-width: 25px
+        max-height: 25px
+    &:hover
+        transform: scale(1.03)
+        background: gradient
+        color: color-secondary
+        .genericButtonCircle
+            background: color-secondary
+            svg
+                fill: white
+                width 25px
+                height 25px
+
+    .eyeIcon 
+        align-items: stretch
+        justify-content: stretch
+        svg
+            width: 25px
+            height 25px
+    &:hover
+        svg 
+            filter: hue-rotate(45deg)
+            transform: scale(1.03)
+
 .btnDisabled
     background: grey
     pointer-events: none
