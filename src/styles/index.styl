@@ -11,11 +11,9 @@ body
 
 #main
     @media screen and (min-width: 770px)
-        margin-top: -90px !important
+        margin-top: -50px !important
     @media screen and (max-width: 1023px)
-        margin-top: -80px !important
-    @media screen and (max-width: 770px)
-        margin-top: -120px !important
+        margin-top: -25px !important
 
 .mainAccordion
     border-radius: 15px !important
@@ -27,7 +25,7 @@ body
     padding-left: 2rem
     padding-top: 40px
     height: 160px
-    @media screen and (max-width: 770px)
+    @media screen and (max-width: 780px)
         centerFlex()
         align-items: baseline
         padding-left: 0.5rem
@@ -35,8 +33,12 @@ body
         padding-top: 10px   
         h2
             font-size: 24px
+        .headerContent
+            flex-direction: column
     @media screen and (max-width: 500px)
-        height: 200px
+        height: 200px 
+    @media screen and (max-width: 380px)
+        height: 220px 
 
 .btnShare
     centerFlex()
@@ -76,11 +78,11 @@ body
         text-transform: uppercase
         margin: 0px
         font-size: 14px
-    @media screen and (min-width: 771px) and (max-width: 1050px)
-        top: -40px !important
-    @media screen and (max-width: 770px)
+    @media screen and (min-width: 781px) and (max-width: 1023px)
+        top: 100px !important
+    @media screen and (max-width: 780px)
         position: initial !important
-        margin-top: 30px
+        margin: 20px 0
     
 .backdrop
     position: fixed
@@ -214,6 +216,9 @@ body
 .listItemText
     span 
         font-weight: 600
+
+        @media screen and (max-width: 500px)
+            white-space: normal
     display: flex
     align-items: center
 

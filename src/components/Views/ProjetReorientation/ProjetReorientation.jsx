@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Orientoi from '../JobsInTension/Orientoi';
-import Inokufu from '../JobsInTension/Inokufu';
 import Pitangoo from './Pitangoo';
 import Curiose from './Curiose';
-import ShareBilanBtn from '../../Button/ShareBilanBtn';
-import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric';
+import InokufuAPI from '../../PartnerApis/InokufuAPI/InokufuAPI';
+// import Inokufu from '../JobsInTension/Inokufu';
 // import JobReady from './JobReady';
 
 const styles = {
@@ -14,23 +13,11 @@ const styles = {
 };
 
 const ProjetReorientation = () => {
-  const [open, setOpen] = useState(false);
-
-  const OpenModal = () => {
-    setOpen(currentOpen => !currentOpen);
-  };
-
-  const closeModal = () => {
-    setOpen(currentOpen => !currentOpen);
-  };
-
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
-        <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
-      </div>
       <Orientoi title={'JobExplore'} badge={true} showType={true} />
-      <Inokufu />
+      {/* <Inokufu /> */}
+      <InokufuAPI keywords={'anglais,italien,photoshop'} />
       <Orientoi title={'myTalent'} talent={true} />
       <Pitangoo headerBg={'#fff'} addStyles={styles.card} />
       <Curiose
@@ -43,7 +30,6 @@ const ProjetReorientation = () => {
         addStyles={styles.card}
         title={'softSkillsCV'}
       /> */}
-      <ModalGeneric open={open} closeModal={closeModal} />
     </>
   );
 };

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
 
 import List from '../../List/List';
 import ListItem from '../../List/ListItem';
-import ShareBilanBtn from '../../Button/ShareBilanBtn';
 
 import iconSoftSkill from '../../../assets/icons/icone-etoile.svg';
 import iconJobExplore from '../../../assets/icons/icon-metiers-explore.svg';
@@ -20,28 +19,15 @@ import iconProProfil from '../../../assets/icons/icone-profil-pro.svg';
 import iconBO from '../../../assets/icons/ICON-BO.svg';
 import iconREO from '../../../assets/icons/ICON-REO.svg';
 
-import ModalGeneric from '../../Modal/ModalGeneric/ModalGeneric';
 // import GraphCircleIcon from "cozy-ui/transpiled/react/icons/GraphCircle";
 // import StarIcon from "cozy-ui/transpiled/react/icons/Star";
 // import MagnifierIcon from "cozy-ui/transpiled/react/Icons/Magnifier";
 
 const HomePage = () => {
   const { t } = useI18n();
-  const [open, setOpen] = useState(false);
-
-  const OpenModal = () => {
-    setOpen(currentOpen => !currentOpen);
-  };
-
-  const closeModal = () => {
-    setOpen(currentOpen => !currentOpen);
-  };
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', margin: 10 }}>
-        <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
-      </div>
       <List title={"Mon Bilan d'Orientation"} icon={iconBO}>
         <ListItem
           link='/results/bo'
@@ -99,7 +85,6 @@ const HomePage = () => {
           noDivider
         />
       </List>
-      <ModalGeneric open={open} closeModal={closeModal} />
     </>
   );
 };

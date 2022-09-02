@@ -1,13 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import useBreakpoints from 'cozy-ui/transpiled/react/hooks/useBreakpoints';
+// import useBreakpoints from 'cozy-ui/transpiled/react/hooks/useBreakpoints';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
 import Typography from 'cozy-ui/transpiled/react/Typography';
 import IconButton from 'cozy-ui/transpiled/react/IconButton';
 import Icon from 'cozy-ui/transpiled/react/Icon';
 import PerviousIcon from 'cozy-ui/transpiled/react/Icons/Previous';
 import backgroundImage from '../../assets/images/en-tete-vg.svg';
+import ShareBilanBtn from '../Button/ShareBilanBtn';
+import ModalGeneric from '../Modal/ModalGeneric/ModalGeneric';
 
 const styles = {
   backButton: {
@@ -62,7 +64,7 @@ const Title = () => {
 };
 
 const Header = () => {
-  const { isMobile } = useBreakpoints();
+  // const { isMobile } = useBreakpoints();
   const { pathname } = useLocation();
   const history = useHistory();
 
@@ -71,6 +73,16 @@ const Header = () => {
 
   const goBack = useCallback(() => history.goBack(), [history]);
   // if (isMobile) return null
+
+  const [open, setOpen] = useState(false);
+
+  const OpenModal = () => {
+    setOpen(currentOpen => !currentOpen);
+  };
+
+  const closeModal = () => {
+    setOpen(currentOpen => !currentOpen);
+  };
 
   return (
     <div
@@ -81,19 +93,25 @@ const Header = () => {
           : null
       }
     >
-      <div className='u-flex'>
-        {showBackButton && showBackButtonPublic && (
-          <IconButton
-            className='u-mr-1'
-            style={styles.backButton}
-            onClick={goBack}
-          >
-            <Icon icon={PerviousIcon} />
-          </IconButton>
-        )}
-        <Typography variant='h2' className='titleHeaderPage'>
-          <Title />
-        </Typography>
+      <div className='u-flex headerContent'>
+        <div className='u-flex' style={{ width: '100%' }}>
+          {showBackButton && showBackButtonPublic && (
+            <IconButton
+              className='u-mr-1'
+              style={styles.backButton}
+              onClick={goBack}
+            >
+              <Icon icon={PerviousIcon} />
+            </IconButton>
+          )}
+          <Typography variant='h2' className='titleHeaderPage'>
+            <Title />
+          </Typography>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
+          <ModalGeneric open={open} closeModal={closeModal} />
+        </div>
       </div>
     </div>
   );

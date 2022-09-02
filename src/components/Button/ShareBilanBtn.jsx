@@ -12,8 +12,8 @@ const ShareBilanBtn = ({
     <div
       style={{
         position: absolute ? 'absolute' : null,
-        top: absolute ? -60 : null,
-        right: absolute ? 0 : null
+        top: absolute ? 50 : null,
+        right: absolute ? 30 : null
       }}
       className='btnShare'
       onClick={() => onClickFc()}

@@ -17,7 +17,8 @@ const styles = {
     padding: '20px 10px',
     borderRadius: '10px',
     margin: '10px',
-    minWidth: '260px'
+    minWidth: '260px',
+    width: '100%'
   },
   container: {
     display: 'flex',
@@ -38,7 +39,15 @@ const JobCards = () => {
     <Accordion icon={icon} title={t('jobCards')}>
       <Grid className='u-mv-1' container spacing={2}>
         {datas.map(({ name, positionnement, type }, index) => (
-          <Grid key={index} item xs={12} sm={4}>
+          <Grid
+            key={index}
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            lg={4}
+            style={{ minWidth: 290, display: 'flex', alignItems: 'stretch' }}
+          >
             <Badge
               icon={ThumbIcon}
               background={bgBadge}
