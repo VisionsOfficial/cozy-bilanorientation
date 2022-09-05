@@ -42,33 +42,6 @@
     "mocks todos": {
       "description": "TO REMOVE: only used as demonstration about Cozy App data interactions",
       "type": "io.mocks.todos"
-    },
-    "visionstrust": {
-      "description": "Communication with Visions API to show elements regarding VisionsGalaxy",
-      "type": "com.visionstrust",
-      "verbs": ["GET", "POST"]
-    },
-    "inokufu": {
-      "description": "Communication with the Inokufu Learning Objects API to retrieve appropriate offers",
-      "type": "com.inokufu.api",
-      "verbs": ["GET"]
-    },
-    "palm": {
-      "description": "Communication with the PALM matching API to retrieve appropriate offers",
-      "type": "io.vision.palm-app",
-      "verbs": ["POST"]
-    },
-    "visions": {
-      "description": "General Visions related information",
-      "type": "visions.cozy",
-      "verbs": ["ALL"]
-    },
-    "mail": {
-      "description": "Send emails to orientation experts",
-      "type": "io.cozy.jobs",
-      "verbs": ["POST"],
-      "selector": "worker",
-      "values": ["sendmail"]
     }
   }
 }
