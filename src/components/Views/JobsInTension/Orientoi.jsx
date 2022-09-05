@@ -42,8 +42,8 @@ const Orientoi = ({
 }) => {
   const { t } = useI18n();
   const { jsonFiles } = useJsonFiles();
-  const datas = getThirdElements(jsonFiles.orientoi.data?.jobCards || []);
-  const badges = jsonFiles.orientoi.data?.badges || [];
+  const datas = getThirdElements(jsonFiles.orientoi.data?.data?.jobCards || []);
+  const badges = jsonFiles.orientoi.data?.data?.badges || [];
 
   return (
     <Accordion
