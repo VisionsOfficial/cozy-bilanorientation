@@ -35,6 +35,10 @@ const BadgeRow = ({
     return title;
   };
 
+  const openInformationUrl = () => {
+    window.open(offerAPI.url);
+  };
+
   return (
     <>
       <div className='badgeRow' style={addStyles}>
@@ -52,7 +56,9 @@ const BadgeRow = ({
             noWrap
           >
             {getShortTitle(offerAPI.title)}
-            <Icon icon={iconInfo} onClick={() => window.open(offerAPI.url)} />
+            {offerAPI.url !== '' && (
+              <Icon icon={iconInfo} onClick={() => openInformationUrl()} />
+            )}
           </Typography>
           <Typography className='u-mv-half' variant='body1'>
             {offerDataMapping !== null ? offerDataMapping.OF : ''}

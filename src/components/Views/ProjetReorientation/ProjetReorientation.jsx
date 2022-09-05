@@ -2,9 +2,9 @@ import React from 'react';
 import Orientoi from '../JobsInTension/Orientoi';
 import Pitangoo from './Pitangoo';
 import Curiose from './Curiose';
-import InokufuAPI from '../../PartnerApis/InokufuAPI/InokufuAPI';
+import InokufuComingSoon from '../../Demo/InokufuComingSoon';
+// import InokufuAPI from '../../PartnerApis/InokufuAPI/InokufuAPI';
 // import Inokufu from '../JobsInTension/Inokufu';
-// import JobReady from './JobReady';
 
 const styles = {
   card: {
@@ -17,7 +17,8 @@ const ProjetReorientation = () => {
     <>
       <Orientoi title={'JobExplore'} badge={true} showType={true} />
       {/* <Inokufu /> */}
-      <InokufuAPI keywords={'anglais,italien,photoshop'} />
+      {/* <InokufuAPI keywords={'anglais,italien,photoshop'} /> */}
+      <InokufuComingSoon />
       <Orientoi title={'myTalent'} talent={true} />
       <Pitangoo headerBg={'#fff'} addStyles={styles.card} />
       <Curiose
@@ -25,11 +26,6 @@ const ProjetReorientation = () => {
         title={'curiose.personality'}
         addStyles={styles.card}
       />
-      {/* <JobReady
-        headerBg={'#FFF'}
-        addStyles={styles.card}
-        title={'softSkillsCV'}
-      /> */}
     </>
   );
 };

@@ -14,6 +14,7 @@ import iconStudious from '../../../assets/icons/icon-studieux.svg'; // color = #
 import iconCultivated from '../../../assets/icons/icon-cultive.svg'; // color = #16F7B4
 import iconConcentrate from '../../../assets/icons/icon-CONCENTRE.svg'; // color = #73FAD2
 import iconDynamic from '../../../assets/icons/icone-DYNAMIQUE.svg'; // color = #455065
+// import iconStar from '../../../assets/icons/icon-star.svg';
 
 const DonutsChart = ({ badges }) => {
   const valueDonuts = [];
@@ -45,16 +46,17 @@ const DonutsChart = ({ badges }) => {
         icon = iconDynamic;
         break;
       case 'ADAPTABLE':
-        color = 'red';
-        icon = iconCultivated;
+        color = '#97D2EC';
+        icon = iconHead;
         break;
       case 'OPTIMISTE':
         color = 'green';
-        icon = iconCultivated;
+        icon = iconHead;
         break;
 
       default:
-        color = '';
+        color = '#455065';
+        icon = iconHead;
         break;
     }
     return { color, icon };

@@ -107,9 +107,10 @@ const App = () => {
                     path='/jobExplorations'
                     component={JobExplorationsPage}
                   />
-                  <Route path='/skills' component={ExperiencesPage} />
+                  <Route path='/skills' component={WipPage} />
                   <Route path='/wip' component={WipPage} />
-                  <Route path='/jobsintension' component={JobsInTensions} />
+                  {/* <Route path='/jobsintension' component={JobsInTensions} /> */}
+                  <Route path='/jobsintension' component={WipPage} />
                   <Route path='/bilanorientation' component={PublicPage} />
                   <Route
                     path='/results/bo'

@@ -10,7 +10,11 @@ const EmailModal = ({ offerDataMapping }) => {
   const handleClick = e => {
     e.stopPropagation();
     setConfirmed(true);
-    // TODO Send mail via VisionsTrust here
+    if (offerDataMapping['lien redirection']) {
+      setTimeout(() => {
+        window.open(offerDataMapping['lien redirection']);
+      }, 2000);
+    }
   };
 
   const data = {
@@ -39,6 +43,9 @@ const EmailModal = ({ offerDataMapping }) => {
           <a href={'/#/bilanorientation'} className='modalPublicLink'>
             {publicLinkTMP}
           </a>
+          {offerDataMapping['lien redirection'] !== '' && (
+            <p>Vous allez être redirigé vers {offerDataMapping.OF}</p>
+          )}
         </p>
       </>
     )
