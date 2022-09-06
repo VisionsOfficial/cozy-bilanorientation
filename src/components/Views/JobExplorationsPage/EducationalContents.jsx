@@ -18,28 +18,36 @@ const EducationalContents = () => {
   return (
     <Accordion icon={InokufuIcon} title={t('educationalContents')}>
       <Grid className='u-mv-1 u-ph-1' container spacing={2}>
-        {datas.map(({ date, keywords, picture, title, url }, index) => (
-          <Grid
-            key={index}
-            item
-            xs={12}
-            className='inokufuEducationalContent'
-            style={{
-              background: '#f3f4f6',
-              borderRadius: 10,
-              margin: 10,
-              maxWidth: 'calc(50% - 30px)'
-            }}
-          >
-            <EducationalContent
-              date={date}
-              keywords={keywords}
-              picture={picture}
-              title={title}
-              url={url}
-            />
-          </Grid>
-        ))}
+        {datas.length === 0 ? (
+          <div style={{ padding: '25px' }}>
+            <h5>Données introuvables</h5>
+          </div>
+        ) : (
+          <>
+            {datas.map(({ date, keywords, picture, title, url }, index) => (
+              <Grid
+                key={index}
+                item
+                xs={12}
+                className='inokufuEducationalContent'
+                style={{
+                  background: '#f3f4f6',
+                  borderRadius: 10,
+                  margin: 10,
+                  maxWidth: 'calc(50% - 30px)'
+                }}
+              >
+                <EducationalContent
+                  date={date}
+                  keywords={keywords}
+                  picture={picture}
+                  title={title}
+                  url={url}
+                />
+              </Grid>
+            ))}
+          </>
+        )}
       </Grid>
     </Accordion>
   );

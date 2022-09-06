@@ -56,17 +56,25 @@ const Orientoi = ({
         <Grid item style={styles.container}>
           {badge ? (
             <>
-              {datas.map(({ name, positionnement, type }, index) => (
-                <Badge
-                  key={index}
-                  title={name}
-                  mainText={t('positionning') + ` : ${positionnement}`}
-                  subText={showType ? 'Type : ' + type : null}
-                  icon={ThumbIcon}
-                  background={bgBadge}
-                  addStyles={styles.badge}
-                />
-              ))}
+              {datas.length === 0 ? (
+                <div style={{ padding: '25px' }}>
+                  <h5>Données introuvables</h5>
+                </div>
+              ) : (
+                <>
+                  {datas.map(({ name, positionnement, type }, index) => (
+                    <Badge
+                      key={index}
+                      title={name}
+                      mainText={t('positionning') + ` : ${positionnement}`}
+                      subText={showType ? 'Type : ' + type : null}
+                      icon={ThumbIcon}
+                      background={bgBadge}
+                      addStyles={styles.badge}
+                    />
+                  ))}
+                </>
+              )}
               <p className='sourceData'>
                 Source de données : <span>Orientoi</span>
               </p>
@@ -74,13 +82,18 @@ const Orientoi = ({
           ) : null}
           {talent ? (
             <>
-              {/* {Object.entries(badges).map(([key, value], index) => (
-                <BadgeTalent key={index} name={key} percentage={value} />
-              ))} */}
-              <DonutsChart badges={badges} />
-              <p className='sourceData'>
-                Source de données : <span>Orientoi</span>
-              </p>
+              {badges.length === 0 ? (
+                <div style={{ padding: '25px' }}>
+                  <h5>Données introuvables</h5>
+                </div>
+              ) : (
+                <>
+                  <DonutsChart badges={badges} />
+                  <p className='sourceData'>
+                    Source de données : <span>Orientoi</span>
+                  </p>
+                </>
+              )}
             </>
           ) : null}
         </Grid>
