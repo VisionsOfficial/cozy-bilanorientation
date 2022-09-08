@@ -109,8 +109,8 @@ const App = () => {
                   />
                   <Route path='/skills' component={WipPage} />
                   <Route path='/wip' component={WipPage} />
-                  {/* <Route path='/jobsintension' component={JobsInTensions} /> */}
-                  <Route path='/jobsintension' component={WipPage} />
+                  <Route path='/jobsintension' component={JobsInTensions} />
+                  {/* <Route path='/jobsintension' component={WipPage} /> */}
                   <Route path='/bilanorientation' component={PublicPage} />
                   <Route
                     path='/results/bo'
