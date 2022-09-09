@@ -68,8 +68,8 @@ const Header = () => {
   const { pathname } = useLocation();
   const history = useHistory();
 
-  const showBackButton = pathname !== '/index' ? true : false;
-  const showBackButtonPublic = pathname !== '/bilanorientation' ? true : false;
+  const showBackButton = pathname !== '/index';
+  const isPublicPage = pathname === '/bilanorientation';
 
   const goBack = useCallback(() => history.goBack(), [history]);
   // if (isMobile) return null
@@ -95,7 +95,7 @@ const Header = () => {
     >
       <div className='u-flex headerContent'>
         <div className='u-flex' style={{ width: '100%' }}>
-          {showBackButton && showBackButtonPublic && (
+          {showBackButton && !isPublicPage && (
             <IconButton
               className='u-mr-1'
               style={styles.backButton}
@@ -108,10 +108,12 @@ const Header = () => {
             <Title />
           </Typography>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
-          <ModalGeneric open={open} closeModal={closeModal} />
-        </div>
+        {isPublicPage === false && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
+            <ModalGeneric open={open} closeModal={closeModal} />
+          </div>
+        )}
       </div>
     </div>
   );

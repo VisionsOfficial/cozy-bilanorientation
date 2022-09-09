@@ -1,6 +1,7 @@
 const VISIONS_DOCTYPE = 'com.visionstrust';
 const PALM_DOCTYPE = 'io.vision.palm-app';
 const INOKUFU_DOCTYPE = 'com.inokufu.api';
+const INOKUFU_MATCHINGS_DOCTYPE = 'com.inokufu';
 
 export const visionsTrustApiPOST = async (client, path, body = {}) => {
   try {
@@ -39,6 +40,22 @@ export const inokufuApiGET = async (client, options) => {
         'GET',
         `/remote/${INOKUFU_DOCTYPE}?provider=${queryOptions.provider}&keywords=${queryOptions.keywords}`
       );
+    return res;
+  } catch (err) {
+    return {
+      statusCode: 400,
+      error: err
+    };
+  }
+};
+
+export const inokufuApiPOST = async (client, body) => {
+  try {
+    const res = await client
+      .getStackClient()
+      .fetchJSON('POST', `/remote/${INOKUFU_MATCHINGS_DOCTYPE}`, {
+        data: JSON.stringify(body)
+      });
     return res;
   } catch (err) {
     return {

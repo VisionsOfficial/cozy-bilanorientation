@@ -70,3 +70,21 @@ export const deleteVisionsCozyDocument = async (client, document) => {
   const response = await client.destroy(document);
   return response;
 };
+
+/**
+ * Generates a public share code for a document in the visions.cozy doctype
+ * @param {CozyClient} client The cozy client instance
+ * @param {object} document The cozy document to share
+ * @returns The public sharecode
+ */
+export const createPublicShareCode = async (client, document) => {
+  const shareObject = await client
+    .collection('io.cozy.permissions')
+    .createSharingLink({
+      _id: document.id,
+      _type: 'visions.cozy'
+    });
+
+  const shareCode = shareObject.data.attributes.shortcodes.email;
+  return shareCode;
+};

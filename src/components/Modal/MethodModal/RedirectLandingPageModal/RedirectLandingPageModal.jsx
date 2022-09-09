@@ -3,8 +3,8 @@ import GenericButton from '../../../Button/GenericButton/GenericButton';
 
 const RedirectLandingPageModal = ({ offerDataMapping }) => {
   const redirect = () => {
-    if (offerDataMapping['lien redirection']) {
-      window.open(offerDataMapping['lien redirection']);
+    if (offerDataMapping.url_redirection) {
+      window.open(offerDataMapping.url_redirection);
     } else {
       alert(`Aucun lien n'a été fourni par ${offerDataMapping.OF}`);
     }
@@ -16,7 +16,7 @@ const RedirectLandingPageModal = ({ offerDataMapping }) => {
         <div>
           <header>
             <h3>
-              Vous êtes intéressé par la formation {offerDataMapping.formation}
+              Vous êtes intéressé par la formation {offerDataMapping.formation_name}
             </h3>
           </header>
           <p>

@@ -17,7 +17,7 @@
       "index": "index.html",
       "public": false
     },
-    "/": {
+    "/public": {
       "folder": "/",
       "index": "index.html",
       "public": true
@@ -48,10 +48,15 @@
       "type": "com.visionstrust",
       "verbs": ["GET", "POST"]
     },
-    "inokufu": {
+    "inokufu offers": {
       "description": "Communication with the Inokufu Learning Objects API to retrieve appropriate offers",
       "type": "com.inokufu.api",
       "verbs": ["GET"]
+    },
+    "inokufu matchings": {
+      "description": "Retrieve offer keywords associated with job recommendations.",
+      "type": "com.inokufu",
+      "verbs": ["POST"]
     },
     "palm": {
       "description": "Communication with the PALM matching API to retrieve appropriate offers",

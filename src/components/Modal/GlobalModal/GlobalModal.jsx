@@ -47,7 +47,7 @@ const GlobalModal = ({ open = false, closeModal, offerDataMapping }) => {
           </div>
         </div>
         <div className='modalContent'>
-          {contentModal(offerDataMapping.Methode)}
+          {contentModal(offerDataMapping.method)}
         </div>
       </div>
     </div>

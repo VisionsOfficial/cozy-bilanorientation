@@ -4,22 +4,22 @@ import GenericButton from '../../../Button/GenericButton/GenericButton';
 const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
 
 const EmailModal = ({ offerDataMapping }) => {
-  const email = offerDataMapping['envoi bilan'];
+  const email = offerDataMapping.email;
   const [confirmed, setConfirmed] = useState(false);
 
   const handleClick = e => {
     e.stopPropagation();
     setConfirmed(true);
-    if (offerDataMapping['lien redirection']) {
+    if (offerDataMapping.url_redirection) {
       setTimeout(() => {
-        window.open(offerDataMapping['lien redirection']);
+        window.open(offerDataMapping.url_redirection);
       }, 2000);
     }
   };
 
   const data = {
     title: !confirmed
-      ? `Vous êtes intéressé par la formation ${offerDataMapping.formation}`
+      ? `Vous êtes intéressé par la formation ${offerDataMapping.formation_name}`
       : `Votre bilan a bien été partagé à ${email}`,
     body: !confirmed ? (
       <>
@@ -43,7 +43,7 @@ const EmailModal = ({ offerDataMapping }) => {
           <a href={'/#/bilanorientation'} className='modalPublicLink'>
             {publicLinkTMP}
           </a>
-          {offerDataMapping['lien redirection'] !== '' && (
+          {offerDataMapping.url_redirection !== '' && (
             <p>Vous allez être redirigé vers {offerDataMapping.OF}</p>
           )}
         </p>

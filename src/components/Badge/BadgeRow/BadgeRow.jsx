@@ -4,7 +4,6 @@ import Typography from 'cozy-ui/transpiled/react/Typography';
 
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 import GlobalModal from '../../Modal/GlobalModal';
-import GenericButton from '../../Button/GenericButton/GenericButton';
 
 import iconInfo from '../../../assets/icons/icon-info.svg';
 
@@ -44,7 +43,7 @@ const BadgeRow = ({
       <div className='badgeRow' style={addStyles}>
         <div className='badgeRowImageContainer'>
           <img
-            src={offerDataMapping?.vignettes || offerAPI?.picture || ''}
+            src={offerDataMapping?.logo || offerAPI?.picture || ''}
             alt={`Vignette formation`}
           />
         </div>
@@ -61,7 +60,7 @@ const BadgeRow = ({
             )}
           </Typography>
           <Typography className='u-mv-half' variant='body1'>
-            {offerDataMapping !== null ? offerDataMapping.OF : ''}
+            {offerAPI.publisher ? offerAPI.publisher[0].name : ''}
           </Typography>
           <Typography
             style={styles.subText}
@@ -77,13 +76,6 @@ const BadgeRow = ({
           >
             {btn && !isPublicPage && offerDataMapping !== null && (
               <ShareBilanBtn onClickFc={OpenModal} />
-            )}
-            {offerDataMapping === null && !isPublicPage && (
-              <GenericButton
-                textContent={"En cours d'implémentation"}
-                disabled={true}
-                hasArrow={false}
-              />
             )}
           </div>
         </div>
