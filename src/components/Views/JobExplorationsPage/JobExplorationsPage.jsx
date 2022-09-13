@@ -1,18 +1,16 @@
 import React from 'react';
 
-import JobCards from './JobCards';
-import EducationalContents from './EducationalContents';
-import Palm from '../SoftSkillsPage/Palm';
 import Becomino from './Becomino';
+import Orientoi from '../JobsInTension/Orientoi';
+import EducationalContents from './EducationalContents';
 
 const JobExplorationsPage = () => {
   //
   return (
     <>
-      <JobCards />
+      <Orientoi title={'JobExplore'} badge={true} showType={true} />
       <EducationalContents />
       <Becomino />
-      <Palm />
     </>
   );
 };

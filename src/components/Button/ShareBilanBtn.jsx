@@ -13,45 +13,53 @@ const ShareBilanBtn = ({
   onClickFc,
   textContent = 'Partager mon bilan'
 }) => {
-  const client = useClient();
-  const { jsonFiles } = useJsonFiles();
-
-  const handleClick = async () => {
-    const doc = await saveJSONFilesToVisionsCozyDoctype(client, jsonFiles);
-
-    const publicShareCode = await createPublicShareCode(client, doc);
-
-    const publicUrl = `${location.protocol}//${location.host}/public/?sharecode=${publicShareCode}`;
-
-    console.log(publicUrl);
-
-    const mailJob = await sendMail(client, {
-      mode: 'from',
-      to: [{ name: 'Test', email: 'felix@visionspol.eu' }],
-      subjects: "Bilan d'orientation",
-      parts: [{ type: 'text/plain', html: `${publicUrl}` }]
-    });
-    console.log(mailJob);
-
-    // onClickFc();
-  };
-
-  return (
-    <div
-      style={{
-        position: absolute ? 'absolute' : null,
-        top: absolute ? 50 : null,
-        right: absolute ? 30 : null
-      }}
-      className='btnShare'
-      onClick={() => handleClick()}
-    >
-      <p className='btnText'>{textContent}</p>
-      <div className='btnCircle'>
-        <Icon icon={Arrow} />
-      </div>
-    </div>
-  );
+  return <></>;
 };
+
+// const ShareBilanBtn = ({
+//   absolute = false,
+//   onClickFc,
+//   textContent = 'Partager mon bilan'
+// }) => {
+//   const client = useClient();
+//   const { jsonFiles } = useJsonFiles();
+
+//   const handleClick = async () => {
+//     const doc = await saveJSONFilesToVisionsCozyDoctype(client, jsonFiles);
+
+//     const publicShareCode = await createPublicShareCode(client, doc);
+
+//     const publicUrl = `${location.protocol}//${location.host}/public/?sharecode=${publicShareCode}`;
+
+//     console.log(publicUrl);
+
+//     const mailJob = await sendMail(client, {
+//       mode: 'from',
+//       to: [{ name: 'Test', email: 'felix@visionspol.eu' }],
+//       subjects: "Bilan d'orientation",
+//       parts: [{ type: 'text/plain', html: `${publicUrl}` }]
+//     });
+//     console.log(mailJob);
+
+//     // onClickFc();
+//   };
+
+//   return (
+//     <div
+//       style={{
+//         position: absolute ? 'absolute' : null,
+//         top: absolute ? 50 : null,
+//         right: absolute ? 30 : null
+//       }}
+//       className='btnShare'
+//       onClick={() => handleClick()}
+//     >
+//       <p className='btnText'>{textContent}</p>
+//       <div className='btnCircle'>
+//         <Icon icon={Arrow} />
+//       </div>
+//     </div>
+//   );
+// };
 
 export default ShareBilanBtn;

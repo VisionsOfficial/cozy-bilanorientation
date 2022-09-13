@@ -13,7 +13,7 @@ import Loader from '../../Loader';
 import icon from '../../../assets/icons/inokufu.svg';
 import EyeIcon from '../../../assets/icons/icon-eye.svg';
 import { useMappingData } from '../../Hooks/useMappingData';
-import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
+// import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
 import { useJsonFiles } from '../../Hooks/useJsonFiles';
 
 const styles = {
@@ -31,8 +31,8 @@ const styles = {
 
 const InokufuAPI = ({
   provider = 'visions',
-  keywords,
-  isPublicPage = false
+  isPublicPage = false,
+  isTension
 }) => {
   const client = useClient();
   const { t } = useI18n();
@@ -41,7 +41,7 @@ const InokufuAPI = ({
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error] = useState(false);
 
   const [extraDataToggled, setExtraDataToggled] = useState(false);
 
@@ -60,30 +60,34 @@ const InokufuAPI = ({
   };
 
   useEffect(() => {
+    let isMounted = true;
     const getData = async () => {
-      const tensionJobCards = jobCards.filter(
-        jc => jc.isTension && jc.isTension === true
-      );
-      const tensionKeywords = tensionJobCards.map(jc => jc.name);
-      if (!tensionKeywords.length) return;
+      const usedJobCards = isTension
+        ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
+        : jobCards;
+
+      const usedKeywords = usedJobCards.map(jc => jc.name);
+      if (!usedKeywords.length) return;
 
       // TMP
-      if (sessionStorage.getItem('inokufuApi')) {
-        setLoading(false);
-        setData(JSON.parse(sessionStorage.getItem('inokufuApi')));
-        return;
-      }
+      // if (sessionStorage.getItem('inokufuApi') && isMounted) {
+      //   setLoading(false);
+      //   setData(JSON.parse(sessionStorage.getItem('inokufuApi')));
+      //   return;
+      // }
 
       // Call to wakeup the API
       await inokufuApiPOST(client, {
         project: 'reo',
-        inputKeyword: tensionKeywords[0]
+        inputKeyword: usedKeywords[0]
       });
 
-      const postPromises = [];
+      // Prepare calls to retrieve output keywords for every input keyword
+      // there is. The output keywords are then used to get the offers
+      const retrieveOutputKeywordsPromises = [];
 
-      for (const keyword of tensionKeywords) {
-        postPromises.push(
+      for (const keyword of usedKeywords) {
+        retrieveOutputKeywordsPromises.push(
           inokufuApiPOST(client, {
             project: 'reo',
             inputKeyword: keyword.toLowerCase().trim()
@@ -91,55 +95,134 @@ const InokufuAPI = ({
         );
       }
 
-      const postResults = await Promise.all(postPromises);
+      const outputKeywordsPromiseResults = await Promise.all(
+        retrieveOutputKeywordsPromises
+      );
 
-      const matchResultsToKeywords = results => {
+      // Match input keywords to output keywords results to build out the sections
+      // in the UI
+      const matchInKeyToOutKey = results => {
         const match = {};
-        for (let i = 0; i < tensionKeywords.length; i++) {
+        // Loop over the usedKeywords as it will be same length as the promise array we built
+        for (let i = 0; i < usedKeywords.length; i++) {
           let apiResult = results[i];
 
           if (typeof apiResult === 'string') apiResult = JSON.parse(apiResult);
 
-          match[tensionKeywords[i]] = apiResult;
+          match[usedKeywords[i]] = apiResult;
         }
 
         return match;
       };
 
-      const tensionToApiResults = matchResultsToKeywords(postResults);
+      const match = matchInKeyToOutKey(outputKeywordsPromiseResults);
 
-      const getPromises = [];
-      for (const met in tensionToApiResults) {
-        if (tensionToApiResults[met].statusCode === 400) {
-          getPromises.push({});
+      const retrieveOffersPromises = [];
+      for (const inputKeyword in match) {
+        if (match[inputKeyword].statusCode === 400) {
+          retrieveOffersPromises.push({});
         } else {
-          getPromises.push(inokufuApiGET(client, { provider, keywords }));
+          const outputKeywords = match[inputKeyword].response.outputKeywords;
+          // TODO : Loop through keywords and associate this inputKw to the multiple get calls;
+          retrieveOffersPromises.push(
+            inokufuApiGET(client, {
+              provider,
+              keywords: outputKeywords.join(',')
+            })
+          );
         }
       }
 
-      const getResults = await Promise.all(getPromises);
+      const offersPromisesResults = await Promise.all(retrieveOffersPromises);
 
+      // Store seen and duplicate results to build sections in the UI
+      const seenResults = [];
+      const duplicateResults = [];
       const sections = [];
-      for (let i = 0; i < tensionKeywords.length; i++) {
-        const get = getResults[i];
-        const keyword = tensionKeywords[i];
-        sections.push({
-          title: keyword,
-          offers: get?.response?.content || []
-        });
+      for (let i = 0; i < usedKeywords.length; i++) {
+        const get = offersPromisesResults[i];
+
+        if (get?.response?.content) {
+          // Push results in seen array
+          seenResults.push(...get.response.content);
+          if (i !== 0) {
+            // For each offer verify if it has already been seen and push in duplicates if necessary
+            for (const receivedOffer of get.response.content) {
+              if (seenResults.find(o => o.title === receivedOffer.title)) {
+                duplicateResults.push(receivedOffer);
+              }
+            }
+          }
+        }
+
+        const keyword = usedKeywords[i];
+
+        const filterDupes = arr => {
+          const filtered = [];
+          for (const el of arr) {
+            const foundDupe = duplicateResults.find(o => o.title === el.title);
+            if (!foundDupe) {
+              filtered.push(el);
+            }
+          }
+          return filtered;
+        };
+
+        const hasDupes = arr => {
+          for (const el of arr) {
+            if (duplicateResults.find(o => o.title === el.title)) return true;
+          }
+          return false;
+        };
+
+        const getDupes = arr => {
+          const dupes = [];
+          for (const el of arr) {
+            const foundDupe = duplicateResults.find(o => o.title === el.title);
+            if (foundDupe) dupes.push(foundDupe);
+          }
+
+          return dupes;
+        };
+
+        const content = get?.response?.content || [];
+
+        // if first iteration push normally
+        // else only push if not a duplicate
+        if (i === 0) {
+          sections.push({
+            title: keyword,
+            offers: content,
+            hasDupes: false,
+            dupes: []
+          });
+        } else {
+          sections.push({
+            title: keyword,
+            offers: filterDupes(content),
+            hasDupes: hasDupes(content),
+            dupes: getDupes(content)
+          });
+        }
       }
+
+      if (!isMounted) return;
 
       setLoading(false);
       setData(sections);
 
       // TMP
-      sessionStorage.setItem('inokufuApi', JSON.stringify(sections));
+      // sessionStorage.setItem('inokufuApi', JSON.stringify(sections));
 
       // await saveAPIDataToVisionsCozyDoctype(client, 'inokufu', sections);
     };
 
     getData();
-  }, [client, keywords, provider, jobCards]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [client, provider, jobCards, isTension]);
 
   const toggleViewMore = () => {
     setExtraDataToggled(!extraDataToggled);
@@ -157,7 +240,8 @@ const InokufuAPI = ({
       title={t('formationOffers')}
       addStyles={styles.card}
       bgHeader={'#FFF'}
-      btnSeeMore={data.length > 2}
+      // btnSeeMore={data.length > 2}
+      btnSeeMore={false}
       seeMoreFC={toggleViewMore}
       seeMoreToggled={extraDataToggled}
     >
@@ -173,7 +257,31 @@ const InokufuAPI = ({
           {data.map((section, index) => (
             <Grid key={index} xs={12} className='containerBadgeRow' item>
               <div>
-                <p>Vos offres pour : {section.title}</p>
+                <h4>Vos offres pour : {section.title}</h4>
+                {section.hasDupes && (
+                  <>
+                    <p>
+                      Certaines formations pour ce métier vous ont été proposées
+                      pour un autre métier ci-dessus.
+                    </p>
+                    <ul>
+                      {/* {section.dupes.map((o, wIdx) => (
+                        <li key={wIdx}>{o.title}</li>
+                      ))} */}
+                      {section.dupes.map((o, wIdx) => (
+                        <Grid key={wIdx} item>
+                          <BadgeRow
+                            offerAPI={o}
+                            icon={EyeIcon}
+                            addStyles={styles.badge}
+                            offerDataMapping={getOfferMappingData(o?.publisher)}
+                            isPublicPage={isPublicPage}
+                          />
+                        </Grid>
+                      ))}
+                    </ul>
+                  </>
+                )}
                 {section.offers.map((offer, yndex) => (
                   <Grid key={yndex} item>
                     <BadgeRow
@@ -185,6 +293,9 @@ const InokufuAPI = ({
                     />
                   </Grid>
                 ))}
+                {section.offers.length === 0 && section.dupes.length === 0 && (
+                  <p>Aucune offre trouvée</p>
+                )}
               </div>
               <p className='sourceData'>
                 Source de données : <span>Inokufu</span>
@@ -196,33 +307,5 @@ const InokufuAPI = ({
     </Accordion>
   );
 };
-
-export const DEMO_DATA = [
-  {
-    title: 'Anglais',
-    url: 'https://lp.wallstreetenglish.fr/vision',
-    description:
-      'Accédez à la Méthode Wall Street English et aux cœurs des éléments qui la composent. Notre formation intensive en anglais est la formation d’apprentissage de l’anglais qu’il vous faut pour améliorer votre anglais rapidement quel que soit votre niveau actuel en suivant un rythme hebdomadaire soutenu. La formation English Express peut être suivie à distance en petit groupe (24h/24) et/ou en centre.',
-    picture:
-      'https://visionspol.eu/wp-content/uploads/2022/09/LOGO-Wall-street-english.jpg'
-  },
-  {
-    title: 'Anglais En Ligne',
-    url:
-      'https://formation.neobridge.com/langues/anglais-hypnose-toeic/#contact--eligi_form',
-    description:
-      'Apprenez facilement l&apos;anglais. Gr\u00e2ce \u00e0 l\u2019apprentissage sous hypnose, levez vos freins et vos \u00e9motions limitantes pour un apprentissage optimal. Choisissez votre formateur pour profitez de face \u00e0 face en visio et d\u2019une formation en ligne \u00e0 visage humain. Obtenez une certification TOEIC reconnue dans le monde du travail. Notre objectif, que vous vous exprimiez avec envie, confiance et s\u00e9r\u00e9nit\u00e9. Plus d&apos;infos : https://formation.neobridge.com/assets/docs/anglais-toeic.pdf',
-    picture:
-      'http://visionspol.eu/wp-content/uploads/2022/09/LOGO-NEOBRIDGE.jpg'
-  },
-  {
-    title: 'Prospecter et développer un portefeuille client',
-    url:
-      'https://www.moncompteformation.gouv.fr/espace-prive/html/#/formation/recherche/83854281900027_788/83854281900027_782',
-    picture: 'http://visionspol.eu/wp-content/uploads/2022/09/LOGO-studi.jpg',
-    description:
-      "La formation « Prospection et développement d'un portefeuille client » vous permet d'accompagner vos clients et définir les actions qui peuvent apporter un avantage concurrentiel à l'entreprise . Le programme s'articule autour de 3 axes : 1. Comment et pourquoi se former à la prospection et au dével..."
-  }
-];
 
 export default InokufuAPI;

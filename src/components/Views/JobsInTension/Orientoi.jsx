@@ -32,18 +32,21 @@ const styles = {
   }
 };
 const bgBadge = '#f4fcfe';
-const getThirdElements = arr => arr.slice(0, 3);
 
 const Orientoi = ({
   title,
   badge = false,
   talent = false,
-  showType = false
+  showType = false,
+  isTension = false
 }) => {
   const { t } = useI18n();
   const { jsonFiles } = useJsonFiles();
-  const datas = getThirdElements(jsonFiles.orientoi.data?.data?.jobCards || []);
+  const datas = jsonFiles.orientoi.data?.data?.jobCards || [];
   const badges = jsonFiles.orientoi.data?.data?.badges || [];
+  const usedJobcards = isTension
+    ? datas.filter(o => o.isTension === true).slice(0.3)
+    : datas;
 
   return (
     <Accordion
@@ -56,13 +59,13 @@ const Orientoi = ({
         <Grid item style={styles.container}>
           {badge ? (
             <>
-              {datas.length === 0 ? (
+              {usedJobcards.length === 0 ? (
                 <div style={{ padding: '25px' }}>
                   <h5>Données introuvables</h5>
                 </div>
               ) : (
                 <>
-                  {datas.map(({ name, positionnement, type }, index) => (
+                  {usedJobcards.map(({ name, positionnement, type }, index) => (
                     <Badge
                       key={index}
                       title={name}

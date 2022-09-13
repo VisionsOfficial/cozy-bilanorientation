@@ -13,7 +13,7 @@ const JobufoModal = ({ offerDataMapping }) => {
   };
   const data = {
     title: !confirmed
-      ? `Vous êtes intéressé par la formation ${offerDataMapping.formation}`
+      ? `Vous êtes intéressé par la formation`
       : `Votre bilan a bien été transmis à ${offerDataMapping.OF}`,
     body: !confirmed ? (
       <>
