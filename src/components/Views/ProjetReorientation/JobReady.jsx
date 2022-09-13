@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import { useI18n } from 'cozy-ui/transpiled/react/I18n'
-import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
+import { useI18n } from 'cozy-ui/transpiled/react/I18n';
+import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
-import Accordion from '../../Accordion'
-import JobReadyIcon from '../../../assets/icons/jobready.svg'
-import LockIcon from 'cozy-ui/transpiled/react/Icons/Lock'
-import Icon from 'cozy-ui/transpiled/react/Icon'
-import ImportDocumentBtn from '../../Button/ImportDocumentBtn'
-import Badge from '../../Badge'
-import { useJsonFiles } from '../../Hooks/useJsonFiles'
-import iconIdea from '../../../assets/icons/icon-JR-soft-skills.svg'
+import Accordion from '../../Accordion';
+import JobReadyIcon from '../../../assets/icons/jobready.svg';
+import LockIcon from 'cozy-ui/transpiled/react/Icons/Lock';
+import Icon from 'cozy-ui/transpiled/react/Icon';
+import ImportDocumentBtn from '../../Button/ImportDocumentBtn';
+import Badge from '../../Badge';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
+import iconIdea from '../../../assets/icons/icon-JR-soft-skills.svg';
 
 const styles = {
   badge: {
@@ -18,13 +18,13 @@ const styles = {
     borderRadius: 10,
     padding: '10px 5px'
   }
-}
+};
 
 const JobReady = ({ headerBg, addStyles, title }) => {
-  const { t } = useI18n()
-  const { jsonFiles } = useJsonFiles()
-  const datas = jsonFiles.jobready.data?.data?.[0]?.fields || []
-  const [submit, setSubmit] = useState(false)
+  const { t } = useI18n();
+  const { jsonFiles } = useJsonFiles();
+  const datas = jsonFiles.jobready.data?.data?.[0]?.fields || [];
+  const [submit, setSubmit] = useState(false);
 
   return (
     <Accordion
@@ -33,7 +33,7 @@ const JobReady = ({ headerBg, addStyles, title }) => {
       addStyles={addStyles}
       bgHeader={headerBg}
     >
-      <Grid className="u-mv-1" container spacing={2}>
+      <Grid className='u-mv-1' container spacing={2}>
         {submit ? (
           <>
             {datas.length !== 0 &&
@@ -54,26 +54,26 @@ const JobReady = ({ headerBg, addStyles, title }) => {
                   />
                 </Grid>
               ))}
-            <p className="sourceData">
+            <p className='sourceData'>
               Source de données : <span>Jobready</span>
             </p>
           </>
         ) : (
-          <div className="importCVContainer">
+          <div className='importCVContainer'>
             <Icon icon={LockIcon} />
-            <p className="importCV">
+            <p className='importCV'>
               Importez <span>votre lettre de motivation ou CV</span> pour
               découvrir les <span>softskills qui en ressortent</span>
             </p>
             <ImportDocumentBtn submit={setSubmit} />
-            <p className="sourceData">
+            <p className='sourceData'>
               Source de données : <span>Jobready</span>
             </p>
           </div>
         )}
       </Grid>
     </Accordion>
-  )
-}
+  );
+};
 
-export default JobReady
+export default JobReady;

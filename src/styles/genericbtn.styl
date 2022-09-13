@@ -13,6 +13,10 @@
     padding: 8px 15px
     width auto
     border: none
+    svg
+        width: 16px !important
+        height 16px !important
+
     p
         margin: 0px
         margin-right: 5px
@@ -51,3 +55,18 @@
     background: grey
     pointer-events: none
     opacity 0.5
+
+.genericButtonGradient 
+    background: gradient
+    color: color-secondary
+    svg
+        fill: white !important
+
+    .genericButtonCircle
+        background: color-secondary
+
+    &:hover
+        background: color-secondary
+        color: white
+        .genericButtonCircle
+            background: gradient

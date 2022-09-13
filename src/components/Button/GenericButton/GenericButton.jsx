@@ -8,14 +8,27 @@ import '../../../styles/genericbtn.styl';
 const GenericButton = ({
   hasArrow = true,
   textContent,
+  color,
   type,
   onClickFc = () => {},
   disabled = false,
   eyeIcon = false
 }) => {
+  let colorGenericButton;
+  switch (color) {
+    case 'gradient':
+      colorGenericButton = 'genericButtonGradient';
+      break;
+    default:
+      colorGenericButton = '';
+      break;
+  }
+
   return (
     <button
-      className={`genericButton ${disabled ? 'btnDisabled' : ''}`}
+      className={`genericButton ${
+        disabled ? 'btnDisabled' : ''
+      } ${colorGenericButton}`}
       type={type}
       onClick={e => onClickFc(e)}
     >

@@ -293,21 +293,26 @@ body
 
 
 .containerGraph
+    centerFlex()
+    align-items: stretch
     @media screen and (max-width: 768px) 
-        centerFlex()
         flex-direction: column
 
 .badgeGraph
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background: #f4fcfe
     padding: 0px 20px 40px 20px
     border-radius: 5px
     margin: 20px auto
     h3
         padding-top: 10px
+        max-width: 350px
     .contentGraph
         centerFlex()
         padding-left: 150px
-        @media screen and (max-width: 425px)
+        @media screen and (max-width: 460px)
             padding-left: 0
         .boxGraph
             width 235px
@@ -331,7 +336,7 @@ body
                     width 0%
                     position: absolute
                     top: 5.5px
-                    @media screen and (max-width: 425px)
+                    @media screen and (max-width: 460px)
                         height: 50%
                         top: 12.5px
                 .cel 
@@ -341,7 +346,7 @@ body
                     border-right: 1px solid rgba(128, 128, 128, 0.300)
                     pointer-events: none
                     z-index: -1
-                    @media screen and (max-width: 425px)
+                    @media screen and (max-width: 460px)
                         height: 45.2px
                 .legendGraph
                     height: 32.2px
@@ -350,7 +355,7 @@ body
                     position: absolute
                     left: -160px
                     bottom: -4px
-                    @media screen and (max-width: 425px)
+                    @media screen and (max-width: 460px)
                         left: 5px
                         top: -10px
                         background: white
@@ -445,6 +450,7 @@ body
     box-shadow: soft-shadow
     cursor pointer
     transition: transform 0.3s
+    width: fit-content
     input
         background: transparent
         border: none
