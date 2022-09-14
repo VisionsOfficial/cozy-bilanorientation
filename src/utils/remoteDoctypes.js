@@ -1,5 +1,5 @@
 const VISIONS_DOCTYPE = 'com.visionstrust';
-const PALM_DOCTYPE = 'io.vision.palm-app';
+const PALM_DOCTYPE = 'io.vision.palmapp';
 const INOKUFU_DOCTYPE = 'com.inokufu.api';
 const INOKUFU_MATCHINGS_DOCTYPE = 'com.inokufu';
 

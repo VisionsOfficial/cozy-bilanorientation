@@ -3,7 +3,7 @@
   "slug": "bilanorientation",
   "icon": "icon.svg",
   "categories": [],
-  "version": "0.4.5",
+  "version": "0.4.6",
   "licence": "AGPL-3.0",
   "editor": "visions",
   "source": "https://github.com/VisionsOfficial/cozy-bilanorientation.git",
@@ -60,7 +60,12 @@
     },
     "palm": {
       "description": "Communication with the PALM matching API to retrieve appropriate offers",
-      "type": "io.vision.palm-app",
+      "type": "io.vision.palmapp",
+      "verbs": ["POST"]
+    },
+    "megaapply": {
+      "description": "Automatically send job applications",
+      "type": "com.megaapply.dev",
       "verbs": ["POST"]
     },
     "visions": {
