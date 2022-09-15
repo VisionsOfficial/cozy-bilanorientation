@@ -27,6 +27,7 @@ import JobsInTensions from './Views/JobsInTension';
 import ProjetReorientation from './Views/ProjetReorientation';
 import HomePage from './Views/HomePage';
 import BilanOrientationResultsPage from './Views/Results/BilanOrientationResultsPage';
+import ReoOffersPage from './Views/ProjetReorientation/ReoOffersPage';
 
 import PublicPage from './Views/publicPage/PublicPage';
 import { useEffect } from 'react';
@@ -144,6 +145,7 @@ const App = ({ isPublic }) => {
                         component={JobExplorationsPage}
                       />
                       <Route path='/skills' component={WipPage} />
+                      <Route path='/reoOffers' component={ReoOffersPage} />
                       <Route path='/wip' component={WipPage} />
                       <Route path='/jobsintension' component={JobsInTensions} />
                       {/* <Route path='/jobsintension' component={WipPage} /> */}

@@ -25,23 +25,23 @@ const ShareBilanBtn = ({
 //   const { jsonFiles } = useJsonFiles();
 
 //   const handleClick = async () => {
-//     const doc = await saveJSONFilesToVisionsCozyDoctype(client, jsonFiles);
+//     // const doc = await saveJSONFilesToVisionsCozyDoctype(client, jsonFiles);
 
-//     const publicShareCode = await createPublicShareCode(client, doc);
+//     // const publicShareCode = await createPublicShareCode(client, doc);
 
-//     const publicUrl = `${location.protocol}//${location.host}/public/?sharecode=${publicShareCode}`;
+//     // const publicUrl = `${location.protocol}//${location.host}/public/?sharecode=${publicShareCode}`;
 
-//     console.log(publicUrl);
+//     // console.log(publicUrl);
 
-//     const mailJob = await sendMail(client, {
-//       mode: 'from',
-//       to: [{ name: 'Test', email: 'felix@visionspol.eu' }],
-//       subjects: "Bilan d'orientation",
-//       parts: [{ type: 'text/plain', html: `${publicUrl}` }]
-//     });
-//     console.log(mailJob);
+//     // const mailJob = await sendMail(client, {
+//     //   mode: 'from',
+//     //   to: [{ name: 'Test', email: 'felix@visionspol.eu' }],
+//     //   subjects: "Bilan d'orientation",
+//     //   parts: [{ type: 'text/plain', html: `${publicUrl}` }]
+//     // });
+//     // console.log(mailJob);
 
-//     // onClickFc();
+//     onClickFc();
 //   };
 
 //   return (

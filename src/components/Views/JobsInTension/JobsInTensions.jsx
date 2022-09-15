@@ -8,7 +8,7 @@ const JobsInTensions = () => {
   return (
     <>
       <Orientoi title={'offersPorposed'} badge={true} isTension={true} />
-      <InokufuAPI isTension={true} />
+      <InokufuAPI isTension={true} project={'smartskills'} />
       <PalmAPI />
       <Doceo />
     </>

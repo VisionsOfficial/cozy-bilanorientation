@@ -3,18 +3,22 @@ import GenericButton from '../../../Button/GenericButton/GenericButton';
 
 const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
 
-const EmailModal = ({ offerDataMapping }) => {
+const EmailModal = ({ offerDataMapping, btnClickFc }) => {
   const email = offerDataMapping.email;
   const [confirmed, setConfirmed] = useState(false);
 
-  const handleClick = e => {
-    e.stopPropagation();
+  const emailModalClickFc = () => {
     setConfirmed(true);
     if (offerDataMapping.url_redirection) {
       setTimeout(() => {
         window.open(offerDataMapping.url_redirection);
       }, 2000);
     }
+  };
+
+  const handleClick = e => {
+    e.stopPropagation();
+    btnClickFc(emailModalClickFc);
   };
 
   const data = {

@@ -35,8 +35,9 @@ const PalmAPI = () => {
   const jobCards = jsonFiles.orientoi?.data?.data?.jobCards || [];
 
   useEffect(() => {
+    let isMounted = true;
     const getData = async () => {
-      if (!jobCards.length) {
+      if (!jobCards.length && isMounted) {
         setData([]);
         setLoading(false);
         setError(false);
@@ -53,6 +54,8 @@ const PalmAPI = () => {
       const res = await palmApiPOST(client, { email, data: createSoupData() });
 
       // PALM sends back a stringified array as a response
+      if (!isMounted) return;
+
       const content = JSON.parse(res);
       setData(content);
       setLoading(false);
@@ -60,6 +63,10 @@ const PalmAPI = () => {
     };
 
     getData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [client, email, jobCards]);
 
   if (error)

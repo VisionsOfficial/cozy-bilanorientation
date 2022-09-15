@@ -3,14 +3,19 @@ import GenericButton from '../../../Button/GenericButton/GenericButton';
 
 const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
 
-const JobufoModal = ({ offerDataMapping }) => {
+const JobufoModal = ({ offerDataMapping, btnClickFc }) => {
   const [confirmed, setConfirmed] = useState(false);
+
+  const jobufoModalClickFc = () => {
+    setConfirmed(true);
+    // TODO Send to jobufo and stuff here
+  };
 
   const handleClick = e => {
     e.stopPropagation();
-    setConfirmed(true);
-    // TODO Send mail via VisionsTrust here
+    btnClickFc(jobufoModalClickFc);
   };
+
   const data = {
     title: !confirmed
       ? `Vous êtes intéressé par la formation`

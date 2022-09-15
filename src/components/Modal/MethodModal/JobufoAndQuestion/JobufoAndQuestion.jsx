@@ -1,7 +1,16 @@
 import React from 'react';
 import GenericButton from '../../../Button/GenericButton/GenericButton';
 
-const JobufoAndQuestion = ({ offerData }) => {
+const JobufoAndQuestion = ({ offerData, btnClickFc }) => {
+  const jobufoFormModalFc = () => {
+    // TODO Integrated form
+  };
+
+  const handleClick = e => {
+    e.stopPropagation();
+    btnClickFc(jobufoFormModalFc);
+  };
+
   if (offerData) {
     return (
       <section className='contentJobufoAndQuestionModal'>
@@ -15,7 +24,10 @@ const JobufoAndQuestion = ({ offerData }) => {
           </p>
           {/* Check from for question */}
         </div>
-        <GenericButton textContent={'Accepter le partage'} />
+        <GenericButton
+          textContent={'Accepter le partage'}
+          onClickFc={e => handleClick(e)}
+        />
       </section>
     );
   } else {

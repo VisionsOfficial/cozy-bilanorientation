@@ -50,7 +50,7 @@ const HomePage = () => {
           text={'Mes résultats'}
         />
         <ListItem
-          link='/wip'
+          link='/reoOffers'
           leftIcon={iconFormation}
           text={'Mes propositions de formations'}
         />
