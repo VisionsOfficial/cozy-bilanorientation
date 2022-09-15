@@ -16,6 +16,8 @@ import { useMappingData } from '../../Hooks/useMappingData';
 // import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
 import { useJsonFiles } from '../../Hooks/useJsonFiles';
 
+const TEN_MINUTES = 10 * 60 * 1000;
+
 const styles = {
   card: {
     borderRadius: '15px',
@@ -32,7 +34,8 @@ const styles = {
 const InokufuAPI = ({
   provider = 'visions',
   isPublicPage = false,
-  isTension
+  isTension,
+  project = 'smartskills'
 }) => {
   const client = useClient();
   const { t } = useI18n();
@@ -47,6 +50,9 @@ const InokufuAPI = ({
 
   const { jsonFiles } = useJsonFiles();
   const jobCards = jsonFiles.orientoi?.data?.data?.jobCards || [];
+
+  const SESSION_INOKUFU_DATA = 'inokufuApi' + provider;
+  const SESSION_INOKUFU_LAST_CALL = 'inokufuLastCall' + provider;
 
   const getOfferMappingData = publisherArr => {
     if (!publisherArr || !publisherArr.length || !mappingData) return null;
@@ -64,21 +70,28 @@ const InokufuAPI = ({
     const getData = async () => {
       const usedJobCards = isTension
         ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
-        : jobCards;
+        : jobCards.filter(jc => !jc.isTension);
 
       const usedKeywords = usedJobCards.map(jc => jc.name);
       if (!usedKeywords.length) return;
 
-      // TMP
-      // if (sessionStorage.getItem('inokufuApi') && isMounted) {
-      //   setLoading(false);
-      //   setData(JSON.parse(sessionStorage.getItem('inokufuApi')));
-      //   return;
-      // }
+      // Check session storage and when was last call to avoid too many calls
+      if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)) {
+        const lastCall = JSON.parse(
+          sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)
+        );
+        if (Date.now() - lastCall < TEN_MINUTES) {
+          if (sessionStorage.getItem(SESSION_INOKUFU_DATA) && isMounted) {
+            setLoading(false);
+            setData(JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA)));
+            return;
+          }
+        }
+      }
 
       // Call to wakeup the API
       await inokufuApiPOST(client, {
-        project: 'reo',
+        project,
         inputKeyword: usedKeywords[0]
       });
 
@@ -89,7 +102,7 @@ const InokufuAPI = ({
       for (const keyword of usedKeywords) {
         retrieveOutputKeywordsPromises.push(
           inokufuApiPOST(client, {
-            project: 'reo',
+            project,
             inputKeyword: keyword.toLowerCase().trim()
           })
         );
@@ -117,93 +130,72 @@ const InokufuAPI = ({
 
       const match = matchInKeyToOutKey(outputKeywordsPromiseResults);
 
-      const retrieveOffersPromises = [];
-      for (const inputKeyword in match) {
-        if (match[inputKeyword].statusCode === 400) {
-          retrieveOffersPromises.push({});
-        } else {
-          const outputKeywords = match[inputKeyword].response.outputKeywords;
-          // TODO : Loop through keywords and associate this inputKw to the multiple get calls;
-          retrieveOffersPromises.push(
+      const removeDuplicateKwFromMatch = obj => {
+        const seenKeywords = [];
+        const r = {};
+        for (const [key, apiRes] of Object.entries(obj)) {
+          if (apiRes.statusCode !== 200 && apiRes.statusCode !== 210) {
+            r[key] = apiRes;
+            continue;
+          }
+
+          if (seenKeywords.length === 0) {
+            seenKeywords.push(...apiRes.response.outputKeywords);
+            r[key] = apiRes;
+            continue;
+          }
+
+          const newKwArr = [];
+          for (const kw of apiRes.response.outputKeywords) {
+            if (!seenKeywords.includes(kw)) newKwArr.push(kw);
+          }
+          apiRes.response.outputKeywords = newKwArr;
+          r[key] = apiRes;
+        }
+        return r;
+      };
+
+      const matchWithoutDuplicates = removeDuplicateKwFromMatch(match);
+
+      for (const inputKeyword in matchWithoutDuplicates) {
+        if (matchWithoutDuplicates[inputKeyword].statusCode === 400) {
+          matchWithoutDuplicates[inputKeyword].offers = [];
+          continue;
+        }
+        const outputKeywords =
+          matchWithoutDuplicates[inputKeyword].response.outputKeywords;
+
+        const thisInputKeywordPromises = [];
+        for (const k of outputKeywords) {
+          thisInputKeywordPromises.push(
             inokufuApiGET(client, {
               provider,
-              keywords: outputKeywords.join(',')
+              keywords: k
             })
           );
         }
+
+        const thisInKwOffersResponses = await Promise.all(
+          thisInputKeywordPromises
+        );
+        const thisInKwOffers = [];
+        for (const r of thisInKwOffersResponses) {
+          if (r.statusCode !== 200) continue;
+          for (const offer of r.response.content) {
+            if (thisInKwOffers.find(o => o.title === offer.title)) continue;
+            thisInKwOffers.push(offer);
+          }
+        }
+
+        matchWithoutDuplicates[inputKeyword].offers = thisInKwOffers;
       }
 
-      const offersPromisesResults = await Promise.all(retrieveOffersPromises);
-
-      // Store seen and duplicate results to build sections in the UI
-      const seenResults = [];
-      const duplicateResults = [];
       const sections = [];
-      for (let i = 0; i < usedKeywords.length; i++) {
-        const get = offersPromisesResults[i];
-
-        if (get?.response?.content) {
-          // Push results in seen array
-          seenResults.push(...get.response.content);
-          if (i !== 0) {
-            // For each offer verify if it has already been seen and push in duplicates if necessary
-            for (const receivedOffer of get.response.content) {
-              if (seenResults.find(o => o.title === receivedOffer.title)) {
-                duplicateResults.push(receivedOffer);
-              }
-            }
-          }
-        }
-
-        const keyword = usedKeywords[i];
-
-        const filterDupes = arr => {
-          const filtered = [];
-          for (const el of arr) {
-            const foundDupe = duplicateResults.find(o => o.title === el.title);
-            if (!foundDupe) {
-              filtered.push(el);
-            }
-          }
-          return filtered;
-        };
-
-        const hasDupes = arr => {
-          for (const el of arr) {
-            if (duplicateResults.find(o => o.title === el.title)) return true;
-          }
-          return false;
-        };
-
-        const getDupes = arr => {
-          const dupes = [];
-          for (const el of arr) {
-            const foundDupe = duplicateResults.find(o => o.title === el.title);
-            if (foundDupe) dupes.push(foundDupe);
-          }
-
-          return dupes;
-        };
-
-        const content = get?.response?.content || [];
-
-        // if first iteration push normally
-        // else only push if not a duplicate
-        if (i === 0) {
-          sections.push({
-            title: keyword,
-            offers: content,
-            hasDupes: false,
-            dupes: []
-          });
-        } else {
-          sections.push({
-            title: keyword,
-            offers: filterDupes(content),
-            hasDupes: hasDupes(content),
-            dupes: getDupes(content)
-          });
-        }
+      for (const key in matchWithoutDuplicates) {
+        sections.push({
+          title: key,
+          offers: matchWithoutDuplicates[key].offers
+        });
       }
 
       if (!isMounted) return;
@@ -211,8 +203,11 @@ const InokufuAPI = ({
       setLoading(false);
       setData(sections);
 
-      // TMP
-      // sessionStorage.setItem('inokufuApi', JSON.stringify(sections));
+      sessionStorage.setItem(SESSION_INOKUFU_DATA, JSON.stringify(sections));
+      sessionStorage.setItem(
+        SESSION_INOKUFU_LAST_CALL,
+        JSON.stringify(Date.now())
+      );
 
       // await saveAPIDataToVisionsCozyDoctype(client, 'inokufu', sections);
     };
@@ -222,7 +217,15 @@ const InokufuAPI = ({
     return () => {
       isMounted = false;
     };
-  }, [client, provider, jobCards, isTension]);
+  }, [
+    client,
+    provider,
+    jobCards,
+    isTension,
+    project,
+    SESSION_INOKUFU_DATA,
+    SESSION_INOKUFU_LAST_CALL
+  ]);
 
   const toggleViewMore = () => {
     setExtraDataToggled(!extraDataToggled);
@@ -257,30 +260,10 @@ const InokufuAPI = ({
           {data.map((section, index) => (
             <Grid key={index} xs={12} className='containerBadgeRow' item>
               <div>
-                <h4>Vos offres pour : {section.title}</h4>
-                {section.hasDupes && (
-                  <>
-                    <p>
-                      Certaines formations pour ce métier vous ont été proposées
-                      pour un autre métier ci-dessus.
-                    </p>
-                    <ul>
-                      {/* {section.dupes.map((o, wIdx) => (
-                        <li key={wIdx}>{o.title}</li>
-                      ))} */}
-                      {section.dupes.map((o, wIdx) => (
-                        <Grid key={wIdx} item>
-                          <BadgeRow
-                            offerAPI={o}
-                            icon={EyeIcon}
-                            addStyles={styles.badge}
-                            offerDataMapping={getOfferMappingData(o?.publisher)}
-                            isPublicPage={isPublicPage}
-                          />
-                        </Grid>
-                      ))}
-                    </ul>
-                  </>
+                {section?.offers?.length === 0 ? (
+                  <h4>Aucune offre trouvée pour {section.title}</h4>
+                ) : (
+                  <h4>Vos offres pour : {section.title}</h4>
                 )}
                 {section.offers.map((offer, yndex) => (
                   <Grid key={yndex} item>
@@ -293,9 +276,6 @@ const InokufuAPI = ({
                     />
                   </Grid>
                 ))}
-                {section.offers.length === 0 && section.dupes.length === 0 && (
-                  <p>Aucune offre trouvée</p>
-                )}
               </div>
               <p className='sourceData'>
                 Source de données : <span>Inokufu</span>

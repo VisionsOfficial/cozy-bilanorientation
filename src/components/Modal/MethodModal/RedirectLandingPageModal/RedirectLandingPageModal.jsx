@@ -1,7 +1,7 @@
 import React from 'react';
 import GenericButton from '../../../Button/GenericButton/GenericButton';
 
-const RedirectLandingPageModal = ({ offerDataMapping }) => {
+const RedirectLandingPageModal = ({ offerDataMapping, btnClickFc }) => {
   const redirect = () => {
     if (offerDataMapping.url_redirection) {
       window.open(offerDataMapping.url_redirection);
@@ -10,13 +10,19 @@ const RedirectLandingPageModal = ({ offerDataMapping }) => {
     }
   };
 
+  const handleClick = e => {
+    e.stopPropagation();
+    btnClickFc(redirect);
+  };
+
   if (offerDataMapping) {
     return (
       <section className='contentEmailModal'>
         <div>
           <header>
             <h3>
-              Vous êtes intéressé par la formation {offerDataMapping.formation_name}
+              Vous êtes intéressé par la formation{' '}
+              {offerDataMapping.formation_name}
             </h3>
           </header>
           <p>
@@ -27,7 +33,7 @@ const RedirectLandingPageModal = ({ offerDataMapping }) => {
         </div>
         <GenericButton
           textContent={'Aller à la formation'}
-          onClickFc={redirect}
+          onClickFc={e => handleClick(e)}
         />
       </section>
     );
