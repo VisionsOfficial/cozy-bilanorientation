@@ -10,10 +10,14 @@ const GenericButton = ({
   textContent,
   color,
   type,
+  role,
+  tag = 'button',
   onClickFc = () => {},
   disabled = false,
   eyeIcon = false
 }) => {
+  let CustomTag = tag;
+
   let colorGenericButton;
   switch (color) {
     case 'gradient':
@@ -25,11 +29,12 @@ const GenericButton = ({
   }
 
   return (
-    <button
+    <CustomTag
       className={`genericButton ${
         disabled ? 'btnDisabled' : ''
       } ${colorGenericButton}`}
       type={type}
+      role={role}
       onClick={e => onClickFc(e)}
     >
       <p>{textContent}</p>
@@ -38,7 +43,7 @@ const GenericButton = ({
           <Icon icon={eyeIcon ? Eye : Arrow} />
         </div>
       )}
-    </button>
+    </CustomTag>
   );
 };
 

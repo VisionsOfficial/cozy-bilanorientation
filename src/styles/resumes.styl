@@ -21,7 +21,7 @@
 
         .bold
             font-weight: bold
-        p 
+        .informationImportDocument 
             margin-bottom: 30px
             font-weight: 500
             font-size: 19px
@@ -72,7 +72,18 @@
             width: 100%
             display: flex
 
-            button 
+            label
+                width: 50%
+                span
+                    width: 100%
+                    display: flex
+                    justify-content: center
+                    background: color-secondary
+                    color: white
+                    border-top-right-radius: 10px
+                    border-top-left-radius: 0px
+                    
+            span 
                 width: 50%
                 border: none
                 cursor: pointer
@@ -80,13 +91,9 @@
                 font-size: 18px
                 padding: 10px 0
                 margin-bottom: 5px
-                &:nth-child(1)
-                    background: color-grayscale
-                    border-top-left-radius: 10px
-                &:nth-child(2)
-                    background: color-secondary
-                    color: white
-                    border-top-right-radius: 10px
+                background: color-grayscale
+                text-align: center
+                border-top-left-radius: 10px
                 @media screen and (max-width: 460px)
                     font-size: 16px
 
@@ -120,6 +127,86 @@
                     centerFlex()
                     svg
                         filter: hue-rotate(45deg)
+                
+                &Icon
+                    centerFlex()
+
+.containerSummaryDocument
+    columnTopFlex()
+
+    .headerSummaryDocument
+        centerFlex()
+        width calc(100% + 20px)
+        justify-content: flex-start
+        margin-bottom: 20px
+        border-bottom: solid 2px rgba(29,33,42,0.16)
+
+        h3
+            margin: 0 0 20px 25px
+
+    .contentSummaryDocument
+        columnTopFlex()
+        margin-bottom: 20px
+        &Information
+            centerFlex()
+            background: color-grayscale
+            border-radius: 10px
+            font-weight: 500
+            width 98%
+
+            p 
+                margin: 5px 0
+
+            svg
+                filter: brightness(0.2)
+                margin: 0 20px
+                width: 35px
+                height: 35px
+
+        &Cards
+            centerFlex()
+            flex-wrap: wrap
+            width 100%
+            margin-top: 10px
+            .cardDocument
+                columnTopFlex()
+                justify-content: space-between
+                background: gradient-low-opacity
+                text-align: center
+                border-radius: 10px
+                width calc(94% / 3)
+                margin: 10px
+                position relative
+                padding-bottom: 20px
+                &Content
+                    font-weight: 500
+
+                    &Icon
+                        centerFlex()
+                        background: gradient
+                        width fit-content
+                        margin: auto
+                        margin-top: 20px
+                        padding: 5px
+                        border-radius: 5px
+                        svg
+                            filter: brightness(0) invert(1)
+                            width 40px
+                            height: 40px
+                    
+                    h4
+                        color: color-primary
+                        text-transform: uppercase
+
+                &Cross
+                    position: absolute
+                    right: 10px
+                    top: 10px
+                    svg 
+                        width: 30px
+                        height: 30px
+                        cursor: pointer
+        
 
 .btnContainer
     width: 100%
