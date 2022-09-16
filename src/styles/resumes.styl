@@ -66,7 +66,11 @@
         width: 100%
         margin: 20px 0
         border-radius: 10px
-        min-height: 150px
+        min-height: 160px
+        cursor pointer
+
+        .active
+            outline: 2px solid color-secondary
 
         .inputGroup
             width: 100%
@@ -102,6 +106,7 @@
             background: gradient
             margin: 10px auto
             border-radius: 10px
+            padding: 0 20px
             .contentFile
                 centerFlex()
                 justify-content: space-between
@@ -113,13 +118,12 @@
                     min-width 30px !important
                     min-height: 30px !important
                     cursor: pointer
-                    margin: 0 20px
 
                     @media screen and (max-width: 460px)
                         margin: 0 10px
                 
                 p
-                    margin: 0
+                    margin: 0 20px
                     font-weight: 500
                     color: color-secondary
 
@@ -130,6 +134,10 @@
                 
                 &Icon
                     centerFlex()
+                    transition: transform 0.1s
+                    &:hover
+                        svg
+                            transform: scale(1.03)
 
 .containerSummaryDocument
     columnTopFlex()
