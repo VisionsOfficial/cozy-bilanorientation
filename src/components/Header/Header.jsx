@@ -111,12 +111,12 @@ const Header = () => {
             <Title />
           </Typography>
         </div>
-        {isPublicPage === false && (
+        {/* {isPublicPage === false && (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
             <ModalGeneric open={open} closeModal={closeModal} />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 import Icon from 'cozy-ui/transpiled/react/Icon';
+import { useClient } from 'cozy-client';
+import { log } from 'cozy-logger';
 
 // TMP
 import logoVisions from '../../../assets/icons/logo_picto.svg';
 import logoTmp from '../../../assets/icons/icon-check.svg';
+import { visionsTrustApiPOST } from '../../../utils/remoteDoctypes';
+import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
 
 const ModalBilan = ({ open = false, closeModal, title, email }) => {
   const openModal = open === false ? '' : 'openModal';
+  const client = useClient();
+  const { visionsAccount } = useVisionsAccount();
 
   const [confirmation, setConfirmation] = useState(false);
-  const confirm = () => {
+  const confirm = async () => {
+    try {
+      await visionsTrustApiPOST(client, 'consent', {
+        leadName: 'EMAIL_SHARE',
+        userId: visionsAccount.id,
+        publicShareURL: sessionStorage.getItem('pubshare'),
+        offerURL: 'EMAIL_SHARE'
+      });
+    } catch (err) {
+      log('error', 'Failed to save lead click in VisionsTrust');
+    }
     setConfirmation(true);
   };
 

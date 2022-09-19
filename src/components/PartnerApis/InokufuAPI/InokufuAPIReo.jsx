@@ -117,6 +117,11 @@ const InokufuAPIReo = ({
         ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
         : jobCards.filter(jc => !jc.isTension);
 
+      if (!usedJobCards || !usedJobCards.length) {
+        setLoading(false);
+        return;
+      }
+
       const usedKeywords = usedJobCards.map(jc => jc.name);
       if (!usedKeywords.length) return;
 

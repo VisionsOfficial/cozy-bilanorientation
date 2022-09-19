@@ -21,9 +21,9 @@ const styles = {
   }
 };
 const bgBadge = 'linear-gradient(85deg, #16f7b415, #21bbee15)';
+const email = 'smartskills@visionspol.eu';
 
 const PalmAPI = () => {
-  const email = 'smartskills@visionspol.eu';
   const client = useClient();
   const { t } = useI18n();
 
@@ -32,12 +32,13 @@ const PalmAPI = () => {
   const [error, setError] = useState(false);
 
   const { jsonFiles } = useJsonFiles();
-  const jobCards = jsonFiles.orientoi?.data?.data?.jobCards || [];
+  const jobCards = jsonFiles.orientoi?.data?.data?.jobCards;
 
   useEffect(() => {
     let isMounted = true;
     const getData = async () => {
-      if (!jobCards.length && isMounted) {
+      if (!jobCards || (jobCards && !jobCards.length)) {
+        if (!isMounted) return;
         setData([]);
         setLoading(false);
         setError(false);
@@ -46,10 +47,9 @@ const PalmAPI = () => {
 
       const createSoupData = () => {
         const jcNames = jobCards.map(jc => jc.name).join(' ');
-        // const jcSlugs = jobCards.map(jc => jc.slug).join(',');
-        // const jcDescs = jobCards.map(jc => jc.description).join(' ');
-        // return `${jcNames} ${jcSlugs} ${jcDescs}`;
-        return `${jcNames}`;
+        const jcSlugs = jobCards.map(jc => jc.slug).join(',');
+        const jcDescs = jobCards.map(jc => jc.description).join(' ');
+        return `${jcNames} ${jcSlugs} ${jcDescs}`;
       };
 
       let res = null;
@@ -77,7 +77,7 @@ const PalmAPI = () => {
     return () => {
       isMounted = false;
     };
-  }, [client, email, jobCards]);
+  }, [client, jobCards]);
 
   if (error)
     return (

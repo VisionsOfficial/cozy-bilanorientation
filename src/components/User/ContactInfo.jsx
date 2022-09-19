@@ -14,8 +14,9 @@ const ContactInfo = ({ userInfo }) => {
   const visionsUserInfo = userInfo?.visionsUserInfo;
 
   if (!visionsUserInfo) {
-    <>Une erreur est survenue</>;
+    return <>Une erreur est survenue</>;
   }
+
   return (
     <div style={styles.container}>
       <h3>
