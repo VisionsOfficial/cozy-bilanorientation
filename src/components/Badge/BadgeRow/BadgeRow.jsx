@@ -61,7 +61,7 @@ const BadgeRow = ({
             )}
           </Typography>
           <Typography className='u-mv-half' variant='body1'>
-            {offerAPI?.publisher[0]?.name || ''}
+            {offerAPI?.publisher ? offerAPI?.publisher[0]?.name || '' : ''}
           </Typography>
           <Typography
             style={styles.subText}

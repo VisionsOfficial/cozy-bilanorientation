@@ -119,9 +119,13 @@ const InokufuAPI = ({
         for (const key in r) {
           for (let i = 0; i < BASE_SHOW_COUNT; i++) {
             if (i >= r[key].offers.length) break;
-            const publisher =
-              r[key]?.offers[i]?.publisher[0]?.name || 'UNKNOWN_PUBLISHER';
-            storeLeadView(publisher);
+            if (r[key]?.offers[i]?.publisher) {
+              const publisher =
+                r[key]?.offers[i]?.publisher[0]?.name || 'UNKNOWN_PUBLISHER';
+              storeLeadView(publisher);
+            } else {
+              storeLeadView('UNKNOWN_PUBLISHER');
+            }
           }
         }
 
@@ -330,11 +334,15 @@ const InokufuAPI = ({
       i++
     ) {
       if (i >= sectionViewedCount[sectionTitle].offers.length) break;
-      const publisher =
-        sectionViewedCount[sectionTitle]?.offers[i]?.publisher[0]?.name ||
-        'UNKNOWN_PUBLISHER';
+      if (sectionViewedCount[sectionTitle]?.offers[i]?.publisher) {
+        const publisher =
+          sectionViewedCount[sectionTitle]?.offers[i]?.publisher[0]?.name ||
+          'UNKNOWN_PUBLISHER';
 
-      storeLeadView(publisher);
+        storeLeadView(publisher);
+      } else {
+        storeLeadView('UNKNWON_PUBLISHER');
+      }
     }
 
     setSectionViewedCount(prev => ({
@@ -404,7 +412,9 @@ const InokufuAPI = ({
                           icon={EyeIcon}
                           addStyles={styles.badge}
                           offerMethodMapping={getOFMethodMapping(
-                            offer.publisher[0]?.name || ''
+                            offer.publisher
+                              ? offer.publisher[0]?.name || ''
+                              : ''
                           )}
                           offerDataMapping={getOfferMappingData(
                             offer?.publisher

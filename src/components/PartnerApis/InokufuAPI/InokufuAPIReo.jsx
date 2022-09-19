@@ -340,7 +340,7 @@ const InokufuAPIReo = ({
                       icon={EyeIcon}
                       addStyles={styles.badge}
                       offerMethodMapping={getOFMethodMapping(
-                        offer.publisher[0]?.name || ''
+                        offer.publisher ? offer.publisher[0]?.name || '' : ''
                       )}
                       offerDataMapping={getOfferMappingData(offer?.publisher)}
                       isPublicPage={isPublicPage}

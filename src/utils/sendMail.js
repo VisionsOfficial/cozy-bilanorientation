@@ -39,7 +39,7 @@ export const trySendBOMail = async (
   const jobCollection = getJobCollection(client);
   const mailData = {
     mode: 'from',
-    to: [{ name: toName, email: 'felix@visionspol.eu' }],
+    to: [{ name: toName, email: toEmail }],
     subjects: `${subject} - ${userInfo.firstName} ${userInfo.lastName}`,
     parts: [
       { type: 'text/html', html: buildTemplate(userInfo, publicShareUrl) }
