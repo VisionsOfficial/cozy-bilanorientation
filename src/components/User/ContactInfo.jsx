@@ -1,44 +1,42 @@
 import React from 'react';
 
-const DEFAULT_INFO = {
-  firstName: 'John',
-  lastName: 'DOE',
-  phoneNumber: '0611223344',
-  email: 'johndoe@example.com',
-  city: 'Paris',
-  situation: 'Etudiant',
-  scholarshipLevel: 'Bac +2'
+const styles = {
+  container: {
+    marginTop: 80,
+    border: '2px solid grey',
+    borderRadius: '4px',
+    padding: '10px',
+    background: 'white'
+  }
 };
 
-const ContactInfo = () => {
-  const contactInfo = DEFAULT_INFO;
+const ContactInfo = ({ userInfo }) => {
+  const visionsUserInfo = userInfo?.visionsUserInfo;
+
+  if (!visionsUserInfo) {
+    <>Une erreur est survenue</>;
+  }
   return (
-    <div
-      style={{
-        border: '2px solid grey',
-        borderRadius: '4px',
-        padding: '10px',
-        background: 'white'
-      }}
-    >
+    <div style={styles.container}>
       <h3>
-        {contactInfo.firstName} {contactInfo.lastName}
+        {visionsUserInfo.firstName} {visionsUserInfo.lastName}
       </h3>
       <hr />
       <p>
-        Email: <b>{contactInfo.email}</b>
+        Email: <b>{visionsUserInfo.email}</b>
       </p>
       <p>
-        Tel: <b>{contactInfo.phoneNumber}</b>
+        Tel: <b>{visionsUserInfo.phoneNumber}</b>
       </p>
       <p>
-        Ville: <b>{contactInfo.city}</b>
+        Ville: <b>{visionsUserInfo.experiencesInfo.city}</b>
       </p>
       <p>
-        Niveau d&apos;études: <b>{contactInfo.scholarshipLevel}</b>
+        Niveau d&apos;études:{' '}
+        <b>{visionsUserInfo.experiencesInfo.scholarshipLevel}</b>
       </p>
       <p>
-        Situation: <b>{contactInfo.situation}</b>
+        Situation: <b>{visionsUserInfo.experiencesInfo.situation}</b>
       </p>
     </div>
   );

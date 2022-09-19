@@ -11,16 +11,46 @@ import RedirectLandingPageModal from '../MethodModal/RedirectLandingPageModal';
 
 import logoTmp from '../../../assets/icons/icon-check.svg';
 import { visionsTrustApiPOST } from '../../../utils/remoteDoctypes';
+import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
 
-const GlobalModal = ({ open = false, closeModal, offerDataMapping }) => {
+const GlobalModal = ({
+  open = false,
+  closeModal,
+  offerAPI,
+  offerDataMapping,
+  offerMethodMapping
+}) => {
   const client = useClient();
+  const { visionsAccount } = useVisionsAccount();
+
+  const getCorrectOfferName = () => {
+    if (offerAPI.publisher) {
+      return offerAPI.publisher[0]?.name;
+    } else {
+      return '';
+    }
+  };
 
   const handleButtonClick = async (callback = () => {}) => {
     // Default behaviour for the button click to store the lead in VT
     try {
-      await visionsTrustApiPOST(client, 'leadtracking', {
-        leadName: offerDataMapping.OF || 'Unregistered-OF'
-      });
+      await Promise.all([
+        visionsTrustApiPOST(client, 'leadtracking', {
+          leadName:
+            offerMethodMapping.OF ||
+            getCorrectOfferName() ||
+            'UNKNOWN_PUBLISHER'
+        }),
+        visionsTrustApiPOST(client, 'consent', {
+          leadName:
+            offerMethodMapping.OF ||
+            getCorrectOfferName() ||
+            'UNKNOWN_PUBLISHER',
+          userId: visionsAccount.id,
+          publicShareURL: sessionStorage.getItem('pubshare'),
+          offerURL: offerAPI.url || 'NOT_SPECIFIED'
+        })
+      ]);
     } catch (err) {
       log('error', 'Failed to save lead click in VisionsTrust');
     }
@@ -33,28 +63,32 @@ const GlobalModal = ({ open = false, closeModal, offerDataMapping }) => {
       case 1:
         return (
           <EmailModal
+            email={offerMethodMapping.email || undefined}
             offerDataMapping={offerDataMapping}
+            offerAPI={offerAPI}
             btnClickFc={handleButtonClick}
           />
         );
       case 2:
         return (
           <JobufoModal
-            offerDataMapping={offerDataMapping}
+            OF={getCorrectOfferName()}
             btnClickFc={handleButtonClick}
           />
         );
       case 3:
         return (
           <JobufoAndQuestion
-            offerDataMapping={offerDataMapping}
+            OF={getCorrectOfferName()}
             btnClickFc={handleButtonClick}
           />
         );
       case 4:
         return (
           <RedirectLandingPageModal
-            offerDataMapping={offerDataMapping}
+            offerTitle={offerAPI.title}
+            OF={getCorrectOfferName()}
+            redirectionUrl={offerDataMapping.url_redirection || offerAPI.url}
             btnClickFc={handleButtonClick}
           />
         );
@@ -87,7 +121,7 @@ const GlobalModal = ({ open = false, closeModal, offerDataMapping }) => {
           </div>
         </div>
         <div className='modalContent'>
-          {contentModal(offerDataMapping.method)}
+          {contentModal(offerMethodMapping.method || -1)}
         </div>
       </div>
     </div>

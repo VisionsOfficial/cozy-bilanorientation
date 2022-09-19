@@ -1,7 +1,7 @@
 import React from 'react';
 import GenericButton from '../../../Button/GenericButton/GenericButton';
 
-const JobufoAndQuestion = ({ offerData, btnClickFc }) => {
+const JobufoAndQuestion = ({ OF, btnClickFc }) => {
   const jobufoFormModalFc = () => {
     // TODO Integrated form
   };
@@ -11,12 +11,12 @@ const JobufoAndQuestion = ({ offerData, btnClickFc }) => {
     btnClickFc(jobufoFormModalFc);
   };
 
-  if (offerData) {
+  if (OF) {
     return (
       <section className='contentJobufoAndQuestionModal'>
         <div>
           <header>
-            <h3>{offerData.OF}</h3>
+            <h3>{OF}</h3>
           </header>
           <p>
             Veuillez répondre à ces quelques questions avant de partager votre

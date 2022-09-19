@@ -8,7 +8,7 @@ import Accordion from '../../Accordion'
 import icon from '../../../assets/icons/default_icon.svg'
 import { useJsonFiles } from '../../Hooks/useJsonFiles'
 
-const Pitangoo = () => {
+const PitangooOLD = () => {
   const { t } = useI18n()
   const { jsonFiles } = useJsonFiles()
   const data = jsonFiles.pitangoo?.data?.data || []
@@ -35,4 +35,4 @@ const Pitangoo = () => {
   )
 }
 
-export default Pitangoo
+export default PitangooOLD

@@ -58,6 +58,9 @@ const Title = () => {
     case '/resumes':
       title = t('List.resumes');
       break;
+    case '/reoOffers':
+      title = t('reo.offers');
+      break;
   }
 
   return <>{title}</>;

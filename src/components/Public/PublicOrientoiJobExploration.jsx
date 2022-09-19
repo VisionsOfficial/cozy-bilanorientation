@@ -43,8 +43,6 @@ const PublicOrientoiJobExploration = ({
   const datas = getThirdElements(data?.data?.jobCards || []);
   const badges = data?.data?.badges || [];
 
-  console.log(data);
-
   return (
     <Accordion
       icon={icon}

@@ -46,12 +46,22 @@ const PalmAPI = () => {
 
       const createSoupData = () => {
         const jcNames = jobCards.map(jc => jc.name).join(' ');
-        const jcSlugs = jobCards.map(jc => jc.slug).join(',');
-        const jcDescs = jobCards.map(jc => jc.description).join(' ');
-        return `${jcNames} ${jcSlugs} ${jcDescs}`;
+        // const jcSlugs = jobCards.map(jc => jc.slug).join(',');
+        // const jcDescs = jobCards.map(jc => jc.description).join(' ');
+        // return `${jcNames} ${jcSlugs} ${jcDescs}`;
+        return `${jcNames}`;
       };
 
-      const res = await palmApiPOST(client, { email, data: createSoupData() });
+      let res = null;
+
+      try {
+        res = await palmApiPOST(client, { email, data: createSoupData() });
+      } catch (err) {
+        if (!isMounted) return;
+        setError(true);
+        setLoading(false);
+        return;
+      }
 
       // PALM sends back a stringified array as a response
       if (!isMounted) return;

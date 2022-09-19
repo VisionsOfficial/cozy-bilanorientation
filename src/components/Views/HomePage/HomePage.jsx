@@ -19,10 +19,6 @@ import iconProProfil from '../../../assets/icons/icone-profil-pro.svg';
 import iconBO from '../../../assets/icons/ICON-BO.svg';
 import iconREO from '../../../assets/icons/ICON-REO.svg';
 
-// import GraphCircleIcon from "cozy-ui/transpiled/react/icons/GraphCircle";
-// import StarIcon from "cozy-ui/transpiled/react/icons/Star";
-// import MagnifierIcon from "cozy-ui/transpiled/react/Icons/Magnifier";
-
 const HomePage = () => {
   const { t } = useI18n();
 

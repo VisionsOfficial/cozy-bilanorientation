@@ -3,7 +3,7 @@ import GenericButton from '../../../Button/GenericButton/GenericButton';
 
 const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
 
-const JobufoModal = ({ offerDataMapping, btnClickFc }) => {
+const JobufoModal = ({ OF, btnClickFc }) => {
   const [confirmed, setConfirmed] = useState(false);
 
   const jobufoModalClickFc = () => {
@@ -19,18 +19,18 @@ const JobufoModal = ({ offerDataMapping, btnClickFc }) => {
   const data = {
     title: !confirmed
       ? `Vous êtes intéressé par la formation`
-      : `Votre bilan a bien été transmis à ${offerDataMapping.OF}`,
+      : `Votre bilan a bien été transmis à ${OF}`,
     body: !confirmed ? (
       <>
         <p>
-          Envoyer votre bilan à <b>{offerDataMapping.OF}</b> qui vous
-          recontactera pour en discuter. Vos données seront uniquement utilisées
-          par <b>{offerDataMapping.OF}</b> pour communiquer avec vous à propos
-          de cette formation et rien d&apos;autre.
+          Envoyer votre bilan à <b>{OF}</b> qui vous recontactera pour en
+          discuter. Vos données seront uniquement utilisées par <b>{OF}</b> pour
+          communiquer avec vous à propos de cette formation et rien
+          d&apos;autre.
         </p>
         <p>
           En cliquant sur Accepter le partage, votre bilan sera automatiquement
-          partagé avec <b>{offerDataMapping.OF}</b>
+          partagé avec <b>{OF}</b>
         </p>
       </>
     ) : (
@@ -48,7 +48,7 @@ const JobufoModal = ({ offerDataMapping, btnClickFc }) => {
     )
   };
 
-  if (offerDataMapping) {
+  if (OF) {
     return (
       <section className='contentEmailModal'>
         <div>

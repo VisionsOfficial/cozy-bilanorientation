@@ -3,15 +3,12 @@ import React from 'react';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
-import Accordion from '../../Accordion';
-import icon from '../../../assets/icons/becomino.svg';
-import { useJsonFiles } from '../../Hooks/useJsonFiles';
-import EducationalContent from './EducationalContent';
+import icon from '../../assets/icons/becomino.svg';
+import Accordion from '../Accordion';
+import EducationalContent from '../Views/JobExplorationsPage/EducationalContent';
 
-const Becomino = () => {
+const PublicBecomino = ({ data }) => {
   const { t } = useI18n();
-  const { jsonFiles } = useJsonFiles();
-  const data = jsonFiles.becomino?.data?.data?.liked || [];
 
   return (
     <Accordion icon={icon} title={t('becominoTitle')}>
@@ -32,4 +29,4 @@ const Becomino = () => {
   );
 };
 
-export default Becomino;
+export default PublicBecomino;

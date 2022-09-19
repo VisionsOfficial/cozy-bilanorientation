@@ -19,12 +19,10 @@ import EyeIcon from '../../../assets/icons/icon-eye.svg';
 import { useMappingData } from '../../Hooks/useMappingData';
 import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
 import { useJsonFiles } from '../../Hooks/useJsonFiles';
-import { shuffleArray } from '../../../utils/arrayFunctions';
-import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
 import { useCallback } from 'react';
+import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
 
 const TIME_BETWEEN_QUERIES = 10 * 60 * 1000;
-const BASE_SHOW_COUNT = 2;
 
 const styles = {
   card: {
@@ -39,11 +37,11 @@ const styles = {
   }
 };
 
-const InokufuAPI = ({
+const InokufuAPIReo = ({
   provider = 'visions',
   isPublicPage = false,
-  isTension,
-  project = 'smartskills'
+  isTension = false,
+  project = 'reo'
 }) => {
   const client = useClient();
   const { t } = useI18n();
@@ -54,8 +52,7 @@ const InokufuAPI = ({
   const [loading, setLoading] = useState(true);
   const [error] = useState(false);
 
-  // View more logic
-  const [sectionViewedCount, setSectionViewedCount] = useState(null);
+  const [extraDataToggled, setExtraDataToggled] = useState(false);
 
   const { jsonFiles } = useJsonFiles();
   const jobCards = jsonFiles.orientoi?.data?.data?.jobCards || [];
@@ -72,6 +69,18 @@ const InokufuAPI = ({
     );
     if (idx === -1) return null;
     return mappingData.of[idx];
+  };
+
+  /**
+   * Finds the method for the of with email if necessary
+   * @param {string} of Name of the OF
+   * @returns The mapping for this of
+   */
+  const getOFMethodMapping = of => {
+    const map = mappingData.methods.find(
+      o => o.OF === of.toLowerCase().replaceAll(' ', '_')
+    );
+    return map;
   };
 
   /**
@@ -104,33 +113,6 @@ const InokufuAPI = ({
   useEffect(() => {
     let isMounted = true;
     const getData = async () => {
-      // VIEW MORE LOGIC
-      const buildSectionViewCount = sectionsArr => {
-        const r = {};
-        for (const s of sectionsArr) {
-          r[s.title] = {
-            offers: [...s.offers],
-            title: s.title,
-            viewCount: BASE_SHOW_COUNT
-          };
-        }
-
-        // STORE INITIAL LEADS
-        for (const key in r) {
-          for (let i = 0; i < BASE_SHOW_COUNT; i++) {
-            if (i >= r[key].offers.length) break;
-            const publisher =
-              r[key]?.offers[i]?.publisher[0]?.name || 'UNKNOWN_PUBLISHER';
-            storeLeadView(publisher);
-          }
-        }
-
-        setSectionViewedCount(prev => ({
-          ...prev,
-          ...r
-        }));
-      };
-
       const usedJobCards = isTension
         ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
         : jobCards.filter(jc => !jc.isTension);
@@ -139,17 +121,19 @@ const InokufuAPI = ({
       if (!usedKeywords.length) return;
 
       // Check session storage and when was last call to avoid too many calls
-      if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)) {
+      if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL + 'reo')) {
         const lastCall = JSON.parse(
-          sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)
+          sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL + 'reo')
         );
         if (Date.now() - lastCall < TIME_BETWEEN_QUERIES) {
-          if (sessionStorage.getItem(SESSION_INOKUFU_DATA) && isMounted) {
-            setData(JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA)));
-            buildSectionViewCount(
-              JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA))
-            );
+          if (
+            sessionStorage.getItem(SESSION_INOKUFU_DATA + 'reo') &&
+            isMounted
+          ) {
             setLoading(false);
+            setData(
+              JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA + 'reo'))
+            );
             return;
           }
         }
@@ -230,29 +214,15 @@ const InokufuAPI = ({
         }
         const outputKeywords =
           matchWithoutDuplicates[inputKeyword].response.outputKeywords;
-        const queryParams =
-          matchWithoutDuplicates[inputKeyword].response.queryParameters;
 
         const thisInputKeywordPromises = [];
-        for (const url of queryParams) {
-          const u = new URL(url);
-          const searchParams = u.searchParams;
-          const dynProvider = searchParams.get('provider');
-          const dynPublisher = searchParams.get('publisher');
-          const extraQueryString = `&publisher=${dynPublisher}`;
-
-          for (const k of outputKeywords) {
-            thisInputKeywordPromises.push(
-              inokufuApiGET(
-                client,
-                {
-                  dynProvider,
-                  keywords: k
-                },
-                extraQueryString
-              )
-            );
-          }
+        for (const k of outputKeywords) {
+          thisInputKeywordPromises.push(
+            inokufuApiGET(client, {
+              provider,
+              keywords: k
+            })
+          );
         }
 
         const thisInKwOffersResponses = await Promise.all(
@@ -274,27 +244,34 @@ const InokufuAPI = ({
       for (const key in matchWithoutDuplicates) {
         sections.push({
           title: key,
-          offers: shuffleArray(matchWithoutDuplicates[key].offers)
+          offers: matchWithoutDuplicates[key].offers
         });
       }
 
       if (!isMounted) return;
 
-      buildSectionViewCount(sections);
-      setData(sections);
       setLoading(false);
+      setData(sections);
 
-      sessionStorage.setItem(SESSION_INOKUFU_DATA, JSON.stringify(sections));
+      for (const s of sections) {
+        for (const o of s.offers) {
+          const pub = o.publisher
+            ? o.publisher[0]?.name || 'UNKNOWN_PUBLISHER'
+            : 'UNKNOWN_PUBLISHER';
+          storeLeadView(pub);
+        }
+      }
+
       sessionStorage.setItem(
-        SESSION_INOKUFU_LAST_CALL,
+        SESSION_INOKUFU_DATA + 'reo',
+        JSON.stringify(sections)
+      );
+      sessionStorage.setItem(
+        SESSION_INOKUFU_LAST_CALL + 'reo',
         JSON.stringify(Date.now())
       );
 
-      await saveAPIDataToVisionsCozyDoctype(
-        client,
-        'inokufu-smartskills',
-        sections
-      );
+      await saveAPIDataToVisionsCozyDoctype(client, 'inokufu-reo', sections);
     };
 
     getData();
@@ -313,44 +290,8 @@ const InokufuAPI = ({
     storeLeadView
   ]);
 
-  /**
-   * Augments the allowed offers to appear
-   * @param {string} sectionTitle The name of the job - section title
-   * @param {string} of The name of the of
-   */
-  const viewMore = sectionTitle => {
-    for (
-      let i = sectionViewedCount[sectionTitle].viewCount;
-      i < sectionViewedCount[sectionTitle].viewCount + BASE_SHOW_COUNT;
-      i++
-    ) {
-      if (i >= sectionViewedCount[sectionTitle].offers.length) break;
-      const publisher =
-        sectionViewedCount[sectionTitle]?.offers[i]?.publisher[0]?.name ||
-        'UNKNOWN_PUBLISHER';
-
-      storeLeadView(publisher);
-    }
-
-    setSectionViewedCount(prev => ({
-      ...prev,
-      [sectionTitle]: {
-        ...prev[sectionTitle],
-        viewCount: prev[sectionTitle].viewCount + BASE_SHOW_COUNT
-      }
-    }));
-  };
-
-  /**
-   * Finds the method for the of with email if necessary
-   * @param {string} of Name of the OF
-   * @returns The mapping for this of
-   */
-  const getOFMethodMapping = of => {
-    const map = mappingData.methods.find(
-      o => o.OF === of.toLowerCase().replaceAll(' ', '_')
-    );
-    return map;
+  const toggleViewMore = () => {
+    setExtraDataToggled(!extraDataToggled);
   };
 
   if (!dataStatus.isLoaded && dataStatus.isLoading) {
@@ -365,9 +306,10 @@ const InokufuAPI = ({
       title={t('formationOffers')}
       addStyles={styles.card}
       bgHeader={'#FFF'}
+      // btnSeeMore={data.length > 2}
       btnSeeMore={false}
-      seeMoreFC={() => {}}
-      seeMoreToggled={false}
+      seeMoreFC={toggleViewMore}
+      seeMoreToggled={extraDataToggled}
     >
       {error && (
         <div>Une erreur est survenue lors du chargement des données</div>
@@ -386,43 +328,20 @@ const InokufuAPI = ({
                 ) : (
                   <h4>Vos offres pour : {section.title}</h4>
                 )}
-                {section.offers.map((offer, yndex) => {
-                  if (
-                    yndex <
-                    (sectionViewedCount[section.title]?.viewCount ||
-                      BASE_SHOW_COUNT)
-                  ) {
-                    return (
-                      <Grid key={yndex} item>
-                        <BadgeRow
-                          offerAPI={offer}
-                          icon={EyeIcon}
-                          addStyles={styles.badge}
-                          offerMethodMapping={getOFMethodMapping(
-                            offer.publisher[0]?.name || ''
-                          )}
-                          offerDataMapping={getOfferMappingData(
-                            offer?.publisher
-                          )}
-                          isPublicPage={isPublicPage}
-                        />
-                      </Grid>
-                    );
-                  }
-                })}
-                {section.offers.length >
-                  (sectionViewedCount[section.title]?.viewCount ||
-                    BASE_SHOW_COUNT) && (
-                  <div
-                    className='btnShare'
-                    onClick={() => {
-                      viewMore(section.title);
-                    }}
-                    style={{ marginTop: '10px' }}
-                  >
-                    <p className='btnText'>Voir +</p>
-                  </div>
-                )}
+                {section.offers.map((offer, yndex) => (
+                  <Grid key={yndex} item>
+                    <BadgeRow
+                      offerAPI={offer}
+                      icon={EyeIcon}
+                      addStyles={styles.badge}
+                      offerMethodMapping={getOFMethodMapping(
+                        offer.publisher[0]?.name || ''
+                      )}
+                      offerDataMapping={getOfferMappingData(offer?.publisher)}
+                      isPublicPage={isPublicPage}
+                    />
+                  </Grid>
+                ))}
               </div>
               <p className='sourceData'>
                 Source de données : <span>Inokufu</span>
@@ -435,4 +354,4 @@ const InokufuAPI = ({
   );
 };
 
-export default InokufuAPI;
+export default InokufuAPIReo;

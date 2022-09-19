@@ -3,8 +3,10 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useClient } from 'cozy-client';
 import { visionsTrustApiPOST } from '../../utils/remoteDoctypes';
 import { getAccount } from '../../utils/fetchVisionsAggragatorAccount';
-
-const SESSION_STORAGE_ITEM = 'visionsId';
+import {
+  getVisionsCozyDocument,
+  updateVisionsCozyDocument
+} from '../../utils/visions.cozy';
 
 const VisionsAccountContext = createContext();
 
@@ -15,23 +17,27 @@ const VisionsAccountProvider = ({ children }) => {
     isLoading: false,
     isLoaded: false
   });
+  const [doctypeUser, setDoctypeUser] = useState(null);
 
   useEffect(() => {
     const loadVisionsAccount = async () => {
       try {
+        const setUserInfo = async visionsUserInfo => {
+          // Check to verify it exists (or creates it)
+          await getVisionsCozyDocument(client, 'user');
+          const doctypeUser = await updateVisionsCozyDocument(client, 'user', {
+            visionsUserInfo
+          });
+
+          setDoctypeUser(doctypeUser.data);
+        };
+
         const account = await getAccount(client);
 
         if (!account) {
           setVisionsAccount(null);
+          setDoctypeUser(null);
           setDataStatus({ isLoaded: false, isLoading: false });
-          return;
-        }
-
-        if (sessionStorage.getItem(SESSION_STORAGE_ITEM)) {
-          setVisionsAccount(
-            JSON.parse(sessionStorage.getItem(SESSION_STORAGE_ITEM))
-          );
-          setDataStatus({ isLoaded: true, isLoading: false });
           return;
         }
 
@@ -41,12 +47,9 @@ const VisionsAccountProvider = ({ children }) => {
           email: account.auth.email
         });
 
-        sessionStorage.setItem(
-          SESSION_STORAGE_ITEM,
-          JSON.stringify(res?.userInfo || {})
-        );
-
-        setVisionsAccount(res?.userInfo || {});
+        // Store data in visions cozy doctype
+        await setUserInfo(res || {});
+        setVisionsAccount(res || {});
         setDataStatus({ isLoaded: true, isLoading: false });
       } catch (error) {
         setDataStatus({ isLoaded: false, isLoading: false });
@@ -57,7 +60,9 @@ const VisionsAccountProvider = ({ children }) => {
   }, [client]);
 
   return (
-    <VisionsAccountContext.Provider value={{ visionsAccount, dataStatus }}>
+    <VisionsAccountContext.Provider
+      value={{ visionsAccount, dataStatus, doctypeUser }}
+    >
       {children}
     </VisionsAccountContext.Provider>
   );

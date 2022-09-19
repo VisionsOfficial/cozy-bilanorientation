@@ -29,7 +29,7 @@ const Doceo = () => {
           Doceo vous accompagnera jusqu&apos;au bout de votre projet, de votre
           formation en 3 mois à la mise en relation avec vos futures clients !
         </p>
-        <ShareBilanBtn onClickFc={OpenModal} />
+        {/* <ShareBilanBtn onClickFc={OpenModal} /> */}
       </div>
       <div className='illustrationDoceo'>
         <Icon icon={DoceoIllus} />
