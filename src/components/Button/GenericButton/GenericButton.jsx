@@ -34,6 +34,7 @@ const GenericButton = ({
         disabled ? 'btnDisabled' : ''
       } ${colorGenericButton}`}
       type={type}
+      tabIndex='0'
       role={role}
       onClick={e => onClickFc(e)}
     >
