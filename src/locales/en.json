@@ -66,5 +66,8 @@
   "resultsReo": "Mes Résultats du Bilan de RéOrientation",
   "resultsBo" : "Mes Résultats du Bilan d'Orientation",
   "softSkillsCV": "Mes soft skills qui ressortent de mon CV ou de ma lettre de motivation",
-  "JobExplore": "Métiers, secteurs et contextes professionnels que j'explore"
+  "JobExplore": "Métiers, secteurs et contextes professionnels que j'explore",
+  "reo": {
+    "offers": "Mes offres de formation"
+  }
 }

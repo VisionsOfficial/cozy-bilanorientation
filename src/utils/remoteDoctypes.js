@@ -1,5 +1,5 @@
 const VISIONS_DOCTYPE = 'com.visionstrust';
-const PALM_DOCTYPE = 'io.vision.palm-app';
+const PALM_DOCTYPE = 'io.vision.palmapp';
 const INOKUFU_DOCTYPE = 'com.inokufu.api';
 const INOKUFU_MATCHINGS_DOCTYPE = 'com.inokufu';
 
@@ -31,14 +31,14 @@ export const palmApiPOST = async (client, body) => {
 };
 
 const defaultInokufuApiOptions = { provider: 'visions', keywords: 'anglais' };
-export const inokufuApiGET = async (client, options) => {
+export const inokufuApiGET = async (client, options, extraParamString = '') => {
   const queryOptions = { ...defaultInokufuApiOptions, ...options };
   try {
     const res = await client
       .getStackClient()
       .fetchJSON(
         'GET',
-        `/remote/${INOKUFU_DOCTYPE}?provider=${queryOptions.provider}&keywords=${queryOptions.keywords}`
+        `/remote/${INOKUFU_DOCTYPE}?provider=${queryOptions.provider}&keywords=${queryOptions.keywords}${extraParamString}`
       );
     return res;
   } catch (err) {

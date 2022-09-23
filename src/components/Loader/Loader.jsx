@@ -1,10 +1,10 @@
 import React from 'react';
 import { CircularProgress } from '@material-ui/core';
 
-const Loader = ({ text = '' }) => {
+const Loader = ({ text = '', size = 70 }) => {
   return (
     <div className='loadingContainer'>
-      <CircularProgress size={70} />
+      <CircularProgress size={size} />
       <div>{text}</div>
     </div>
   );

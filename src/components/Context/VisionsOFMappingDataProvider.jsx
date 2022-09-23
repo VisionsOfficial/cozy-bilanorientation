@@ -3,6 +3,8 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useClient } from 'cozy-client';
 import { visionsTrustApiPOST } from '../../utils/remoteDoctypes';
 
+const SESSION_STORAGE_ITEM = 'visionsMappingData';
+
 const VisionsOFMappingDataContext = createContext();
 
 const VisionsOFMappingDataProvider = ({ children }) => {
@@ -16,8 +18,20 @@ const VisionsOFMappingDataProvider = ({ children }) => {
   useEffect(() => {
     const getMappingData = async () => {
       try {
+        if (sessionStorage.getItem(SESSION_STORAGE_ITEM)) {
+          setMappingData(
+            JSON.parse(sessionStorage.getItem(SESSION_STORAGE_ITEM))
+          );
+          setDataStatus({ isLoaded: true, isLoading: false });
+        }
+
         setDataStatus({ isLoading: true, isLoaded: false });
         const res = await visionsTrustApiPOST(client, 'mappings');
+
+        sessionStorage.setItem(
+          SESSION_STORAGE_ITEM,
+          JSON.stringify(res.mappings || {})
+        );
 
         setMappingData(res?.mappings);
         setDataStatus({ isLoaded: true, isLoading: false });

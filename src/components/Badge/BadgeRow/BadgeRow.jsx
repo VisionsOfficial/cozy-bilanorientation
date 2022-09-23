@@ -21,7 +21,8 @@ const BadgeRow = ({
   addStyles,
   isPublicPage = false,
   btn = true,
-  offerDataMapping = null
+  offerDataMapping = null,
+  offerMethodMapping = null
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -60,7 +61,7 @@ const BadgeRow = ({
             )}
           </Typography>
           <Typography className='u-mv-half' variant='body1'>
-            {offerAPI.publisher ? offerAPI.publisher[0].name : ''}
+            {offerAPI?.publisher ? offerAPI?.publisher[0]?.name || '' : ''}
           </Typography>
           <Typography
             style={styles.subText}
@@ -74,15 +75,17 @@ const BadgeRow = ({
               margin: '10px 0px'
             }}
           >
-            {btn && !isPublicPage && offerDataMapping !== null && (
+            {btn && !isPublicPage && offerMethodMapping !== null && (
               <ShareBilanBtn onClickFc={OpenModal} />
             )}
           </div>
         </div>
       </div>
-      {offerDataMapping !== null && !isPublicPage ? (
+      {offerMethodMapping !== null && !isPublicPage ? (
         <GlobalModal
           offerDataMapping={offerDataMapping}
+          offerMethodMapping={offerMethodMapping}
+          offerAPI={offerAPI}
           open={open}
           closeModal={closeModal}
         />

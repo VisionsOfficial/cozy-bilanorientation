@@ -30,6 +30,7 @@ import {
 import manifest from '../../../manifest.webapp';
 import IsPublicContext from '../../components/Context/IsPublicContext';
 import PublicPage from '../../components/Views/publicPage/PublicPage';
+import { VisionsAccountProvider } from '../../components/Context/VisionsAccountProvider';
 
 /*
 With MUI V4, it is possible to generate deterministic class names.
@@ -53,9 +54,11 @@ const renderApp = function(client, isPublic) {
               <IsPublicContext.Provider value={isPublic}>
                 {!isPublic && (
                   <JsonFilesProvider>
-                    <VisionsOFMappingDataProvider>
-                      <App isPublic={isPublic} />
-                    </VisionsOFMappingDataProvider>
+                    <VisionsAccountProvider>
+                      <VisionsOFMappingDataProvider>
+                        <App isPublic={isPublic} />
+                      </VisionsOFMappingDataProvider>
+                    </VisionsAccountProvider>
                   </JsonFilesProvider>
                 )}
                 {isPublic && <PublicPage />}
