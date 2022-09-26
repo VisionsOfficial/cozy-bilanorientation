@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
+import { useVisionsAccount } from '../../../Hooks/useVisionsAccount';
+import { megaApplyApiPOST } from '../../../../utils/remoteDoctypes';
+import { useClient } from 'cozy-client';
+import log from 'cozy-logger';
+
 import GenericButton from '../../../Button/GenericButton/GenericButton';
 
 const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
 
-const JobufoModal = ({ OF, btnClickFc }) => {
+const JobufoModal = ({ OF, offerUrl, btnClickFc }) => {
   const [confirmed, setConfirmed] = useState(false);
+  const { visionsAccount } = useVisionsAccount();
+  const client = useClient();
 
-  const jobufoModalClickFc = () => {
+  const jobufoModalClickFc = async () => {
     setConfirmed(true);
-    // TODO Send to jobufo and stuff here
+    if (!visionsAccount) return;
+    try {
+      await megaApplyApiPOST(client, visionsAccount, offerUrl);
+    } catch (err) {
+      log('error', err.message);
+    }
   };
 
   const handleClick = e => {

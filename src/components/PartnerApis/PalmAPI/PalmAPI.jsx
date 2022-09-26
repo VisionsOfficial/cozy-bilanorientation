@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useClient } from 'cozy-client';
+import log from 'cozy-logger';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
 import { palmApiPOST } from '../../../utils/remoteDoctypes';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
@@ -37,39 +38,49 @@ const PalmAPI = () => {
   useEffect(() => {
     let isMounted = true;
     const getData = async () => {
-      if (!jobCards || (jobCards && !jobCards.length)) {
+      try {
+        if (!jobCards || (jobCards && !jobCards.length)) {
+          if (!isMounted) return;
+          setData([]);
+          setLoading(false);
+          setError(false);
+          return;
+        }
+
+        const createSoupData = () => {
+          const jcNames = jobCards.map(jc => jc.name).join(' ');
+          const jcSlugs = jobCards.map(jc => jc.slug).join(',');
+          const jcDescs = jobCards.map(jc => jc.description).join(' ');
+          return `${jcNames} ${jcSlugs} ${jcDescs}`;
+        };
+
+        let res = null;
+
+        try {
+          res = await palmApiPOST(client, {
+            email,
+            data: createSoupData()
+          });
+        } catch (err) {
+          if (!isMounted) return;
+          setError(true);
+          setLoading(false);
+          return;
+        }
+
+        // PALM sends back a stringified array as a response
         if (!isMounted) return;
-        setData([]);
+
+        const content = typeof res === 'string' ? JSON.parse(res) : res;
+        setData(content);
         setLoading(false);
         setError(false);
-        return;
-      }
-
-      const createSoupData = () => {
-        const jcNames = jobCards.map(jc => jc.name).join(' ');
-        const jcSlugs = jobCards.map(jc => jc.slug).join(',');
-        const jcDescs = jobCards.map(jc => jc.description).join(' ');
-        return `${jcNames} ${jcSlugs} ${jcDescs}`;
-      };
-
-      let res = null;
-
-      try {
-        res = await palmApiPOST(client, { email, data: createSoupData() });
       } catch (err) {
-        if (!isMounted) return;
-        setError(true);
+        log('error', err);
+        setData([]);
         setLoading(false);
-        return;
+        setError(true);
       }
-
-      // PALM sends back a stringified array as a response
-      if (!isMounted) return;
-
-      const content = JSON.parse(res);
-      setData(content);
-      setLoading(false);
-      setError(false);
     };
 
     getData();
@@ -127,7 +138,10 @@ const PalmAPI = () => {
         {data
           .slice(0, 2)
           .map(
-            ({ mission_name, similarity, short_summary, email, url }, idx) => (
+            (
+              { mission_name, similarity, short_summary, email, mission_url },
+              idx
+            ) => (
               <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
                 <Badge
                   title={mission_name}
@@ -138,7 +152,7 @@ const PalmAPI = () => {
                   addStyles={styles.badge}
                   btn={false}
                   email={email}
-                  url={url}
+                  url={mission_url}
                 />
               </Grid>
             )

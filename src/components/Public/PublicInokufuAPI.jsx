@@ -42,7 +42,7 @@ const PublicInokufuAPI = ({ data, isPublicPage = true }) => {
               ) : (
                 <h4>Vos offres pour : {section.title}</h4>
               )}
-              {section.offers.map((offer, yndex) => (
+              {section.offers.slice(0, 3).map((offer, yndex) => (
                 <Grid key={yndex} item>
                   <BadgeRow
                     offerAPI={offer}

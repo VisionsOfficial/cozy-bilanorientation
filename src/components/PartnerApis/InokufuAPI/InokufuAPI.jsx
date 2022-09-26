@@ -1,12 +1,17 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useClient } from 'cozy-client';
 import {
   inokufuApiGET,
   inokufuApiPOST,
   visionsTrustApiPOST
 } from '../../../utils/remoteDoctypes';
+import { useMappingData } from '../../Hooks/useMappingData';
+import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
+import { shuffleArray } from '../../../utils/arrayFunctions';
+import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
+import log from 'cozy-logger';
+
 import Accordion from '../../Accordion';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
@@ -16,12 +21,6 @@ import Loader from '../../Loader';
 // IMG
 import icon from '../../../assets/icons/inokufu.svg';
 import EyeIcon from '../../../assets/icons/icon-eye.svg';
-import { useMappingData } from '../../Hooks/useMappingData';
-import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
-import { useJsonFiles } from '../../Hooks/useJsonFiles';
-import { shuffleArray } from '../../../utils/arrayFunctions';
-import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
-import { useCallback } from 'react';
 
 const TIME_BETWEEN_QUERIES = 10 * 60 * 1000;
 const BASE_SHOW_COUNT = 2;
@@ -45,6 +44,10 @@ const InokufuAPI = ({
   isTension,
   project = 'smartskills'
 }) => {
+  const [loadingText, setLoadingText] = useState(
+    'Veuillez patienter, nous récupérons les offres adaptées...'
+  );
+
   const client = useClient();
   const { t } = useI18n();
 
@@ -94,6 +97,7 @@ const InokufuAPI = ({
 
       waitForRepeatingFunctionsToEnd(async () => {
         const leads = JSON.parse(sessionStorage.getItem(sessionStorageKey));
+        if (!leads) return;
         await visionsTrustApiPOST(client, 'leadview', { leads });
         sessionStorage.removeItem(sessionStorageKey);
       }, 500);
@@ -101,209 +105,298 @@ const InokufuAPI = ({
     [client]
   );
 
+  const forceReload = () => {
+    sessionStorage.removeItem(SESSION_INOKUFU_DATA);
+    sessionStorage.removeItem(SESSION_INOKUFU_LAST_CALL);
+    window.location.reload();
+  };
+
+  const addCPFIfNeeded = urls => {
+    const result = [...urls];
+    for (const url of urls) {
+      const u = new URL(url);
+      const sp = u.searchParams;
+      if (!sp.get('publisher')) {
+        if (sp.get('provider') === 'visions') continue;
+        result.push(
+          'https://api.inokufu.com/learningobject/v2/search-provider?lang=fr&model=strict&sort=popularity&max=20&match=strict&page=0&provider=moncompteformation'
+        );
+      }
+    }
+    return result;
+  };
+
+  /**
+   * LOAD API DATA FROM INOKUFU AND MATCH OFFERS
+   */
   useEffect(() => {
     let isMounted = true;
     const getData = async () => {
-      // VIEW MORE LOGIC
-      const buildSectionViewCount = sectionsArr => {
-        const r = {};
-        for (const s of sectionsArr) {
-          r[s.title] = {
-            offers: [...s.offers],
-            title: s.title,
-            viewCount: BASE_SHOW_COUNT
-          };
+      try {
+        // VIEW MORE LOGIC
+        const buildSectionViewCount = sectionsArr => {
+          const r = {};
+          for (const s of sectionsArr) {
+            r[s.title] = {
+              offers: [...s.offers],
+              title: s.title,
+              viewCount: BASE_SHOW_COUNT
+            };
+          }
+
+          // STORE INITIAL LEADS
+          for (const key in r) {
+            for (let i = 0; i < BASE_SHOW_COUNT; i++) {
+              if (i >= r[key].offers.length) break;
+              if (r[key]?.offers[i]?.publisher) {
+                const publisher =
+                  r[key]?.offers[i]?.publisher[0]?.name || 'UNKNOWN_PUBLISHER';
+                storeLeadView(publisher);
+              } else {
+                storeLeadView('UNKNOWN_PUBLISHER');
+              }
+            }
+          }
+
+          setSectionViewedCount(prev => ({
+            ...prev,
+            ...r
+          }));
+        };
+
+        const usedJobCards = isTension
+          ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
+          : jobCards.filter(jc => !jc.isTension);
+
+        if (!usedJobCards || !usedJobCards.length) {
+          setLoading(false);
+          return;
         }
 
-        // STORE INITIAL LEADS
-        for (const key in r) {
-          for (let i = 0; i < BASE_SHOW_COUNT; i++) {
-            if (i >= r[key].offers.length) break;
-            if (r[key]?.offers[i]?.publisher) {
-              const publisher =
-                r[key]?.offers[i]?.publisher[0]?.name || 'UNKNOWN_PUBLISHER';
-              storeLeadView(publisher);
-            } else {
-              storeLeadView('UNKNOWN_PUBLISHER');
+        const usedKeywords = usedJobCards.map(jc => jc.name);
+        if (!usedKeywords.length) return;
+
+        // Check session storage and when was last call to avoid too many calls
+        if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)) {
+          const lastCall = JSON.parse(
+            sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)
+          );
+          if (Date.now() - lastCall < TIME_BETWEEN_QUERIES) {
+            if (sessionStorage.getItem(SESSION_INOKUFU_DATA) && isMounted) {
+              setData(JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA)));
+              buildSectionViewCount(
+                JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA))
+              );
+              setLoading(false);
+              return;
             }
           }
         }
 
-        setSectionViewedCount(prev => ({
-          ...prev,
-          ...r
-        }));
-      };
-
-      const usedJobCards = isTension
-        ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
-        : jobCards.filter(jc => !jc.isTension);
-
-      if (!usedJobCards || !usedJobCards.length) {
-        setLoading(false);
-        return;
-      }
-
-      const usedKeywords = usedJobCards.map(jc => jc.name);
-      if (!usedKeywords.length) return;
-
-      // Check session storage and when was last call to avoid too many calls
-      if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)) {
-        const lastCall = JSON.parse(
-          sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)
-        );
-        if (Date.now() - lastCall < TIME_BETWEEN_QUERIES) {
-          if (sessionStorage.getItem(SESSION_INOKUFU_DATA) && isMounted) {
-            setData(JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA)));
-            buildSectionViewCount(
-              JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA))
-            );
-            setLoading(false);
-            return;
-          }
-        }
-      }
-
-      // Call to wakeup the API
-      await inokufuApiPOST(client, {
-        project,
-        inputKeyword: usedKeywords[0]
-      });
-
-      // Prepare calls to retrieve output keywords for every input keyword
-      // there is. The output keywords are then used to get the offers
-      const retrieveOutputKeywordsPromises = [];
-
-      for (const keyword of usedKeywords) {
-        retrieveOutputKeywordsPromises.push(
-          inokufuApiPOST(client, {
-            project,
-            inputKeyword: keyword.toLowerCase().trim()
-          })
-        );
-      }
-
-      const outputKeywordsPromiseResults = await Promise.all(
-        retrieveOutputKeywordsPromises
-      );
-
-      // Match input keywords to output keywords results to build out the sections
-      // in the UI
-      const matchInKeyToOutKey = results => {
-        const match = {};
-        // Loop over the usedKeywords as it will be same length as the promise array we built
-        for (let i = 0; i < usedKeywords.length; i++) {
-          let apiResult = results[i];
-
-          if (typeof apiResult === 'string') apiResult = JSON.parse(apiResult);
-
-          match[usedKeywords[i]] = apiResult;
-        }
-
-        return match;
-      };
-
-      const match = matchInKeyToOutKey(outputKeywordsPromiseResults);
-
-      const removeDuplicateKwFromMatch = obj => {
-        const seenKeywords = [];
-        const r = {};
-        for (const [key, apiRes] of Object.entries(obj)) {
-          if (apiRes.statusCode !== 200 && apiRes.statusCode !== 210) {
-            r[key] = apiRes;
-            continue;
-          }
-
-          if (seenKeywords.length === 0) {
-            seenKeywords.push(...apiRes.response.outputKeywords);
-            r[key] = apiRes;
-            continue;
-          }
-
-          const newKwArr = [];
-          for (const kw of apiRes.response.outputKeywords) {
-            if (!seenKeywords.includes(kw)) newKwArr.push(kw);
-          }
-          apiRes.response.outputKeywords = newKwArr;
-          r[key] = apiRes;
-        }
-        return r;
-      };
-
-      const matchWithoutDuplicates = removeDuplicateKwFromMatch(match);
-
-      for (const inputKeyword in matchWithoutDuplicates) {
-        if (matchWithoutDuplicates[inputKeyword].statusCode === 400) {
-          matchWithoutDuplicates[inputKeyword].offers = [];
-          continue;
-        }
-        const outputKeywords =
-          matchWithoutDuplicates[inputKeyword].response.outputKeywords;
-        const queryParams =
-          matchWithoutDuplicates[inputKeyword].response.queryParameters;
-
-        const thisInputKeywordPromises = [];
-        for (const url of queryParams) {
-          const u = new URL(url);
-          const searchParams = u.searchParams;
-          const dynProvider = searchParams.get('provider');
-          const dynPublisher = searchParams.get('publisher');
-          const extraQueryString = `&publisher=${dynPublisher}`;
-
-          for (const k of outputKeywords) {
-            thisInputKeywordPromises.push(
-              inokufuApiGET(
-                client,
-                {
-                  dynProvider,
-                  keywords: k
-                },
-                extraQueryString
-              )
-            );
-          }
-        }
-
-        const thisInKwOffersResponses = await Promise.all(
-          thisInputKeywordPromises
-        );
-        const thisInKwOffers = [];
-        for (const r of thisInKwOffersResponses) {
-          if (r.statusCode !== 200) continue;
-          for (const offer of r.response.content) {
-            if (thisInKwOffers.find(o => o.title === offer.title)) continue;
-            thisInKwOffers.push(offer);
-          }
-        }
-
-        matchWithoutDuplicates[inputKeyword].offers = thisInKwOffers;
-      }
-
-      const sections = [];
-      for (const key in matchWithoutDuplicates) {
-        sections.push({
-          title: key,
-          offers: shuffleArray(matchWithoutDuplicates[key].offers)
+        // Call to wakeup the API
+        await inokufuApiPOST(client, {
+          project,
+          inputKeyword: usedKeywords[0]
         });
+
+        // Prepare calls to retrieve output keywords for every input keyword
+        // there is. The output keywords are then used to get the offers
+        const retrieveOutputKeywordsPromises = [];
+
+        if (isMounted)
+          setLoadingText(
+            `Recherche de compétences pour les métiers en tension...`
+          );
+
+        for (const keyword of usedKeywords) {
+          retrieveOutputKeywordsPromises.push(
+            inokufuApiPOST(client, {
+              project,
+              inputKeyword: keyword.toLowerCase().trim()
+            })
+          );
+        }
+
+        const outputKeywordsPromiseResults = await Promise.all(
+          retrieveOutputKeywordsPromises
+        );
+
+        // Match input keywords to output keywords results to build out the sections
+        // in the UI
+        const matchInKeyToOutKey = results => {
+          const match = {};
+          // Loop over the usedKeywords as it will be same length as the promise array we built
+          for (let i = 0; i < usedKeywords.length; i++) {
+            let apiResult = results[i];
+
+            if (typeof apiResult === 'string')
+              apiResult = JSON.parse(apiResult);
+
+            match[usedKeywords[i]] = apiResult;
+          }
+
+          return match;
+        };
+
+        const match = matchInKeyToOutKey(outputKeywordsPromiseResults);
+
+        const removeDuplicateKwFromMatch = obj => {
+          const seenKeywords = [];
+          const r = {};
+          for (const [key, apiRes] of Object.entries(obj)) {
+            if (apiRes.statusCode !== 200 && apiRes.statusCode !== 210) {
+              r[key] = apiRes;
+              continue;
+            }
+
+            if (seenKeywords.length === 0) {
+              seenKeywords.push(...apiRes.response.outputKeywords);
+              r[key] = apiRes;
+              continue;
+            }
+
+            const newKwArr = [];
+            for (const kw of apiRes.response.outputKeywords) {
+              if (!seenKeywords.includes(kw)) newKwArr.push(kw);
+            }
+            apiRes.response.outputKeywords = newKwArr;
+            r[key] = apiRes;
+          }
+          return r;
+        };
+
+        const matchWithoutDuplicates = removeDuplicateKwFromMatch(match);
+
+        for (const inputKeyword in matchWithoutDuplicates) {
+          if (isMounted)
+            setLoadingText(
+              `Récupération des offres adaptées pour ${inputKeyword}`
+            );
+
+          if (matchWithoutDuplicates[inputKeyword].statusCode === 400) {
+            matchWithoutDuplicates[inputKeyword].offers = [];
+            continue;
+          }
+          const outputKeywords =
+            matchWithoutDuplicates[inputKeyword].response.outputKeywords;
+          const queryParams =
+            matchWithoutDuplicates[inputKeyword].response.queryParameters;
+
+          const thisInputKeywordPromises = [];
+          for (const url of addCPFIfNeeded(queryParams)) {
+            const u = new URL(url);
+            const searchParams = u.searchParams;
+            const options = {};
+            for (const [k, v] of searchParams.entries()) {
+              options[k] = v;
+            }
+
+            for (const k of outputKeywords) {
+              thisInputKeywordPromises.push(
+                inokufuApiGET(client, {
+                  ...options,
+                  keywords: k
+                })
+              );
+            }
+          }
+
+          const thisInKwOffersResponses = await Promise.all(
+            thisInputKeywordPromises
+          );
+          const thisInKwOffers = [];
+          for (const r of thisInKwOffersResponses) {
+            if (r.statusCode !== 200) continue;
+            for (const offer of r.response.content) {
+              if (thisInKwOffers.find(o => o.title === offer.title)) continue;
+              thisInKwOffers.push(offer);
+            }
+          }
+
+          matchWithoutDuplicates[inputKeyword].offers = thisInKwOffers;
+        }
+
+        const sections = [];
+
+        // GET PRIORITY KEYWORDS
+        const differentPublishersOffers = [];
+        let differentPublisherOffersIndex = -1;
+        for (const keyW in matchWithoutDuplicates) {
+          ++differentPublisherOffersIndex;
+          differentPublishersOffers.push([]);
+          // First keyword is the most important, try to find 2 publishers different
+          const offers = matchWithoutDuplicates[keyW].offers;
+          const tmpStorage = [];
+
+          for (const o of shuffleArray(offers)) {
+            if (
+              !o.publisher ||
+              differentPublishersOffers[differentPublisherOffersIndex].length ==
+                2
+            ) {
+              tmpStorage.push(o);
+              continue;
+            }
+
+            try {
+              const existsIndex = differentPublishersOffers[
+                differentPublisherOffersIndex
+              ].findIndex(
+                item => item.publisher[0].name === o.publisher[0].name
+              );
+              if (existsIndex === -1) {
+                differentPublishersOffers[differentPublisherOffersIndex].push(
+                  o
+                );
+              } else {
+                tmpStorage.push(o);
+              }
+            } catch (e) {
+              tmpStorage.push(o);
+              continue;
+            }
+          }
+
+          // Replaces the array without the 2 first ones
+          // We refill it with the 2 first ones later
+          matchWithoutDuplicates[keyW].offers = tmpStorage;
+        }
+
+        let i = 0;
+        for (const key in matchWithoutDuplicates) {
+          sections.push({
+            title: key,
+            offers: [
+              ...differentPublishersOffers[i], // Rebuild the array with the 2 initial offers
+              ...shuffleArray(matchWithoutDuplicates[key].offers)
+            ]
+          });
+
+          i++;
+        }
+
+        if (!isMounted) return;
+
+        buildSectionViewCount(sections);
+        setData(sections);
+        setLoading(false);
+
+        sessionStorage.setItem(SESSION_INOKUFU_DATA, JSON.stringify(sections));
+        sessionStorage.setItem(
+          SESSION_INOKUFU_LAST_CALL,
+          JSON.stringify(Date.now())
+        );
+
+        await saveAPIDataToVisionsCozyDoctype(
+          client,
+          'inokufu-smartskills',
+          sections
+        );
+      } catch (err) {
+        log('error', err);
+        setData([]);
+        setLoading(false);
       }
-
-      if (!isMounted) return;
-
-      buildSectionViewCount(sections);
-      setData(sections);
-      setLoading(false);
-
-      sessionStorage.setItem(SESSION_INOKUFU_DATA, JSON.stringify(sections));
-      sessionStorage.setItem(
-        SESSION_INOKUFU_LAST_CALL,
-        JSON.stringify(Date.now())
-      );
-
-      await saveAPIDataToVisionsCozyDoctype(
-        client,
-        'inokufu-smartskills',
-        sections
-      );
     };
 
     getData();
@@ -363,11 +456,11 @@ const InokufuAPI = ({
     const map = mappingData.methods.find(
       o => o.OF === of.toLowerCase().replaceAll(' ', '_')
     );
-    return map;
+    return map || 5;
   };
 
   if (!dataStatus.isLoaded && dataStatus.isLoading) {
-    return <Loader text='Chargement' />;
+    return <Loader text={'Chargement'} />;
   } else if (!dataStatus.isLoaded && !dataStatus.isLoading) {
     return <div>Une erreur est survenue</div>;
   }
@@ -386,9 +479,7 @@ const InokufuAPI = ({
         <div>Une erreur est survenue lors du chargement des données</div>
       )}
       {loading ? (
-        <Loader
-          text={'Veuillez patienter, nous récupérons les offres adaptées...'}
-        />
+        <Loader text={loadingText} />
       ) : (
         <Grid>
           {data.map((section, index) => (
@@ -444,6 +535,9 @@ const InokufuAPI = ({
               </p>
             </Grid>
           ))}
+          <button className='btnShare' onClick={() => forceReload()}>
+            Actualiser les résultats
+          </button>
         </Grid>
       )}
     </Accordion>

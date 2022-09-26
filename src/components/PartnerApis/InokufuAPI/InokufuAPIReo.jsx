@@ -1,12 +1,16 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useClient } from 'cozy-client';
+import log from 'cozy-logger';
+import { useMappingData } from '../../Hooks/useMappingData';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
+import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
+import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
 import {
   inokufuApiGET,
   inokufuApiPOST,
   visionsTrustApiPOST
 } from '../../../utils/remoteDoctypes';
+
 import Accordion from '../../Accordion';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
@@ -16,11 +20,7 @@ import Loader from '../../Loader';
 // IMG
 import icon from '../../../assets/icons/inokufu.svg';
 import EyeIcon from '../../../assets/icons/icon-eye.svg';
-import { useMappingData } from '../../Hooks/useMappingData';
-import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
-import { useJsonFiles } from '../../Hooks/useJsonFiles';
-import { useCallback } from 'react';
-import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
+import cyLogo from '../../../assets/images/cy.png';
 
 const TIME_BETWEEN_QUERIES = 10 * 60 * 1000;
 
@@ -113,170 +113,177 @@ const InokufuAPIReo = ({
   useEffect(() => {
     let isMounted = true;
     const getData = async () => {
-      const usedJobCards = isTension
-        ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
-        : jobCards.filter(jc => !jc.isTension);
+      try {
+        const usedJobCards = isTension
+          ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
+          : jobCards.filter(jc => !jc.isTension);
 
-      if (!usedJobCards || !usedJobCards.length) {
-        setLoading(false);
-        return;
-      }
-
-      const usedKeywords = usedJobCards.map(jc => jc.name);
-      if (!usedKeywords.length) return;
-
-      // Check session storage and when was last call to avoid too many calls
-      if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL + 'reo')) {
-        const lastCall = JSON.parse(
-          sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL + 'reo')
-        );
-        if (Date.now() - lastCall < TIME_BETWEEN_QUERIES) {
-          if (
-            sessionStorage.getItem(SESSION_INOKUFU_DATA + 'reo') &&
-            isMounted
-          ) {
-            setLoading(false);
-            setData(
-              JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA + 'reo'))
-            );
-            return;
-          }
-        }
-      }
-
-      // Call to wakeup the API
-      await inokufuApiPOST(client, {
-        project,
-        inputKeyword: usedKeywords[0]
-      });
-
-      // Prepare calls to retrieve output keywords for every input keyword
-      // there is. The output keywords are then used to get the offers
-      const retrieveOutputKeywordsPromises = [];
-
-      for (const keyword of usedKeywords) {
-        retrieveOutputKeywordsPromises.push(
-          inokufuApiPOST(client, {
-            project,
-            inputKeyword: keyword.toLowerCase().trim()
-          })
-        );
-      }
-
-      const outputKeywordsPromiseResults = await Promise.all(
-        retrieveOutputKeywordsPromises
-      );
-
-      // Match input keywords to output keywords results to build out the sections
-      // in the UI
-      const matchInKeyToOutKey = results => {
-        const match = {};
-        // Loop over the usedKeywords as it will be same length as the promise array we built
-        for (let i = 0; i < usedKeywords.length; i++) {
-          let apiResult = results[i];
-
-          if (typeof apiResult === 'string') apiResult = JSON.parse(apiResult);
-
-          match[usedKeywords[i]] = apiResult;
+        if (!usedJobCards || !usedJobCards.length) {
+          setLoading(false);
+          return;
         }
 
-        return match;
-      };
+        const usedKeywords = usedJobCards.map(jc => jc.name);
+        if (!usedKeywords.length) return;
 
-      const match = matchInKeyToOutKey(outputKeywordsPromiseResults);
-
-      const removeDuplicateKwFromMatch = obj => {
-        const seenKeywords = [];
-        const r = {};
-        for (const [key, apiRes] of Object.entries(obj)) {
-          if (apiRes.statusCode !== 200 && apiRes.statusCode !== 210) {
-            r[key] = apiRes;
-            continue;
+        // Check session storage and when was last call to avoid too many calls
+        if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL + 'reo')) {
+          const lastCall = JSON.parse(
+            sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL + 'reo')
+          );
+          if (Date.now() - lastCall < TIME_BETWEEN_QUERIES) {
+            if (
+              sessionStorage.getItem(SESSION_INOKUFU_DATA + 'reo') &&
+              isMounted
+            ) {
+              setLoading(false);
+              setData(
+                JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA + 'reo'))
+              );
+              return;
+            }
           }
-
-          if (seenKeywords.length === 0) {
-            seenKeywords.push(...apiRes.response.outputKeywords);
-            r[key] = apiRes;
-            continue;
-          }
-
-          const newKwArr = [];
-          for (const kw of apiRes.response.outputKeywords) {
-            if (!seenKeywords.includes(kw)) newKwArr.push(kw);
-          }
-          apiRes.response.outputKeywords = newKwArr;
-          r[key] = apiRes;
         }
-        return r;
-      };
 
-      const matchWithoutDuplicates = removeDuplicateKwFromMatch(match);
+        // Call to wakeup the API
+        await inokufuApiPOST(client, {
+          project,
+          inputKeyword: usedKeywords[0]
+        });
 
-      for (const inputKeyword in matchWithoutDuplicates) {
-        if (matchWithoutDuplicates[inputKeyword].statusCode === 400) {
-          matchWithoutDuplicates[inputKeyword].offers = [];
-          continue;
-        }
-        const outputKeywords =
-          matchWithoutDuplicates[inputKeyword].response.outputKeywords;
+        // Prepare calls to retrieve output keywords for every input keyword
+        // there is. The output keywords are then used to get the offers
+        const retrieveOutputKeywordsPromises = [];
 
-        const thisInputKeywordPromises = [];
-        for (const k of outputKeywords) {
-          thisInputKeywordPromises.push(
-            inokufuApiGET(client, {
-              provider,
-              keywords: k
+        for (const keyword of usedKeywords) {
+          retrieveOutputKeywordsPromises.push(
+            inokufuApiPOST(client, {
+              project,
+              inputKeyword: keyword.toLowerCase().trim()
             })
           );
         }
 
-        const thisInKwOffersResponses = await Promise.all(
-          thisInputKeywordPromises
+        const outputKeywordsPromiseResults = await Promise.all(
+          retrieveOutputKeywordsPromises
         );
-        const thisInKwOffers = [];
-        for (const r of thisInKwOffersResponses) {
-          if (r.statusCode !== 200) continue;
-          for (const offer of r.response.content) {
-            if (thisInKwOffers.find(o => o.title === offer.title)) continue;
-            thisInKwOffers.push(offer);
+
+        // Match input keywords to output keywords results to build out the sections
+        // in the UI
+        const matchInKeyToOutKey = results => {
+          const match = {};
+          // Loop over the usedKeywords as it will be same length as the promise array we built
+          for (let i = 0; i < usedKeywords.length; i++) {
+            let apiResult = results[i];
+
+            if (typeof apiResult === 'string')
+              apiResult = JSON.parse(apiResult);
+
+            match[usedKeywords[i]] = apiResult;
+          }
+
+          return match;
+        };
+
+        const match = matchInKeyToOutKey(outputKeywordsPromiseResults);
+
+        const removeDuplicateKwFromMatch = obj => {
+          const seenKeywords = [];
+          const r = {};
+          for (const [key, apiRes] of Object.entries(obj)) {
+            if (apiRes.statusCode !== 200 && apiRes.statusCode !== 210) {
+              r[key] = apiRes;
+              continue;
+            }
+
+            if (seenKeywords.length === 0) {
+              seenKeywords.push(...apiRes.response.outputKeywords);
+              r[key] = apiRes;
+              continue;
+            }
+
+            const newKwArr = [];
+            for (const kw of apiRes.response.outputKeywords) {
+              if (!seenKeywords.includes(kw)) newKwArr.push(kw);
+            }
+            apiRes.response.outputKeywords = newKwArr;
+            r[key] = apiRes;
+          }
+          return r;
+        };
+
+        const matchWithoutDuplicates = removeDuplicateKwFromMatch(match);
+
+        for (const inputKeyword in matchWithoutDuplicates) {
+          if (matchWithoutDuplicates[inputKeyword].statusCode === 400) {
+            matchWithoutDuplicates[inputKeyword].offers = [];
+            continue;
+          }
+          const outputKeywords =
+            matchWithoutDuplicates[inputKeyword].response.outputKeywords;
+
+          const thisInputKeywordPromises = [];
+          for (const k of outputKeywords) {
+            thisInputKeywordPromises.push(
+              inokufuApiGET(client, {
+                provider,
+                keywords: k
+              })
+            );
+          }
+
+          const thisInKwOffersResponses = await Promise.all(
+            thisInputKeywordPromises
+          );
+          const thisInKwOffers = [];
+          for (const r of thisInKwOffersResponses) {
+            if (r.statusCode !== 200) continue;
+            for (const offer of r.response.content) {
+              if (thisInKwOffers.find(o => o.title === offer.title)) continue;
+              thisInKwOffers.push(offer);
+            }
+          }
+
+          matchWithoutDuplicates[inputKeyword].offers = thisInKwOffers;
+        }
+
+        const sections = [];
+        for (const key in matchWithoutDuplicates) {
+          sections.push({
+            title: key,
+            offers: matchWithoutDuplicates[key].offers
+          });
+        }
+
+        if (!isMounted) return;
+
+        setLoading(false);
+        setData(sections);
+
+        for (const s of sections) {
+          for (const o of s.offers) {
+            const pub = o.publisher
+              ? o.publisher[0]?.name || 'UNKNOWN_PUBLISHER'
+              : 'UNKNOWN_PUBLISHER';
+            storeLeadView(pub);
           }
         }
 
-        matchWithoutDuplicates[inputKeyword].offers = thisInKwOffers;
+        sessionStorage.setItem(
+          SESSION_INOKUFU_DATA + 'reo',
+          JSON.stringify(sections)
+        );
+        sessionStorage.setItem(
+          SESSION_INOKUFU_LAST_CALL + 'reo',
+          JSON.stringify(Date.now())
+        );
+
+        await saveAPIDataToVisionsCozyDoctype(client, 'inokufu-reo', sections);
+      } catch (err) {
+        log('error', err);
+        setLoading(false);
+        setData([]);
       }
-
-      const sections = [];
-      for (const key in matchWithoutDuplicates) {
-        sections.push({
-          title: key,
-          offers: matchWithoutDuplicates[key].offers
-        });
-      }
-
-      if (!isMounted) return;
-
-      setLoading(false);
-      setData(sections);
-
-      for (const s of sections) {
-        for (const o of s.offers) {
-          const pub = o.publisher
-            ? o.publisher[0]?.name || 'UNKNOWN_PUBLISHER'
-            : 'UNKNOWN_PUBLISHER';
-          storeLeadView(pub);
-        }
-      }
-
-      sessionStorage.setItem(
-        SESSION_INOKUFU_DATA + 'reo',
-        JSON.stringify(sections)
-      );
-      sessionStorage.setItem(
-        SESSION_INOKUFU_LAST_CALL + 'reo',
-        JSON.stringify(Date.now())
-      );
-
-      await saveAPIDataToVisionsCozyDoctype(client, 'inokufu-reo', sections);
     };
 
     getData();
@@ -337,6 +344,7 @@ const InokufuAPIReo = ({
                   <Grid key={yndex} item>
                     <BadgeRow
                       offerAPI={offer}
+                      fixedPicture={cyLogo}
                       icon={EyeIcon}
                       addStyles={styles.badge}
                       offerMethodMapping={getOFMethodMapping(

@@ -8,6 +8,7 @@ import EmailModal from '../MethodModal/EmailModal';
 import JobufoModal from '../MethodModal/JobufoModal';
 import JobufoAndQuestion from '../MethodModal/JobufoAndQuestion';
 import RedirectLandingPageModal from '../MethodModal/RedirectLandingPageModal';
+import DefaultShareModal from '../MethodModal/DefaultShareModal';
 
 import logoTmp from '../../../assets/icons/icon-check.svg';
 import { visionsTrustApiPOST } from '../../../utils/remoteDoctypes';
@@ -74,6 +75,7 @@ const GlobalModal = ({
           <JobufoModal
             OF={getCorrectOfferName()}
             btnClickFc={handleButtonClick}
+            offerUrl={offerAPI.url}
           />
         );
       case 3:
@@ -93,7 +95,13 @@ const GlobalModal = ({
           />
         );
       default:
-        break;
+        return (
+          <DefaultShareModal
+            offerTitle={offerAPI.title}
+            OF={getCorrectOfferName()}
+            btnClickFc={handleButtonClick}
+          />
+        );
     }
   };
 

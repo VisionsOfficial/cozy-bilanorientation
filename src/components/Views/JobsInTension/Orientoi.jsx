@@ -46,7 +46,11 @@ const Orientoi = ({
   const badges = jsonFiles.orientoi.data?.data?.badges || [];
   const usedJobcards = isTension
     ? datas.filter(o => o.isTension === true).slice(0.3)
-    : datas.filter(o => !o.isTension);
+    : datas.filter(
+        o =>
+          !o.isTension ||
+          (o.isTension && o.positionnement === 'ça me correspond')
+      );
 
   return (
     <Accordion

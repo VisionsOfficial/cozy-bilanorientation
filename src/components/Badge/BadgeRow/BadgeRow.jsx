@@ -19,6 +19,7 @@ const styles = {
 const BadgeRow = ({
   offerAPI,
   addStyles,
+  fixedPicture = null,
   isPublicPage = false,
   btn = true,
   offerDataMapping = null,
@@ -44,7 +45,9 @@ const BadgeRow = ({
       <div className='badgeRow' style={addStyles}>
         <div className='badgeRowImageContainer'>
           <img
-            src={offerDataMapping?.logo || offerAPI?.picture || ''}
+            src={
+              fixedPicture || offerDataMapping?.logo || offerAPI?.picture || ''
+            }
             alt={`Vignette formation`}
           />
         </div>

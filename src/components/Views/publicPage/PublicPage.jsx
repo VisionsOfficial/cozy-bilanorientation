@@ -72,7 +72,9 @@ const PublicPage = () => {
       <PublicPitangoo
         data={document?.platforms?.pitangoo?.data?.data?.missions || []}
       />
-      <PublicInokufuAPI data={document?.APIData?.inokufu || []} />
+      <PublicInokufuAPI
+        data={document?.APIData ? document.APIData['inokufu-smartskills'] : []}
+      />
       <PublicPalmAPI data={document?.APIData?.palm || []} />
       <PublicCuriose data={document?.platforms?.curiose?.data || []} />
       {/* 
