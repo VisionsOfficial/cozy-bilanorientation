@@ -25,6 +25,7 @@
             margin-bottom 30px
             font-weight 500
             font-size 19px
+            text-align center
 
 .containerEditingDocument
     columnTopFlex()
@@ -93,6 +94,12 @@
             border-radius 10px
             padding 0 20px
 
+            @media screen and (max-width 1024px)
+                width 90%
+
+            @media screen and (max-width 550px)
+                padding 0 5px
+
             .contentFile
                 centerFlex()
                 justify-content space-between
@@ -109,7 +116,6 @@
                     min-width 30px !important
                     min-height 30px !important
                     transform scale(1)
-                    cursor pointer
 
                     @media screen and (max-width 460px)
                         margin 0 10px
@@ -118,6 +124,9 @@
                     margin 0 20px
                     font-weight 500
                     color color-secondary
+
+                    @media screen and (max-width 420px)
+                        margin 0 5px
 
                 &Title
                     centerFlex()
@@ -160,12 +169,26 @@
 
             p
                 margin 5px 0
+                padding-right 10px
 
             svg
                 filter brightness(.2)
                 margin 0 20px
                 width 35px
                 height 35px
+                min-width 25px
+                min-height 25px
+
+            @media screen and (max-width 600px)
+                flex-direction column
+
+                p
+                    margin 10px
+                    padding 0
+
+                svg
+                    margin 10px
+                    margin-bottom 0
 
         &Cards
             centerFlex()
@@ -184,6 +207,13 @@
                 position relative
                 padding-bottom 20px
                 height 270px
+                min-width 230px
+
+                @media screen and (max-width 1024px)
+                    width calc((94% / 2))
+
+                @media screen and (max-width 710px)
+                    width 100%
 
                 &Content
                     font-weight 500
@@ -224,4 +254,4 @@
     flex-wrap wrap
 
     span
-        margin 5px
+        margin 10px 5px

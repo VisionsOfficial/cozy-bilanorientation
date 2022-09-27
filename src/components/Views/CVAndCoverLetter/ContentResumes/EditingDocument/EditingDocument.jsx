@@ -97,8 +97,11 @@ const EditingDocument = ({ stepResumes, method, importFile }) => {
       refTitleInput.current.style.outline = 'none';
     }
 
-    if (method === CVLETTERS_METHODS.MANUAL && textAreaContent === '') {
-      return alert('Impossible de sauvegarder un texte vide !');
+    if (
+      (method === CVLETTERS_METHODS.MANUAL && textAreaContent === '') ||
+      (method === CVLETTERS_METHODS.MANUAL && fileName === '')
+    ) {
+      return alert('Impossible de sauvegarder un titre ou texte vide !');
     }
 
     setButtonClicked(true);
@@ -132,6 +135,7 @@ const EditingDocument = ({ stepResumes, method, importFile }) => {
             id='titleDocument'
             ref={refTitleInput}
             tabIndex='0'
+            maxLength={'30'}
             onChange={e => renameFile(e)}
             value={fileName}
           />

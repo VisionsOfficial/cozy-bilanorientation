@@ -11,6 +11,7 @@ import { conditionsFile } from '../../../../../utils/fileTypeCondition';
 import { fileToArrayBuffer } from '../../../../../utils/fetchJsonFileByName';
 import { getPdfText } from '../../../../../utils/pdfjsStuff';
 import { CVLETTERS_METHODS } from '../../CVAndCoverLetter';
+import CustomLoader from '../../../../Loader/CustomLoader';
 
 // Cozy
 import FileInput from 'cozy-ui/transpiled/react/FileInput';
@@ -24,17 +25,22 @@ import iconCV from '../../../../../assets/icons/cv.svg';
 
 const SummaryDocument = ({ stepResumes, fileImport }) => {
   const [files, setFiles] = useState([]);
+  const [loader, setLoader] = useState(false);
   const client = useClient();
 
   useEffect(() => {
     let isMounted = true;
+    setLoader(true);
     const getData = async () => {
       const document = await getVisionsCozyDocument(
         client,
         DOCTYPE_COLLECTIONS.USER_DOCUMENTS
       );
       const allDocuments = document.documents;
-      if (isMounted) setFiles(allDocuments);
+      if (isMounted) {
+        setLoader(false);
+        setFiles(allDocuments);
+      }
     };
 
     getData();
@@ -94,7 +100,10 @@ const SummaryDocument = ({ stepResumes, fileImport }) => {
 
   return (
     <Grid className='containerSummaryDocument'>
-      {files && files.length === 0 && (
+      {loader && (
+        <CustomLoader size={'large'} text={'Chargement des données'} />
+      )}
+      {!loader && files && files.length === 0 && (
         <div className='containerImportDocument'>
           <Icon icon={FolderAddIcon} />
           <p className='informationImportDocument'>
@@ -104,7 +113,7 @@ const SummaryDocument = ({ stepResumes, fileImport }) => {
           </p>
         </div>
       )}
-      {files && files.length !== 0 && (
+      {!loader && files && files.length !== 0 && (
         <>
           <div className='headerSummaryDocument'>
             <h3>Mes CV et lettres de motivation importés</h3>
@@ -133,28 +142,30 @@ const SummaryDocument = ({ stepResumes, fileImport }) => {
           </div>
         </>
       )}
-      <div className='btnContainer'>
-        <GenericButton
-          textContent={'écrivez votre document'}
-          hasArrow={false}
-          color={'gradient'}
-          role={'button'}
-          tag={'span'}
-          onClickFc={() => {
-            fileImport([]);
-            stepResumes(CVLETTERS_METHODS.MANUAL);
-          }}
-        />
-        <FileInput className='file-selector' onChange={importDocument}>
+      {!loader && (
+        <div className='btnContainer'>
           <GenericButton
-            textContent={'importer un document'}
+            textContent={'écrivez votre document'}
             hasArrow={false}
             color={'gradient'}
             role={'button'}
             tag={'span'}
+            onClickFc={() => {
+              fileImport([]);
+              stepResumes(CVLETTERS_METHODS.MANUAL);
+            }}
           />
-        </FileInput>
-      </div>
+          <FileInput className='file-selector' onChange={importDocument}>
+            <GenericButton
+              textContent={'importer un document'}
+              hasArrow={false}
+              color={'gradient'}
+              role={'button'}
+              tag={'span'}
+            />
+          </FileInput>
+        </div>
+      )}
     </Grid>
   );
 };
