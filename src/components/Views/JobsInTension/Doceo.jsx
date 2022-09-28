@@ -5,6 +5,7 @@ import ModalBilan from '../../Modal/ModalBilan/ModalBilan';
 
 import DoceoIllus from '../../../assets/icons/doceo-formation-illustration.svg';
 import Icon from 'cozy-ui/transpiled/react/Icon';
+import GlobalModal from '../../Modal/GlobalModal';
 
 const Doceo = () => {
   const [open, setOpen] = useState(false);
@@ -34,11 +35,11 @@ const Doceo = () => {
       <div className='illustrationDoceo'>
         <Icon icon={DoceoIllus} />
       </div>
-      <ModalBilan
+      <GlobalModal
         open={open}
         closeModal={closeModal}
-        title={'Doceo'}
-        email={'docoe@test.com'}
+        hardcodedMethod={5}
+        specificEmail={'doceo@test.com'}
       />
     </Grid>
   );

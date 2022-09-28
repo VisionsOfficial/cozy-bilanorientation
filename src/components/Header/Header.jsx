@@ -9,7 +9,7 @@ import Icon from 'cozy-ui/transpiled/react/Icon';
 import PerviousIcon from 'cozy-ui/transpiled/react/Icons/Previous';
 import backgroundImage from '../../assets/images/en-tete-vg.svg';
 import ShareBilanBtn from '../Button/ShareBilanBtn';
-import ModalGeneric from '../Modal/ModalGeneric/ModalGeneric';
+import GlobalModal from '../Modal/GlobalModal';
 
 const styles = {
   backButton: {
@@ -72,7 +72,7 @@ const Header = () => {
   const history = useHistory();
 
   const showBackButton = pathname !== '/index';
-  const isPublicPage = pathname === '/bilanorientation';
+  const isPublicPage = pathname === '/public';
 
   const goBack = useCallback(() => history.goBack(), [history]);
   // if (isMobile) return null
@@ -111,12 +111,16 @@ const Header = () => {
             <Title />
           </Typography>
         </div>
-        {/* {isPublicPage === false && (
+        {isPublicPage === false && (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
-            <ModalGeneric open={open} closeModal={closeModal} />
+            <GlobalModal
+              hardcodedMethod={5}
+              open={open}
+              closeModal={closeModal}
+            />
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

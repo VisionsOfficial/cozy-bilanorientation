@@ -13,13 +13,16 @@ import DefaultShareModal from '../MethodModal/DefaultShareModal';
 import logoTmp from '../../../assets/icons/icon-check.svg';
 import { visionsTrustApiPOST } from '../../../utils/remoteDoctypes';
 import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
+import GlobalShareModal from '../MethodModal/GlobalShareModal';
 
 const GlobalModal = ({
   open = false,
   closeModal,
   offerAPI,
   offerDataMapping,
-  offerMethodMapping
+  offerMethodMapping,
+  hardcodedMethod = null,
+  specificEmail = null,
 }) => {
   const client = useClient();
   const { visionsAccount } = useVisionsAccount();
@@ -94,6 +97,8 @@ const GlobalModal = ({
             btnClickFc={handleButtonClick}
           />
         );
+      case 5:
+        return <GlobalShareModal email={specificEmail}/>;
       default:
         return (
           <DefaultShareModal
@@ -129,7 +134,7 @@ const GlobalModal = ({
           </div>
         </div>
         <div className='modalContent'>
-          {contentModal(offerMethodMapping.method || -1)}
+          {contentModal(offerMethodMapping?.method || hardcodedMethod || -1)}
         </div>
       </div>
     </div>

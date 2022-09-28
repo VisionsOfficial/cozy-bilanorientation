@@ -1,7 +1,7 @@
 import React from 'react';
 import GenericButton from '../../../Button/GenericButton/GenericButton';
 
-const RedirectLandingPageModal = ({ OF, offerTitle, btnClickFc }) => {
+const DefaultShareModal = ({ OF, offerTitle, btnClickFc }) => {
   const handleClick = e => {
     e.stopPropagation();
     btnClickFc();
@@ -28,4 +28,4 @@ const RedirectLandingPageModal = ({ OF, offerTitle, btnClickFc }) => {
   );
 };
 
-export default RedirectLandingPageModal;
+export default DefaultShareModal;

@@ -11,6 +11,8 @@ import Badge from '../../Badge';
 import icon from '../../../assets/icons/palm.svg';
 import iconJob from '../../../assets/icons/icon-emploi-fond.svg';
 import { useJsonFiles } from '../../Hooks/useJsonFiles';
+import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
+import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
 
 const styles = {
   card: {
@@ -22,11 +24,12 @@ const styles = {
   }
 };
 const bgBadge = 'linear-gradient(85deg, #16f7b415, #21bbee15)';
-const email = 'smartskills@visionspol.eu';
+const DEFAULT_EMAIL = 'smartskills@visionspol.eu';
 
 const PalmAPI = () => {
   const client = useClient();
   const { t } = useI18n();
+  const { visionsAccount } = useVisionsAccount();
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +61,7 @@ const PalmAPI = () => {
 
         try {
           res = await palmApiPOST(client, {
-            email,
+            email: visionsAccount?.email || DEFAULT_EMAIL,
             data: createSoupData()
           });
         } catch (err) {
@@ -71,10 +74,25 @@ const PalmAPI = () => {
         // PALM sends back a stringified array as a response
         if (!isMounted) return;
 
-        const content = typeof res === 'string' ? JSON.parse(res) : res;
+        const clearDoubles = arr => {
+          const newArr = [];
+          for (const el of arr) {
+            if (!newArr.find(o => o.mission_name === el.mission_name)) {
+              newArr.push(el);
+            }
+          }
+          return newArr;
+        };
+
+        const content =
+          typeof res === 'string'
+            ? clearDoubles(JSON.parse(res))
+            : clearDoubles(res);
+
         setData(content);
         setLoading(false);
         setError(false);
+        await saveAPIDataToVisionsCozyDoctype(client, 'palm', content);
       } catch (err) {
         log('error', err);
         setData([]);
@@ -135,28 +153,32 @@ const PalmAPI = () => {
             </h4>
           </Grid>
         )}
-        {data
-          .slice(0, 2)
-          .map(
-            (
-              { mission_name, similarity, short_summary, email, mission_url },
-              idx
-            ) => (
-              <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
-                <Badge
-                  title={mission_name}
-                  mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
-                  subText={short_summary}
-                  icon={iconJob}
-                  background={bgBadge}
-                  addStyles={styles.badge}
-                  btn={false}
-                  email={email}
-                  url={mission_url}
-                />
-              </Grid>
-            )
-          )}
+        {data.map(
+          (
+            {
+              mission_name,
+              similarity,
+              short_summary,
+              email,
+              mission_customer_url
+            },
+            idx
+          ) => (
+            <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
+              <Badge
+                title={mission_name}
+                mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
+                subText={short_summary}
+                icon={iconJob}
+                background={bgBadge}
+                addStyles={styles.badge}
+                btn={false}
+                email={email}
+                url={mission_customer_url}
+              />
+            </Grid>
+          )
+        )}
         <p className='sourceData'>
           Source de données : <span>PALM</span>
         </p>
