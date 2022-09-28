@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
-import ShareBilanBtn from '../../Button/ShareBilanBtn';
-import ModalBilan from '../../Modal/ModalBilan/ModalBilan';
+// import ShareBilanBtn from '../../Button/ShareBilanBtn';
 
 import DoceoIllus from '../../../assets/icons/doceo-formation-illustration.svg';
 import Icon from 'cozy-ui/transpiled/react/Icon';
@@ -10,9 +9,9 @@ import GlobalModal from '../../Modal/GlobalModal';
 const Doceo = () => {
   const [open, setOpen] = useState(false);
 
-  const OpenModal = () => {
-    setOpen(currentOpen => !currentOpen);
-  };
+  // const OpenModal = () => {
+  //   setOpen(currentOpen => !currentOpen);
+  // };
 
   const closeModal = () => {
     setOpen(currentOpen => !currentOpen);

@@ -22,7 +22,7 @@ const GlobalModal = ({
   offerDataMapping,
   offerMethodMapping,
   hardcodedMethod = null,
-  specificEmail = null,
+  specificEmail = null
 }) => {
   const client = useClient();
   const { visionsAccount } = useVisionsAccount();
@@ -98,7 +98,7 @@ const GlobalModal = ({
           />
         );
       case 5:
-        return <GlobalShareModal email={specificEmail}/>;
+        return <GlobalShareModal email={specificEmail} />;
       default:
         return (
           <DefaultShareModal

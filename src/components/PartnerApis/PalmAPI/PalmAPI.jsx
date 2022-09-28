@@ -106,7 +106,7 @@ const PalmAPI = () => {
     return () => {
       isMounted = false;
     };
-  }, [client, jobCards]);
+  }, [client, jobCards, visionsAccount.email]);
 
   if (error)
     return (
