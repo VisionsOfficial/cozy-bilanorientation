@@ -19,18 +19,10 @@ const JobufoModal = ({ OF, offerUrl, btnClickFc }) => {
   const [blob, setBlob] = useState(null);
 
   const toBase64 = file =>
-    new Promise((res, rej) => {
-      if (!file) rej();
+    new Promise(res => {
       const reader = new FileReader();
+      reader.onloadend = () => res(reader.result);
       reader.readAsDataURL(file);
-      reader.onload = () => {
-        res({
-          name: file.name,
-          type: file.type,
-          base64: reader.result
-        });
-      };
-      reader.onerror = err => rej(err);
     });
 
   const jobufoModalClickFc = async () => {
@@ -84,10 +76,15 @@ const JobufoModal = ({ OF, offerUrl, btnClickFc }) => {
       if (!blob) return;
       if (!visionsAccount) return;
       try {
-        const base64 = await toBase64(blob);
+        let base64 = await toBase64(blob);
+        // Convert Data URI to Binary
+        const base64Index = base64.indexOf(';base64,') + ';base64,'.length;
+        base64 = base64.substring(base64Index);
         await megaApplyApiPOST(client, visionsAccount, offerUrl, base64);
+        setBlob(null);
       } catch (err) {
         log('error', err);
+        setBlob(null);
       }
     };
 

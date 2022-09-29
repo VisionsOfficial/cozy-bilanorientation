@@ -119,7 +119,7 @@ export const megaApplyApiPOST = async (
         documents: [
           {
             name: 'visions_profile.pdf',
-            content: base64.base64,
+            content: base64,
             category: 'OTHER'
           }
         ]
