@@ -3,6 +3,7 @@ const PALM_DOCTYPE = 'io.vision.palmapp';
 const INOKUFU_DOCTYPE = 'com.inokufu.api';
 const INOKUFU_MATCHINGS_DOCTYPE = 'com.inokufu';
 const MEGA_APPLY_DOCTYPE = 'com.megaapply.www';
+// const MEGA_APPLY_DOCTYPE__DEV = 'com.megaapply.dev';
 
 export const visionsTrustApiPOST = async (client, path, body = {}) => {
   try {
@@ -91,9 +92,15 @@ export const inokufuApiPOST = async (client, body) => {
   }
 };
 
-export const megaApplyApiPOST = async (client, visionsAccount, detail_link) => {
+export const megaApplyApiPOST = async (
+  client,
+  visionsAccount,
+  detail_link,
+  base64
+) => {
   try {
     if (!visionsAccount) throw new Error('Missing user visions account data.');
+    if (!base64) throw new Error('Missing base64 pdf');
 
     const body = {
       data: {
@@ -109,7 +116,13 @@ export const megaApplyApiPOST = async (client, visionsAccount, detail_link) => {
             city: visionsAccount.experiencesInfo.city
           }
         },
-        documents: []
+        documents: [
+          {
+            name: 'visions_profile.pdf',
+            content: base64.base64,
+            category: 'OTHER'
+          }
+        ]
       }
     };
 

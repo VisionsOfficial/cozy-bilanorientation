@@ -30,6 +30,7 @@ const PalmAPI = () => {
   const client = useClient();
   const { t } = useI18n();
   const { visionsAccount } = useVisionsAccount();
+  const userEmail = visionsAccount?.email;
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,8 @@ const PalmAPI = () => {
 
   useEffect(() => {
     let isMounted = true;
+    if (!userEmail) return;
+    if (!jobCards || !jobCards.length) return;
     const getData = async () => {
       try {
         if (!jobCards || (jobCards && !jobCards.length)) {
@@ -61,7 +64,7 @@ const PalmAPI = () => {
 
         try {
           res = await palmApiPOST(client, {
-            email: visionsAccount?.email || DEFAULT_EMAIL,
+            email: userEmail || DEFAULT_EMAIL,
             data: createSoupData()
           });
         } catch (err) {
@@ -106,7 +109,7 @@ const PalmAPI = () => {
     return () => {
       isMounted = false;
     };
-  }, [client, jobCards, visionsAccount.email]);
+  }, [client, jobCards, userEmail]);
 
   if (error)
     return (
@@ -153,32 +156,20 @@ const PalmAPI = () => {
             </h4>
           </Grid>
         )}
-        {data.map(
-          (
-            {
-              mission_name,
-              similarity,
-              short_summary,
-              email,
-              mission_customer_url
-            },
-            idx
-          ) => (
-            <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
-              <Badge
-                title={mission_name}
-                mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
-                subText={short_summary}
-                icon={iconJob}
-                background={bgBadge}
-                addStyles={styles.badge}
-                btn={false}
-                email={email}
-                url={mission_customer_url}
-              />
-            </Grid>
-          )
-        )}
+        {data.map(({ mission_name, similarity, mission_customer_url }, idx) => (
+          <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
+            <Badge
+              title={mission_name}
+              mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
+              subText={''}
+              icon={iconJob}
+              background={bgBadge}
+              addStyles={styles.badge}
+              btn={false}
+              url={mission_customer_url}
+            />
+          </Grid>
+        ))}
         <p className='sourceData'>
           Source de données : <span>PALM</span>
         </p>

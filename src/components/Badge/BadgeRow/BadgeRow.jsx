@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useClient } from 'cozy-client';
+import log from 'cozy-logger';
 
 import Typography from 'cozy-ui/transpiled/react/Typography';
 
@@ -9,6 +11,7 @@ import iconInfo from '../../../assets/icons/icon-info.svg';
 
 import '../../../styles/badgerow.styl';
 import Icon from 'cozy-ui/transpiled/react/Icon';
+import { getVisionsCozyDocument } from '../../../utils/visions.cozy';
 
 const styles = {
   subText: {
@@ -23,9 +26,12 @@ const BadgeRow = ({
   isPublicPage = false,
   btn = true,
   offerDataMapping = null,
-  offerMethodMapping = null
+  offerMethodMapping = null,
+  alreadyApplied = false
 }) => {
   const [open, setOpen] = useState(false);
+  const [hasShared, setHasShared] = useState(false);
+  const client = useClient();
 
   const OpenModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
@@ -38,6 +44,19 @@ const BadgeRow = ({
 
   const openInformationUrl = () => {
     window.open(offerAPI.url);
+  };
+
+  const validateShare = async () => {
+    setHasShared(true);
+    try {
+      const document = await getVisionsCozyDocument(client, 'sentApplications');
+      if (!document.applications) document.applications = [];
+      if (document.applications.includes(offerAPI.title)) return;
+      document.applications.push(offerAPI.title);
+      await client.save(document);
+    } catch (err) {
+      log('error', err);
+    }
   };
 
   return (
@@ -79,7 +98,13 @@ const BadgeRow = ({
             }}
           >
             {btn && !isPublicPage && offerMethodMapping !== null && (
-              <ShareBilanBtn onClickFc={OpenModal} />
+              <>
+                {hasShared || alreadyApplied ? (
+                  <p>Bilan partagé !</p>
+                ) : (
+                  <ShareBilanBtn onClickFc={OpenModal} />
+                )}
+              </>
             )}
           </div>
         </div>
@@ -91,6 +116,7 @@ const BadgeRow = ({
           offerAPI={offerAPI}
           open={open}
           closeModal={closeModal}
+          validateFc={validateShare}
         />
       ) : (
         <div></div>

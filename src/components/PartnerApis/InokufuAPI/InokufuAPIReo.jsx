@@ -38,7 +38,7 @@ const styles = {
 };
 
 const InokufuAPIReo = ({
-  provider = 'visions',
+  provider = 'CY Cergy Pontoise',
   isPublicPage = false,
   isTension = false,
   project = 'reo'
@@ -348,7 +348,7 @@ const InokufuAPIReo = ({
                       icon={EyeIcon}
                       addStyles={styles.badge}
                       offerMethodMapping={getOFMethodMapping(
-                        offer.publisher ? offer.publisher[0]?.name || '' : ''
+                        'CY Cergy Pontoise'
                       )}
                       offerDataMapping={getOfferMappingData(offer?.publisher)}
                       isPublicPage={isPublicPage}

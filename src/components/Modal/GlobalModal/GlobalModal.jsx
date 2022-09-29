@@ -18,6 +18,7 @@ import GlobalShareModal from '../MethodModal/GlobalShareModal';
 const GlobalModal = ({
   open = false,
   closeModal,
+  validateFc = () => {},
   offerAPI,
   offerDataMapping,
   offerMethodMapping,
@@ -60,6 +61,8 @@ const GlobalModal = ({
     }
 
     if (callback) callback();
+
+    validateFc();
   };
 
   const contentModal = method => {

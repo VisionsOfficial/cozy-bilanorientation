@@ -1,6 +1,6 @@
 {
   "name": "bilanorientation",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "scripts": {
     "build": "yarn build:browser",
     "build:browser": "cs build --browser && tar -czvf tarball/build.tar.gz build/*",
@@ -26,6 +26,11 @@
     "url": "https://github.com/cozy/bilanorientation/issues"
   },
   "homepage": "https://github.com/cozy/bilanorientation#readme",
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "devDependencies": {
     "@testing-library/react": "11.2.7",
     "babel-preset-cozy-app": "1.11.0",
@@ -52,6 +57,7 @@
     "react": "16.14.0",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "16.14.0",
-    "react-router-dom": "5.2.0"
+    "react-router-dom": "5.2.0",
+    "svg-to-pdfkit": "^0.1.8"
   }
 }

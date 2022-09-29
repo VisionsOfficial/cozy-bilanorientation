@@ -6,22 +6,93 @@ import log from 'cozy-logger';
 
 import GenericButton from '../../../Button/GenericButton/GenericButton';
 
-const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
+import SVGtoPDF from 'svg-to-pdfkit';
+import { useEffect } from 'react';
+
+import { vgSVG as svg } from '../../../../shared/svgs';
 
 const JobufoModal = ({ OF, offerUrl, btnClickFc }) => {
   const [confirmed, setConfirmed] = useState(false);
   const { visionsAccount } = useVisionsAccount();
   const client = useClient();
 
+  const [blob, setBlob] = useState(null);
+
+  const toBase64 = file =>
+    new Promise((res, rej) => {
+      if (!file) rej();
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        res({
+          name: file.name,
+          type: file.type,
+          base64: reader.result
+        });
+      };
+      reader.onerror = err => rej(err);
+    });
+
   const jobufoModalClickFc = async () => {
     setConfirmed(true);
     if (!visionsAccount) return;
+
     try {
-      await megaApplyApiPOST(client, visionsAccount, offerUrl);
+      window.PDFDocument.prototype.addSVG = function(svg, x, y, options) {
+        return SVGtoPDF(this, svg, x, y, options), this;
+      };
+
+      const doc = new window.PDFDocument();
+      const stream = doc.pipe(window.blobStream());
+      await doc.addSVG(svg, 10, -300, { width: 300 });
+      doc.moveDown(10);
+      doc.fontSize(14);
+      doc.text(`${visionsAccount.firstName} ${visionsAccount.lastName}`);
+      doc.text(`${visionsAccount.email}`);
+      doc.text(`Tel : ${visionsAccount.phoneNumber || 'Non renseigné'}`);
+      doc.text(
+        `Niveau d'études : ${visionsAccount.experiencesInfo?.scholarshipLevel ||
+          'Non renseigné'}`
+      );
+      doc.text(
+        `Ville : ${visionsAccount.experiencesInfo?.city || 'Non renseigné'}`
+      );
+      doc.text(
+        `Situation Professionnelle : ${visionsAccount.experiencesInfo
+          ?.situation || 'Non renseigné'}`
+      );
+
+      doc.moveDown(2);
+      doc.fillColor('blue');
+      doc.text(
+        `Lien vers le bilan de ${visionsAccount.firstName} ${visionsAccount.lastName}`,
+        {
+          link: sessionStorage.getItem('pubshare') || null
+        }
+      );
+      doc.end();
+      stream.on('finish', () => {
+        setBlob(stream.toBlob('application/pdf'));
+      });
     } catch (err) {
-      log('error', err.message);
+      log('error', err);
     }
   };
+
+  useEffect(() => {
+    const setBase64AndSend = async () => {
+      if (!blob) return;
+      if (!visionsAccount) return;
+      try {
+        const base64 = await toBase64(blob);
+        await megaApplyApiPOST(client, visionsAccount, offerUrl, base64);
+      } catch (err) {
+        log('error', err);
+      }
+    };
+
+    setBase64AndSend();
+  }, [blob, client, offerUrl, visionsAccount]);
 
   const handleClick = e => {
     e.stopPropagation();
@@ -52,8 +123,11 @@ const JobufoModal = ({ OF, offerUrl, btnClickFc }) => {
           Vous pouvez également partager le lien suivant pour donner accès à
           votre bilan d&apos;orientation : <br />
           <br />
-          <a href={'/#/bilanorientation'} className='modalPublicLink'>
-            {publicLinkTMP}
+          <a
+            href={sessionStorage.getItem('pubshare')}
+            className='modalPublicLink'
+          >
+            {sessionStorage.getItem('pubshare')}
           </a>
         </p>
       </>
