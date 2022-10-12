@@ -60,7 +60,15 @@ const Badge = ({
               {title}
             </div>
           ) : (
-            <div>{title}</div>
+            <div
+              onClick={() =>
+                alert(
+                  "Le lien pour cette formation n'a pas été fourni par PALM."
+                )
+              }
+            >
+              {title}
+            </div>
           )}
         </Typography>
         <Typography className='u-mv-half' variant='body1'>

@@ -8,17 +8,22 @@ import EmailModal from '../MethodModal/EmailModal';
 import JobufoModal from '../MethodModal/JobufoModal';
 import JobufoAndQuestion from '../MethodModal/JobufoAndQuestion';
 import RedirectLandingPageModal from '../MethodModal/RedirectLandingPageModal';
+import DefaultShareModal from '../MethodModal/DefaultShareModal';
 
 import logoTmp from '../../../assets/icons/icon-check.svg';
 import { visionsTrustApiPOST } from '../../../utils/remoteDoctypes';
 import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
+import GlobalShareModal from '../MethodModal/GlobalShareModal';
 
 const GlobalModal = ({
   open = false,
   closeModal,
+  validateFc = () => {},
   offerAPI,
   offerDataMapping,
-  offerMethodMapping
+  offerMethodMapping,
+  hardcodedMethod = null,
+  specificEmail = null
 }) => {
   const client = useClient();
   const { visionsAccount } = useVisionsAccount();
@@ -56,6 +61,8 @@ const GlobalModal = ({
     }
 
     if (callback) callback();
+
+    validateFc();
   };
 
   const contentModal = method => {
@@ -74,6 +81,7 @@ const GlobalModal = ({
           <JobufoModal
             OF={getCorrectOfferName()}
             btnClickFc={handleButtonClick}
+            offerUrl={offerAPI.url}
           />
         );
       case 3:
@@ -92,8 +100,16 @@ const GlobalModal = ({
             btnClickFc={handleButtonClick}
           />
         );
+      case 5:
+        return <GlobalShareModal email={specificEmail} />;
       default:
-        break;
+        return (
+          <DefaultShareModal
+            offerTitle={offerAPI.title}
+            OF={getCorrectOfferName()}
+            btnClickFc={handleButtonClick}
+          />
+        );
     }
   };
 
@@ -121,7 +137,7 @@ const GlobalModal = ({
           </div>
         </div>
         <div className='modalContent'>
-          {contentModal(offerMethodMapping.method || -1)}
+          {contentModal(offerMethodMapping?.method || hardcodedMethod || -1)}
         </div>
       </div>
     </div>

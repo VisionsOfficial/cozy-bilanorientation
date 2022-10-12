@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useClient } from 'cozy-client';
 import ContactInfo from '../../User/ContactInfo';
 import getSharedDocument from 'cozy-sharing/dist/getSharedDocument';
@@ -6,8 +6,6 @@ import getSharedDocument from 'cozy-sharing/dist/getSharedDocument';
 import { Content } from 'cozy-ui/transpiled/react/Layout';
 
 import { getParameterByName } from '../../../utils/urlFunctions';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import PublicOrientoiJobExploration from '../../Public/PublicOrientoiJobExploration';
 import PublicJobReady from '../../Public/PublicJobready';
 import PublicEducationalContents from '../../Public/PublicEducationalContents';
@@ -16,6 +14,7 @@ import PublicPitangoo from '../../Public/PublicPitangoo';
 import PublicInokufuAPI from '../../Public/PublicInokufuAPI';
 import PublicPalmAPI from '../../Public/PublicPalmAPI';
 import PublicCuriose from '../../Public/PublicCuriose';
+import PublicInokufuAPIReo from '../../Public/PublicInokufuAPIReo';
 
 const styles = {
   content: {
@@ -72,13 +71,16 @@ const PublicPage = () => {
       <PublicPitangoo
         data={document?.platforms?.pitangoo?.data?.data?.missions || []}
       />
-      <PublicInokufuAPI data={document?.APIData?.inokufu || []} />
+      <PublicInokufuAPI
+        data={
+          document?.APIData ? document.APIData['inokufu-smartskills'] || [] : []
+        }
+      />
+      <PublicInokufuAPIReo
+        data={document?.APIData ? document.APIData['inokufu-reo'] || [] : []}
+      />
       <PublicPalmAPI data={document?.APIData?.palm || []} />
       <PublicCuriose data={document?.platforms?.curiose?.data || []} />
-      {/* 
-      <InokufuAPI isPublicPage={true} />
-      <Palm isPublicPage={true} />
-       */}
     </Content>
   );
 };

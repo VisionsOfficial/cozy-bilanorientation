@@ -8,6 +8,7 @@ import { saveJSONFilesToVisionsCozyDoctype } from '../../utils/saveDataToVisions
 import { createPublicShareCode } from '../../utils/visions.cozy';
 import { useState } from 'react';
 import Loader from '../Loader';
+import log from 'cozy-logger';
 
 const ShareBilanBtn = ({
   absolute = false,
@@ -22,7 +23,27 @@ const ShareBilanBtn = ({
   const handleClick = async () => {
     if (loading) return;
     setLoading(true);
-    const doc = await saveJSONFilesToVisionsCozyDoctype(client, jsonFiles);
+
+    const awaitSetTimeout = ms => {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    };
+
+    let doc = undefined;
+    try {
+      doc = await saveJSONFilesToVisionsCozyDoctype(client, jsonFiles);
+    } catch (err) {
+      // There could be a document save conflict if fired before the offers are loaded in
+      log('warn', 'Document save conflict situation.');
+      await awaitSetTimeout(8000);
+      try {
+        doc = await saveJSONFilesToVisionsCozyDoctype(client, jsonFiles);
+      } catch (err) {
+        log('error', err);
+        alert('Une erreur est survenue, veuillez réessayer plus tard.');
+        setLoading(false);
+        return;
+      }
+    }
     const publicShareCode = await createPublicShareCode(client, doc);
     const publicUrl = `${location.protocol}//${location.host}/public/?sharecode=${publicShareCode}`;
     sessionStorage.setItem('pubshare', publicUrl);

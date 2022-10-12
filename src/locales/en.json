@@ -58,13 +58,17 @@
   "becominoTitle": "Becomino",
   "pitangooTitle": "PITANGOO",
   "formationOffers": "Offres de formation",
+  "offers": {
+    "smartskills": "Offres de formation - Bilan d'orientation",
+    "reo": "Offres de formation - Réorientation"
+  },
   "jobsInTension": "Mes Propositions de métiers en tensions, d'offres d'emploi et de formation",
   "jobsOffers": "Offres d'emplois des métiers en tension",
   "offersPorposed": "Métiers en tension proposés/sélectionnés",
   "publicPageTitle": "Récapitulatif du Bilan",
   "myTalent": "Mes talents de personne",
   "resultsReo": "Mes Résultats du Bilan de RéOrientation",
-  "resultsBo" : "Mes Résultats du Bilan d'Orientation",
+  "resultsBo": "Mes Résultats du Bilan d'Orientation",
   "softSkillsCV": "Mes soft skills qui ressortent de mon CV ou de ma lettre de motivation",
   "JobExplore": "Métiers, secteurs et contextes professionnels que j'explore",
   "reo": {

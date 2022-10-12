@@ -1,11 +1,14 @@
 import React from 'react';
+
 import Accordion from '../Accordion';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
 import BadgeRow from '../Badge/BadgeRow';
+
 // IMG
 import icon from '../../assets/icons/inokufu.svg';
 import EyeIcon from '../../assets/icons/icon-eye.svg';
+import cyLogo from '../../assets/images/cy.png';
 
 const styles = {
   card: {
@@ -20,13 +23,13 @@ const styles = {
   }
 };
 
-const PublicInokufuAPI = ({ data, isPublicPage = true }) => {
+const PublicInokufuAPIReo = ({ data, isPublicPage = true }) => {
   const { t } = useI18n();
 
   return (
     <Accordion
       icon={icon}
-      title={t('offers.smartskills')}
+      title={t('offers.reo')}
       addStyles={styles.card}
       bgHeader={'#FFF'}
       btnSeeMore={false}
@@ -42,12 +45,14 @@ const PublicInokufuAPI = ({ data, isPublicPage = true }) => {
               ) : (
                 <h4>Offres recommandées pour : {section.title}</h4>
               )}
-              {section.offers.slice(0, 3).map((offer, yndex) => (
+              {section.offers.map((offer, yndex) => (
                 <Grid key={yndex} item>
                   <BadgeRow
                     offerAPI={offer}
+                    fixedPicture={cyLogo}
                     icon={EyeIcon}
                     addStyles={styles.badge}
+                    offerMethodMapping={null}
                     offerDataMapping={null}
                     isPublicPage={isPublicPage}
                   />
@@ -64,4 +69,4 @@ const PublicInokufuAPI = ({ data, isPublicPage = true }) => {
   );
 };
 
-export default PublicInokufuAPI;
+export default PublicInokufuAPIReo;

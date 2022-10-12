@@ -36,25 +36,23 @@ const PublicPalmAPI = ({ data }) => {
             </h4>
           </Grid>
         )}
-        {data
-          .slice(0, 2)
-          .map(
-            ({ mission_name, similarity, short_summary, email, url }, idx) => (
-              <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
-                <Badge
-                  title={mission_name}
-                  mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
-                  subText={short_summary}
-                  icon={iconJob}
-                  background={bgBadge}
-                  addStyles={styles.badge}
-                  btn={false}
-                  email={email}
-                  url={url}
-                />
-              </Grid>
-            )
-          )}
+        {data.map(
+          ({ mission_name, similarity, short_summary, email, mission_customer_url }, idx) => (
+            <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
+              <Badge
+                title={mission_name}
+                mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
+                subText={short_summary}
+                icon={iconJob}
+                background={bgBadge}
+                addStyles={styles.badge}
+                btn={false}
+                email={email}
+                url={mission_customer_url}
+              />
+            </Grid>
+          )
+        )}
         <p className='sourceData'>
           Source de données : <span>PALM</span>
         </p>

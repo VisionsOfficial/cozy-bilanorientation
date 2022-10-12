@@ -20,9 +20,9 @@ export const saveJSONFilesToVisionsCozyDoctype = async (client, cozy_files) => {
 
 export const saveAPIDataToVisionsCozyDoctype = async (client, key, data) => {
   // GET CREATE DOC
-  await getVisionsCozyDocument(client, 'user');
+  const document = await getVisionsCozyDocument(client, 'user');
 
-  const saveData = { APIData: {} };
+  const saveData = { APIData: document.APIData || {} };
   saveData.APIData[key] = data;
   const updatedDoc = await updateVisionsCozyDocument(client, 'user', saveData);
   return updatedDoc;

@@ -58,6 +58,10 @@
   "becominoTitle": "Becomino",
   "pitangooTitle": "PITANGOO",
   "formationOffers": "Offres de formation",
+  "offers": {
+    "smartskills": "Offres de formation - Bilan d'orientation",
+    "reo": "Offres de formation - Réorientation"
+  },
   "jobsInTension": "Mes Propositions de métiers en tensions, d'offres d'emploi et de formation",
   "jobsOffers": "Offres d'emplois des métiers en tension",
   "offersPorposed": "Métiers en tension proposés/sélectionnés",
