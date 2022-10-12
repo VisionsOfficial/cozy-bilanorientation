@@ -63,7 +63,7 @@ const HomePage = () => {
           leftIcon={iconJobExplore}
           text={t('List.jobExplorations')}
         />
-        <ListItem link='/wip' leftIcon={iconCV} text={t('List.resumes')} />
+        <ListItem link='/resumes' leftIcon={iconCV} text={t('List.resumes')} />
         <ListItem
           link='/skills'
           leftIcon={iconSkills}

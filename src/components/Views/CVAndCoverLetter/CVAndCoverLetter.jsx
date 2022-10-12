@@ -1,37 +1,41 @@
-import React from 'react';
-import Icon from 'cozy-ui/transpiled/react/Icon';
-import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
-import FolderAddIcon from 'cozy-ui/transpiled/react/Icons/FolderAdd';
+import React, { useState } from 'react';
 
 // Components
 import EditingDocument from './ContentResumes/EditingDocument/EditingDocument';
-import ImportDocumentBtn from '../../Button/ImportDocumentBtn';
 import SummaryDocument from './ContentResumes/SummaryDocument';
 
 import '../../../styles/resumes.styl';
 
+export const CVLETTERS_METHODS = {
+  MAIN: 0,
+  IMPORT: 1,
+  MANUAL: 2
+};
+
 const CVAndCoverLetter = () => {
+  const [stepResumes, setStepResumes] = useState(CVLETTERS_METHODS.MAIN);
+  const [file, setFile] = useState([]);
+
   const contentResumes = method => {
     switch (method) {
-      case true:
-        return <EditingDocument />;
-      case 'recap':
-        return <SummaryDocument />;
-      default:
+      case CVLETTERS_METHODS.MANUAL:
+      case CVLETTERS_METHODS.IMPORT:
         return (
-          <Grid className='containerImportDocument'>
-            <Icon icon={FolderAddIcon} />
-            <p>
-              Vous n&apos;avez pas de{' '}
-              <span className='bold'>lettre de motivation ou de CV</span>,
-              importez en une ou rédigez la !
-            </p>
-            <ImportDocumentBtn />
-          </Grid>
+          <EditingDocument
+            stepResumes={setStepResumes}
+            method={method}
+            importFile={file.length !== 0 ? file : null}
+          />
         );
+      case CVLETTERS_METHODS.MAIN:
+        return (
+          <SummaryDocument stepResumes={setStepResumes} fileImport={setFile} />
+        );
+      default:
+        break;
     }
   };
-  return <div className='containerResumes'>{contentResumes('recap')}</div>;
+  return <div className='containerResumes'>{contentResumes(stepResumes)}</div>;
 };
 
 export default CVAndCoverLetter;

@@ -11,6 +11,12 @@ import { Q } from 'cozy-client';
 
 const DOCTYPE = 'visions.cozy';
 
+export const DOCTYPE_COLLECTIONS = {
+  USER: 'user',
+  SETTINGS: 'settings',
+  USER_DOCUMENTS: 'userDocuments'
+};
+
 /**
  * Fetches the document of the set category
  * @param {string} category The document category field
