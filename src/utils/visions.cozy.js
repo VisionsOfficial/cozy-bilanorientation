@@ -94,3 +94,17 @@ export const createPublicShareCode = async (client, document) => {
   const shareCode = shareObject.data.attributes.shortcodes.email;
   return shareCode;
 };
+
+/**
+ * Generates a public share code for a document in the visions.cozy doctype, generates
+ * the full url for it and stores it in the session
+ * @param {CozyClient} client The cozy client instance
+ * @param {object} document The cozy document to share
+ * @returns The full public report url
+ */
+export const createPublicReportLink = async (client, document) => {
+  const shareCode = await createPublicShareCode(client, document);
+  const publicReportLink = `${location.protocol}//${location.host}/public/?sharecode=${shareCode}`;
+  sessionStorage.setItem('pubshare', publicReportLink);
+  return publicReportLink;
+};

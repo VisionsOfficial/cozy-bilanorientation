@@ -5,7 +5,7 @@ import { useClient } from 'cozy-client';
 
 import Arrow from '../../assets/icons/arrow-right-solid.svg';
 import { saveJSONFilesToVisionsCozyDoctype } from '../../utils/saveDataToVisionsCozyDoctype';
-import { createPublicShareCode } from '../../utils/visions.cozy';
+import { createPublicReportLink } from '../../utils/visions.cozy';
 import { useState } from 'react';
 import Loader from '../Loader';
 import log from 'cozy-logger';
@@ -44,9 +44,15 @@ const ShareBilanBtn = ({
         return;
       }
     }
-    const publicShareCode = await createPublicShareCode(client, doc);
-    const publicUrl = `${location.protocol}//${location.host}/public/?sharecode=${publicShareCode}`;
-    sessionStorage.setItem('pubshare', publicUrl);
+
+    try {
+      await createPublicReportLink(client, doc);
+    } catch (err) {
+      log('error', err);
+      alert('Une erreur est survenue, veuillez réessayer plus tard');
+      setLoading(false);
+      return;
+    }
 
     onClickFc();
     setLoading(false);

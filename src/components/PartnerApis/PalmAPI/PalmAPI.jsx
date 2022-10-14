@@ -6,7 +6,7 @@ import { palmApiPOST } from '../../../utils/remoteDoctypes';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 import Accordion from '../../Accordion';
 import Loader from '../../Loader';
-import Badge from '../../Badge';
+import PALMBadge from '../../Badge/PALMBadge/PALMBadge';
 
 import icon from '../../../assets/icons/palm.svg';
 import iconJob from '../../../assets/icons/icon-emploi-fond.svg';
@@ -158,7 +158,7 @@ const PalmAPI = () => {
         )}
         {data.map(({ mission_name, similarity, mission_customer_url }, idx) => (
           <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
-            <Badge
+            <PALMBadge
               title={mission_name}
               mainText={`Taux de matching : ${Math.trunc(similarity)} %`}
               subText={''}

@@ -62,14 +62,14 @@ const BadgeRow = ({
   return (
     <>
       <div className='badgeRow' style={addStyles}>
-        <div className='badgeRowImageContainer'>
+        {/* <div className='badgeRowImageContainer'>
           <img
             src={
               fixedPicture || offerDataMapping?.logo || offerAPI?.picture || ''
             }
             alt={`Vignette formation`}
           />
-        </div>
+        </div> */}
         <div className='badgeRowTextContainer'>
           <Typography
             className='badgeRowTitle'

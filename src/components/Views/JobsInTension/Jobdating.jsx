@@ -7,6 +7,9 @@ import iconCalendar from '../../../assets/icons/icon-calendrier.svg';
 import bgImg from '../../../assets/images/multi-ethnic-young-people-using-smartphone-and-tablet-computers.jpg';
 
 const Jobdating = () => {
+  // TODO Define generic subscription url
+  const handleClick = () => {};
+
   return (
     <div className='jobdating' style={{ background: `url(${bgImg})` }}>
       <img src={bgImg} alt='' loading='lazy' />
@@ -32,7 +35,11 @@ const Jobdating = () => {
         votre projet professionnel !{' '}
       </p>
       <div className='jobdatingBtn'>
-        <GenericButton textContent={"s'inscrire"} color={'gradient'} />
+        <GenericButton
+          textContent={"s'inscrire"}
+          color={'gradient'}
+          onClickFc={() => handleClick()}
+        />
       </div>
     </div>
   );

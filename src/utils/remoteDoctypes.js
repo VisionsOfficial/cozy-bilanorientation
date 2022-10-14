@@ -33,39 +33,57 @@ export const palmApiPOST = async (client, body) => {
 };
 
 const defaultInokufuApiOptions = {
-  provider: 'visions',
   keywords: 'anglais',
-  publisher: '',
-  match: 'strict',
+  lang: 'fr',
+  provider: 'visions',
   sort: 'popularity',
   max: '20',
   model: 'strict',
-  page: '0',
-  lang: 'fr',
+  address: '',
   distanceMax: '',
-  address: ''
+  ageMin: '',
+  ageMax: '',
+  popularityMin: '',
+  levelMin: '',
+  levelMax: '',
+  learningTimeMin: '',
+  learningTimeMax: '',
+  publisher: '',
+  author: '',
+  free: '',
+  page: '0',
+  match: 'strict'
 };
 export const inokufuApiGET = async (client, options) => {
   const queryOptions = { ...defaultInokufuApiOptions, ...options };
   const {
-    provider,
     keywords,
-    publisher,
-    match,
+    lang,
+    provider,
     sort,
     max,
     model,
-    page,
-    lang,
+    address,
     distanceMax,
-    address
+    ageMin,
+    ageMax,
+    popularityMin,
+    levelMin,
+    levelMax,
+    learningTimeMin,
+    learningTimeMax,
+    publisher,
+    author,
+    free,
+    page,
+    match
   } = queryOptions;
   try {
     const res = await client
       .getStackClient()
       .fetchJSON(
         'GET',
-        `/remote/${INOKUFU_DOCTYPE}?provider=${provider}&keywords=${keywords}&publisher=${publisher}&match=${match}&sort=${sort}&max=${max}&model=${model}&page=${page}&lang=${lang}&distanceMax=${distanceMax}&address=${address}`
+        `/remote/${INOKUFU_DOCTYPE}?keywords=${keywords}&lang=${lang}&provider=${provider}&sort=${sort}&max=${max}&model=${model}&address=${address}&distanceMax=${distanceMax}&ageMin=${ageMin}&ageMax=${ageMax}&popularityMin=${popularityMin}&levelMin=${levelMin}&levelMax=${levelMax}&learningTimeMin=${learningTimeMin}&learningTimeMax=${learningTimeMax}&publisher=${publisher}&author=${author}&free=${free}&page=${page}&match=${match}`
       );
     return res;
   } catch (err) {

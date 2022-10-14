@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import Typography from 'cozy-ui/transpiled/react/Typography';
 import Icon from 'cozy-ui/transpiled/react/Icon';
 
-import IdeaIcon from '../../assets/icons/icon-idea.svg';
-import ShareBilanBtn from '../Button/ShareBilanBtn';
-import ModalBilan from '../Modal/ModalBilan/ModalBilan';
+import IdeaIcon from '../../../assets/icons/icon-idea.svg';
+import ShareBilanBtn from '../../Button/ShareBilanBtn';
+import ModalBilan from '../../Modal/ModalBilan/ModalBilan';
 
 const styles = {
   icon: {
@@ -25,7 +25,7 @@ const styles = {
   }
 };
 
-const Badge = ({
+const PALMBadge = ({
   title,
   mainText,
   subText,
@@ -60,7 +60,15 @@ const Badge = ({
               {title}
             </div>
           ) : (
-            <div>{title}</div>
+            <div
+              onClick={() =>
+                alert(
+                  "Le lien pour cette formation n'a pas été fourni par PALM."
+                )
+              }
+            >
+              {title}
+            </div>
           )}
         </Typography>
         <Typography className='u-mv-half' variant='body1'>
@@ -83,4 +91,4 @@ const Badge = ({
   );
 };
 
-export default Badge;
+export default PALMBadge;

@@ -75,12 +75,25 @@ const JobufoModal = ({ OF, offerUrl, btnClickFc }) => {
     const setBase64AndSend = async () => {
       if (!blob) return;
       if (!visionsAccount) return;
+
+      // HARDCODE for OpenClassrooms
+      const verifyOfferURL = () => {
+        if (OF.toLowerCase() === 'openclassrooms')
+          return 'https://share.hsforms.com/10ZF0bakxR-iiYzPJt9iAiQ18llt';
+        return offerUrl;
+      };
+
       try {
         let base64 = await toBase64(blob);
         // Convert Data URI to Binary
         const base64Index = base64.indexOf(';base64,') + ';base64,'.length;
         base64 = base64.substring(base64Index);
-        await megaApplyApiPOST(client, visionsAccount, offerUrl, base64);
+        await megaApplyApiPOST(
+          client,
+          visionsAccount,
+          verifyOfferURL(),
+          base64
+        );
         setBlob(null);
       } catch (err) {
         log('error', err);
@@ -89,7 +102,7 @@ const JobufoModal = ({ OF, offerUrl, btnClickFc }) => {
     };
 
     setBase64AndSend();
-  }, [blob, client, offerUrl, visionsAccount]);
+  }, [blob, client, offerUrl, visionsAccount, OF]);
 
   const handleClick = e => {
     e.stopPropagation();
