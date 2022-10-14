@@ -68,9 +68,13 @@ const GlobalModal = ({
   const contentModal = method => {
     switch (parseInt(method)) {
       case 1:
+        if (!offerDataMapping)
+          return (
+            <GlobalShareModal email={offerMethodMapping?.email || undefined} />
+          );
         return (
           <EmailModal
-            email={offerMethodMapping.email || undefined}
+            email={offerMethodMapping?.email || undefined}
             offerDataMapping={offerDataMapping}
             offerAPI={offerAPI}
             btnClickFc={handleButtonClick}
