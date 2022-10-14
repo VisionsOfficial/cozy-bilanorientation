@@ -3,11 +3,13 @@ import Orientoi from './Orientoi';
 import InokufuAPI from '../../PartnerApis/InokufuAPI/InokufuAPI';
 import Doceo from './Doceo';
 import PalmAPI from '../../PartnerApis/PalmAPI/PalmAPI';
+import Jobdating from './Jobdating';
 
 const JobsInTensions = () => {
   return (
     <>
       <Orientoi title={'offersPorposed'} badge={true} isTension={true} />
+      <Jobdating />
       <InokufuAPI isTension={true} project={'smartskills'} />
       <PalmAPI />
       <Doceo />
