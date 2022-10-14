@@ -32,7 +32,7 @@ const EmailModal = ({ offerAPI, offerDataMapping, btnClickFc, email }) => {
 
   const data = {
     title: !confirmed
-      ? `Vous êtes intéressé par la formation ${offerDataMapping.formation_name}`
+      ? `Vous êtes intéressé par la formation ${offerDataMapping?.formation_name}`
       : `Votre bilan a bien été partagé à ${email}`,
     body: !confirmed ? (
       <>
