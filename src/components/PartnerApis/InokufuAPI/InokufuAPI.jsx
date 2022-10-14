@@ -31,9 +31,7 @@ const styles = {
     paddingBottom: 30
   },
   badge: {
-    padding: '8px 10px',
     borderRadius: '10px',
-    height: '100%',
     background: '#f3f4f6'
   }
 };
@@ -490,32 +488,34 @@ const InokufuAPI = ({
                 ) : (
                   <h4>Vos offres pour : {section.title}</h4>
                 )}
-                {section.offers.map((offer, yndex) => {
-                  if (
-                    yndex <
-                    (sectionViewedCount[section.title]?.viewCount ||
-                      BASE_SHOW_COUNT)
-                  ) {
-                    return (
-                      <Grid key={yndex} item>
-                        <BadgeRow
-                          offerAPI={offer}
-                          icon={EyeIcon}
-                          addStyles={styles.badge}
-                          offerMethodMapping={getOFMethodMapping(
-                            offer.publisher
-                              ? offer.publisher[0]?.name || ''
-                              : ''
-                          )}
-                          offerDataMapping={getOfferMappingData(
-                            offer?.publisher
-                          )}
-                          isPublicPage={isPublicPage}
-                        />
-                      </Grid>
-                    );
-                  }
-                })}
+                <div className='contentBadgeRow'>
+                  {section.offers.map((offer, yndex) => {
+                    if (
+                      yndex <
+                      (sectionViewedCount[section.title]?.viewCount ||
+                        BASE_SHOW_COUNT)
+                    ) {
+                      return (
+                        <Grid key={yndex} item>
+                          <BadgeRow
+                            offerAPI={offer}
+                            icon={EyeIcon}
+                            addStyles={styles.badge}
+                            offerMethodMapping={getOFMethodMapping(
+                              offer.publisher
+                                ? offer.publisher[0]?.name || ''
+                                : ''
+                            )}
+                            offerDataMapping={getOfferMappingData(
+                              offer?.publisher
+                            )}
+                            isPublicPage={isPublicPage}
+                          />
+                        </Grid>
+                      );
+                    }
+                  })}
+                </div>
                 {section.offers.length >
                   (sectionViewedCount[section.title]?.viewCount ||
                     BASE_SHOW_COUNT) && (
@@ -535,7 +535,11 @@ const InokufuAPI = ({
               </p>
             </Grid>
           ))}
-          <button className='btnShare' onClick={() => forceReload()}>
+          <button
+            className='btnShare'
+            style={{ marginTop: 10 }}
+            onClick={() => forceReload()}
+          >
             Actualiser les résultats
           </button>
         </Grid>

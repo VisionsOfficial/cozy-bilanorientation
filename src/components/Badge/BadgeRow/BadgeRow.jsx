@@ -31,6 +31,7 @@ const BadgeRow = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [hasShared, setHasShared] = useState(false);
+  const [hideDescription, setHideDescription] = useState(true);
   const client = useClient();
 
   const OpenModal = () => setOpen(true);
@@ -87,27 +88,28 @@ const BadgeRow = ({
           </Typography>
           <Typography
             style={styles.subText}
-            className='textLineClamp'
+            className={hideDescription ? 'textLineClamp' : 'showDescription'}
             variant='body1'
+            onClick={() => setHideDescription(!hideDescription)}
           >
             {offerAPI.description}
           </Typography>
-          <div
-            style={{
-              margin: '10px 0px'
-            }}
+          <p
+            className='readMore'
+            onClick={() => setHideDescription(!hideDescription)}
           >
-            {btn && !isPublicPage && offerMethodMapping !== null && (
-              <>
-                {hasShared || alreadyApplied ? (
-                  <p>Bilan partagé !</p>
-                ) : (
-                  <ShareBilanBtn onClickFc={OpenModal} />
-                )}
-              </>
+            {hideDescription && 'En lire plus'}
+          </p>
+        </div>
+        {btn && !isPublicPage && offerMethodMapping !== null && (
+          <div className='badgeRowBtnContainer'>
+            {hasShared || alreadyApplied ? (
+              <p>Bilan partagé !</p>
+            ) : (
+              <ShareBilanBtn onClickFc={OpenModal} />
             )}
           </div>
-        </div>
+        )}
       </div>
       {offerMethodMapping !== null && !isPublicPage ? (
         <GlobalModal
