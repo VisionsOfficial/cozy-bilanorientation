@@ -1,14 +1,19 @@
 import React from 'react';
 import Icon from 'cozy-ui/transpiled/react/Icon';
-import GenericButton from '../../Button/GenericButton/GenericButton';
+
+const CONTEXT = 'numerique';
 
 //IMG
 import iconCalendar from '../../../assets/icons/icon-calendrier.svg';
 import bgImg from '../../../assets/images/multi-ethnic-young-people-using-smartphone-and-tablet-computers.jpg';
+import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
 
 const Jobdating = () => {
-  // TODO Define generic subscription url
-  const handleClick = () => {};
+  const { visionsAccount } = useVisionsAccount();
+
+  if (visionsAccount?.experiencesInfo?.context !== CONTEXT) {
+    return <></>;
+  }
 
   return (
     <div className='jobdating' style={{ background: `url(${bgImg})` }}>
@@ -27,20 +32,13 @@ const Jobdating = () => {
       </div>
       <div className='jobdatingDate'>
         <Icon icon={iconCalendar} />
-        <span>Date à déterminer</span>
+        <span>Jeudi 24 Novembre</span>
       </div>
       <p className='jobdatingDescription'>
         Rencontrez les organismes de formation et employeurs qui recrutent et
         échanger avec eux. Saisissez cette opportunité unique pour construire
         votre projet professionnel !{' '}
       </p>
-      <div className='jobdatingBtn'>
-        <GenericButton
-          textContent={"s'inscrire"}
-          color={'gradient'}
-          onClickFc={() => handleClick()}
-        />
-      </div>
     </div>
   );
 };
