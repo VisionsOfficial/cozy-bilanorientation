@@ -3,7 +3,7 @@
   "version": "0.4.15",
   "scripts": {
     "build": "yarn build:browser",
-    "build:browser": "cs build --browser && tar -czvf tarball/build.tar.gz build/*",
+    "build:browser": "cs build --browser && tar -czvf tarball/build.tar.gz build/",
     "build:mobile": "cs build --mobile",
     "watch": "yarn watch:browser",
     "watch:browser": "cs watch --browser",
