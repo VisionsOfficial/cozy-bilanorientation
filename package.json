@@ -1,6 +1,6 @@
 {
   "name": "bilanorientation",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "scripts": {
     "build": "yarn build:browser",
     "build:browser": "rm -rf tarball/* && cs build --browser && tar -czvf tarball/build.tar.gz build/*",
