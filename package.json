@@ -34,7 +34,7 @@
   "devDependencies": {
     "@testing-library/react": "11.2.7",
     "babel-preset-cozy-app": "1.11.0",
-    "cozy-app-publish": "^0.29.0",
+    "cozy-app-publish": "0.32.0",
     "cozy-bar": "7.16.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
