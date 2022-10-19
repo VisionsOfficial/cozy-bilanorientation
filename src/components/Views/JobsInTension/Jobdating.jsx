@@ -5,7 +5,7 @@ const CONTEXT = 'numerique';
 
 //IMG
 import iconCalendar from '../../../assets/icons/icon-calendrier.svg';
-import bgImg from '../../../assets/images/multi-ethnic-young-people-using-smartphone-and-tablet-computers.jpg';
+import bgImg from '../../../assets/images/multi-ethnic-young-people-using-smartphone-and-tablet-computers.png';
 import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
 
 const Jobdating = () => {
