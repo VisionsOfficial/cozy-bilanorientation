@@ -2,11 +2,19 @@
 @import './mixin';
 
 .containerBadgeRow
-    twoColumnGrid()
+    border-radius 5px
+    margin 5px !important
+    padding 10px
     padding-bottom: 10px
     @media screen and (max-width 1170px)
         display: flex
         flex-wrap: wrap
+
+.containerBadgeRow:nth-child(even)
+    background rgba(32, 187, 238, 0.28)
+.containerBadgeRow:nth-child(odd)
+    background rgba(32, 187, 238, 0.58)
+
 .badgeRow 
     centerFlex()
     justify-content: flex-start
@@ -56,6 +64,7 @@
         align-items: center
         margin-top: 10px
     .badgeRowTitle
+        cursor pointer
         centerFlex()
         justify-content: flex-start
         flex-wrap: wrap

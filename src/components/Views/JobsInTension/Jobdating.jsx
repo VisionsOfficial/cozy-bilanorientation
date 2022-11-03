@@ -1,20 +1,11 @@
 import React from 'react';
 import Icon from 'cozy-ui/transpiled/react/Icon';
 
-const CONTEXT = 'numerique';
-
 //IMG
 import iconCalendar from '../../../assets/icons/icon-calendrier.svg';
 import bgImg from '../../../assets/images/multi-ethnic-young-people-using-smartphone-and-tablet-computers.png';
-import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
 
 const Jobdating = () => {
-  const { visionsAccount } = useVisionsAccount();
-
-  if (visionsAccount?.experiencesInfo?.context !== CONTEXT) {
-    return <></>;
-  }
-
   return (
     <div className='jobdating' style={{ background: `url(${bgImg})` }}>
       <img src={bgImg} alt='' loading='lazy' />

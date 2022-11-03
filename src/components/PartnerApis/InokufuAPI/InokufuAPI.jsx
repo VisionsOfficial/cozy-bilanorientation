@@ -11,6 +11,9 @@ import { useJsonFiles } from '../../Hooks/useJsonFiles';
 import { shuffleArray } from '../../../utils/arrayFunctions';
 import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
 import log from 'cozy-logger';
+import useVisionsContextRules, {
+  knownContextCodes
+} from '../../Hooks/useVisionsContextRules';
 
 import Accordion from '../../Accordion';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
@@ -21,6 +24,7 @@ import Loader from '../../Loader';
 // IMG
 import icon from '../../../assets/icons/inokufu.svg';
 import EyeIcon from '../../../assets/icons/icon-eye.svg';
+import Pill, { PILL_TYPES } from '../../Pills/Pill';
 
 const TIME_BETWEEN_QUERIES = 10 * 60 * 1000;
 const BASE_SHOW_COUNT = 2;
@@ -50,6 +54,10 @@ const InokufuAPI = ({
 
   const client = useClient();
   const { t } = useI18n();
+  const {
+    contextRules,
+    isLoading: contextRulesLoading
+  } = useVisionsContextRules();
 
   const { mappingData, dataStatus } = useMappingData();
 
@@ -126,10 +134,36 @@ const InokufuAPI = ({
     return result;
   };
 
+  const getUsedJobCards = useCallback(
+    cards => {
+      const tensionCards = cards.filter(jc => jc.isTension);
+      const nonTensionCards = cards.filter(jc => !jc.isTension);
+      if (isTension) {
+        if (contextRules.context === knownContextCodes.numerique) {
+          const idkPositionnedCards = nonTensionCards.filter(
+            jc => jc.positionnement?.toLowerCase() === 'je ne sais pas'
+          );
+          const positionnedCards = nonTensionCards.filter(
+            jc => jc.positionnement?.toLowerCase() === 'ça me correspond'
+          );
+          return [...positionnedCards, ...idkPositionnedCards, ...tensionCards];
+        } else {
+          return tensionCards;
+        }
+      }
+
+      return nonTensionCards.filter(
+        jc => jc.positionnement !== 'ça ne me correspond pas'
+      );
+    },
+    [isTension, contextRules.context]
+  );
+
   /**
    * LOAD API DATA FROM INOKUFU AND MATCH OFFERS
    */
   useEffect(() => {
+    if (contextRulesLoading) return;
     let isMounted = true;
     const getData = async () => {
       try {
@@ -164,9 +198,7 @@ const InokufuAPI = ({
           }));
         };
 
-        const usedJobCards = isTension
-          ? jobCards.filter(jc => jc.isTension && jc.isTension === true)
-          : jobCards.filter(jc => !jc.isTension);
+        const usedJobCards = getUsedJobCards(jobCards);
 
         if (!usedJobCards || !usedJobCards.length) {
           setLoading(false);
@@ -369,7 +401,8 @@ const InokufuAPI = ({
             offers: [
               ...differentPublishersOffers[i], // Rebuild the array with the 2 initial offers
               ...shuffleArray(matchWithoutDuplicates[key].offers)
-            ]
+            ],
+            jobCard: jobCards.find(jc => jc.name === key)
           });
 
           i++;
@@ -412,7 +445,10 @@ const InokufuAPI = ({
     project,
     SESSION_INOKUFU_DATA,
     SESSION_INOKUFU_LAST_CALL,
-    storeLeadView
+    storeLeadView,
+    contextRulesLoading,
+    contextRules,
+    getUsedJobCards
   ]);
 
   /**
@@ -459,6 +495,19 @@ const InokufuAPI = ({
     return map || 5;
   };
 
+  const getPillColor = positionning => {
+    switch (positionning.toLowerCase()) {
+      case 'ça me correspond':
+        return PILL_TYPES.SUCCESS;
+      case 'ça ne me correspond pas':
+        return PILL_TYPES.DANGER;
+      case 'je ne sais pas':
+        return PILL_TYPES.WARN;
+    }
+  };
+
+  if (contextRulesLoading) return <Loader text='Chargement...' />;
+
   if (!dataStatus.isLoaded && dataStatus.isLoading) {
     return <Loader text={'Chargement'} />;
   } else if (!dataStatus.isLoaded && !dataStatus.isLoading) {
@@ -486,9 +535,37 @@ const InokufuAPI = ({
             <Grid key={index} xs={12} className='containerBadgeRow' item>
               <div>
                 {section?.offers?.length === 0 ? (
-                  <h4>Aucune offre trouvée pour {section.title}</h4>
+                  <>
+                    <h4>Aucune offre trouvée pour : {section.title}</h4>
+                    {!section.jobCard?.isTension && (
+                      <Pill
+                        textContent={section.jobCard.positionnement}
+                        type={getPillColor(section.jobCard.positionnement)}
+                      />
+                    )}
+                    {section.jobCard?.isTension && (
+                      <Pill
+                        textContent={'Métier en tension recommandé'}
+                        type={PILL_TYPES.INFO}
+                      />
+                    )}
+                  </>
                 ) : (
-                  <h4>Vos offres pour : {section.title}</h4>
+                  <>
+                    <h4>Vos offres pour : {section.title}</h4>
+                    {!section.jobCard?.isTension && (
+                      <Pill
+                        textContent={section.jobCard.positionnement}
+                        type={getPillColor(section.jobCard.positionnement)}
+                      />
+                    )}
+                    {section.jobCard?.isTension && (
+                      <Pill
+                        textContent={'Métier en tension recommandé'}
+                        type={PILL_TYPES.INFO}
+                      />
+                    )}
+                  </>
                 )}
                 {section.offers.map((offer, yndex) => {
                   if (
@@ -535,6 +612,7 @@ const InokufuAPI = ({
               </p>
             </Grid>
           ))}
+          <hr />
           <button className='btnShare' onClick={() => forceReload()}>
             Actualiser les résultats
           </button>

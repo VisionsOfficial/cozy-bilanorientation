@@ -7,10 +7,7 @@ import Typography from 'cozy-ui/transpiled/react/Typography';
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 import GlobalModal from '../../Modal/GlobalModal';
 
-import iconInfo from '../../../assets/icons/icon-info.svg';
-
 import '../../../styles/badgerow.styl';
-import Icon from 'cozy-ui/transpiled/react/Icon';
 import { getVisionsCozyDocument } from '../../../utils/visions.cozy';
 
 const styles = {
@@ -22,7 +19,7 @@ const styles = {
 const BadgeRow = ({
   offerAPI,
   addStyles,
-  fixedPicture = null,
+  // fixedPicture = null,
   isPublicPage = false,
   btn = true,
   offerDataMapping = null,
@@ -75,12 +72,10 @@ const BadgeRow = ({
             className='badgeRowTitle'
             variant='h6'
             component='div'
+            onClick={() => openInformationUrl()}
             noWrap
           >
             {getShortTitle(offerAPI.title)}
-            {offerAPI.url !== '' && (
-              <Icon icon={iconInfo} onClick={() => openInformationUrl()} />
-            )}
           </Typography>
           <Typography className='u-mv-half' variant='body1'>
             {offerAPI?.publisher ? offerAPI?.publisher[0]?.name || '' : ''}

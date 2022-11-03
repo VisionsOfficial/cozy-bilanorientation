@@ -18,9 +18,16 @@ import iconProProfil from '../../../assets/icons/icone-profil-pro.svg';
 
 import iconBO from '../../../assets/icons/ICON-BO.svg';
 import iconREO from '../../../assets/icons/ICON-REO.svg';
+import useVisionsContextRules from '../../Hooks/useVisionsContextRules';
+import Loader from '../../Loader';
 
 const HomePage = () => {
   const { t } = useI18n();
+  const { contextRules, isLoading } = useVisionsContextRules();
+
+  if (isLoading) {
+    return <Loader text='Chargement...' />;
+  }
 
   return (
     <>
@@ -33,54 +40,62 @@ const HomePage = () => {
         <ListItem
           link='/jobsintension'
           leftIcon={iconOffers}
-          text={
-            "Mes propositions de métiers en tensions, d'offres d'emploi et de formations"
-          }
+          text={t(contextRules.homePage.bo.text.proposals)}
           latest={true}
         />
       </List>
-      <List title={'Mon Bilan de RéOrientation'} icon={iconREO}>
-        <ListItem
-          link='/projetreorientation'
-          leftIcon={iconJobTension}
-          text={'Mes résultats'}
-        />
-        <ListItem
-          link='/reoOffers'
-          leftIcon={iconFormation}
-          text={'Mes propositions de formations'}
-        />
-      </List>
-      <List title={'Mes données'}>
-        <ListItem
-          link='/softSkills'
-          leftIcon={iconSoftSkill}
-          text={t('List.softSkills')}
-        />
-        <ListItem link='/wip' leftIcon={iconCareer} text={t('List.career')} />
-        <ListItem
-          link='/jobExplorations'
-          leftIcon={iconJobExplore}
-          text={t('List.jobExplorations')}
-        />
-        <ListItem link='/resumes' leftIcon={iconCV} text={t('List.resumes')} />
-        <ListItem
-          link='/skills'
-          leftIcon={iconSkills}
-          text={t('List.skills')}
-        />
-        <ListItem
-          link='/wip'
-          leftIcon={iconProProfil}
-          text={t('List.professionnalProfile')}
-        />
-        <ListItem
-          link='/wip'
-          leftIcon={iconExperience}
-          text={t('List.experiences')}
-          noDivider
-        />
-      </List>
+
+      {contextRules.homePage.visible.reo === true && (
+        <List title={'Mon Bilan de RéOrientation'} icon={iconREO}>
+          <ListItem
+            link='/projetreorientation'
+            leftIcon={iconJobTension}
+            text={'Mes résultats'}
+          />
+          <ListItem
+            link='/reoOffers'
+            leftIcon={iconFormation}
+            text={'Mes propositions de formations'}
+          />
+        </List>
+      )}
+
+      {contextRules.homePage.visible.data === true && (
+        <List title={'Mes données'}>
+          <ListItem
+            link='/softSkills'
+            leftIcon={iconSoftSkill}
+            text={t('List.softSkills')}
+          />
+          <ListItem link='/wip' leftIcon={iconCareer} text={t('List.career')} />
+          <ListItem
+            link='/jobExplorations'
+            leftIcon={iconJobExplore}
+            text={t('List.jobExplorations')}
+          />
+          <ListItem
+            link='/resumes'
+            leftIcon={iconCV}
+            text={t('List.resumes')}
+          />
+          <ListItem
+            link='/skills'
+            leftIcon={iconSkills}
+            text={t('List.skills')}
+          />
+          <ListItem
+            link='/wip'
+            leftIcon={iconProProfil}
+            text={t('List.professionnalProfile')}
+          />
+          <ListItem
+            link='/wip'
+            leftIcon={iconExperience}
+            text={t('List.experiences')}
+            noDivider
+          />
+        </List>
+      )}
     </>
   );
 };

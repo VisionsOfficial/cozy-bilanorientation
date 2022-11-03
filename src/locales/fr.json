@@ -73,5 +73,13 @@
   "JobExplore": "Métiers, secteurs et contextes professionnels que j'explore",
   "reo": {
     "offers": "Mes offres de formation"
+  },
+  "home": {
+    "bo": {
+      "proposals": {
+        "default": "Mes propositions de métiers en tensions, d'offres d'emploi et de formation",
+        "numerique": "Mes matchings formations pour le speedating"
+      }
+    }
   }
 }
