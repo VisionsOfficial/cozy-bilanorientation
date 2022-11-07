@@ -81,5 +81,11 @@
         "numerique": "Mes matchings formations pour le speedating"
       }
     }
+  },
+  "visionsContext": {
+    "numerique": {
+      "rdv": "Je prends RDV",
+      "pre_jobscroller": "Super tu as trouvé une formation qui t'intéresse ! Inscris-toi pour pouvoir rencontrer les acteurs les 23 & 24 Novembre aux créneaux de ton choix."
+    }
   }
 }

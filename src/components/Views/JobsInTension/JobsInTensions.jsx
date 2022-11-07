@@ -8,6 +8,7 @@ import useVisionsContextRules, {
   knownContextCodes
 } from '../../Hooks/useVisionsContextRules';
 import Loader from '../../Loader';
+import Jobscroller from '../../ContextSpecific/Speedating/Jobscroller/Jobscroller';
 
 const JobsInTensions = () => {
   const { contextRules, isLoading } = useVisionsContextRules();
@@ -21,7 +22,12 @@ const JobsInTensions = () => {
       {contextRules.boProposals.ot.visible === true && (
         <Orientoi title={'offersPorposed'} badge={true} isTension={true} />
       )}
-      {contextRules.context === knownContextCodes.numerique && <Jobdating />}
+      {contextRules.context === knownContextCodes.numerique && (
+        <>
+          <Jobdating />
+          <Jobscroller />
+        </>
+      )}
       {contextRules.boProposals.ik.visible === true && (
         <InokufuAPI isTension={true} project={'smartskills'} />
       )}

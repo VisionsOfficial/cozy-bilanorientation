@@ -68,7 +68,7 @@ const contextCodeRules = {
         hideNonCorresponding: false
       },
       ik: {
-        visible: true,
+        visible: false,
         useAllCards: false
       },
       palm: {

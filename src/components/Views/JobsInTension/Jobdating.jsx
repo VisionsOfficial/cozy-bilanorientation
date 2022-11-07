@@ -27,7 +27,7 @@ const Jobdating = () => {
       </div>
       <p className='jobdatingDescription'>
         Rencontrez les organismes de formation et employeurs qui recrutent et
-        échanger avec eux. Saisissez cette opportunité unique pour construire
+        échangez avec eux. Saisissez cette opportunité unique pour construire
         votre projet professionnel !{' '}
       </p>
     </div>

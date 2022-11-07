@@ -10,11 +10,13 @@ export const PILL_TYPES = {
 };
 
 const Pill = ({ textContent, type = PILL_TYPES.INFO }) => {
-  return (
-    <>
-      <div className={`pill pill--${type}`}>{textContent}</div>
-    </>
-  );
+  return <></>
+  
+  // return (
+  //   <>
+  //     <div className={`pill pill--${type}`}>{textContent}</div>
+  //   </>
+  // );
 };
 
 export default Pill;

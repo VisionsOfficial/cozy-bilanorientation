@@ -18,8 +18,11 @@ import iconProProfil from '../../../assets/icons/icone-profil-pro.svg';
 
 import iconBO from '../../../assets/icons/ICON-BO.svg';
 import iconREO from '../../../assets/icons/ICON-REO.svg';
-import useVisionsContextRules from '../../Hooks/useVisionsContextRules';
+import useVisionsContextRules, {
+  knownContextCodes
+} from '../../Hooks/useVisionsContextRules';
 import Loader from '../../Loader';
+import InstantRedirect from '../../ContextSpecific/InstantRedirect';
 
 const HomePage = () => {
   const { t } = useI18n();
@@ -27,6 +30,13 @@ const HomePage = () => {
 
   if (isLoading) {
     return <Loader text='Chargement...' />;
+  }
+
+  if (
+    contextRules.context === knownContextCodes.numerique &&
+    !sessionStorage.getItem('hasBeenRedirected')
+  ) {
+    return <InstantRedirect link='/jobsintension' />;
   }
 
   return (
