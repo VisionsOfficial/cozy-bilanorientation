@@ -53,6 +53,8 @@ const Jobscroller = () => {
   };
 
   useEffect(() => {
+    if (!jobCards?.length) return;
+    if (!client) return;
     const getOffers = async () => {
       const data = await visionsTrustApiPOST(client, 'speedating');
       const offers = data.offers || [];
