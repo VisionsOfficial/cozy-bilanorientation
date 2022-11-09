@@ -15,9 +15,6 @@ import { useJsonFiles } from '../../../Hooks/useJsonFiles';
 import ShareBilanBtn from '../../../Button/ShareBilanBtn';
 import { prioritizeCards } from '../../../../utils/orientoi';
 
-const TMP_REDIRECTION_LINK =
-  'https://visionspol.eu/speedating-de-la-formation-aux-metiers-du-numerique/';
-
 const styles = {
   card: {
     borderRadius: '15px',
@@ -199,7 +196,10 @@ const Modal = ({ closeModal, visible, content, link }) => {
           >
             <div
               className='btnShare'
-              onClick={() => window.open(TMP_REDIRECTION_LINK)}
+              onClick={() => {
+                window.open(link);
+                closeModal();
+              }}
             >
               <p className='btnText'>Je prends RDV</p>
               <div className='btnCircle'>
