@@ -41,8 +41,9 @@ const Jobscroller = () => {
   const [redirectLink, setRedirectLink] = useState('');
 
   const openModal = link => {
-    setRedirectLink(link);
-    setModalVisible(true);
+    return window.open(link);
+    // setRedirectLink(link);
+    // setModalVisible(true);
   };
 
   const closeModal = () => {
