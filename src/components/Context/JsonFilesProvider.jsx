@@ -77,16 +77,25 @@ const JsonFilesProvider = ({ children }) => {
     (async () => {
       try {
         setAllDataStatus({ isLoading: true, isLoaded: false });
-        for (const [key, value] of Object.entries(jsonFilesDefault)) {
-          const jsonData = await fetchJsonFileByName(client, value.name);
+        const promises = [];
+        for (const [, value] of Object.entries(jsonFilesDefault)) {
+          promises.push(fetchJsonFileByName(client, value.name));
+        }
+
+        const results = await Promise.all(promises);
+
+        let idx = 0;
+        for (const [key] of Object.entries(jsonFilesDefault)) {
+          const result = results[idx];
           setJsonFiles(prev => ({
             ...prev,
             [key]: {
               ...prev[key],
-              data: jsonData ? jsonData : [],
-              dataLoaded: !!jsonData
+              data: result ? result : [],
+              dataLoaded: !!result
             }
           }));
+          idx++;
         }
 
         setAllDataStatus({ isLoading: false, isLoaded: true });

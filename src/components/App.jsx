@@ -23,12 +23,16 @@ import CVAndCoverLetter from './Views/CVAndCoverLetter/CVAndCoverLetter';
 import SoftSkillsPage from 'src/components/Views/SoftSkillsPage';
 import JobExplorationsPage from 'src/components/Views/JobExplorationsPage';
 import WipPage from 'src/components/Views/WipPage';
-import ExperiencesPage from 'src/components/Views/ExperiencesPage/ExperiencesPage';
 import JobsInTensions from './Views/JobsInTension';
 import ProjetReorientation from './Views/ProjetReorientation';
 import HomePage from './Views/HomePage';
-import PublicPage from './Views/publicPage/PublicPage';
 import BilanOrientationResultsPage from './Views/Results/BilanOrientationResultsPage';
+import ReoOffersPage from './Views/ProjetReorientation/ReoOffersPage';
+
+import PublicPage from './Views/publicPage/PublicPage';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import getSharedDocument from 'cozy-sharing/dist/getSharedDocument';
 
 const styles = {
   content: {
@@ -38,7 +42,36 @@ const styles = {
   }
 };
 
-const App = () => {
+const PublicContext = () => {
+  const client = useClient();
+  const [sharedDocument, setSharedDocument] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // public route = /public/?sharecode=xxxxx
+        // There is no id. It should be a sharecode
+        // dedicated to a unique document. We look into
+        // permissions and try to open the first file.
+        const sharedDoc = await getSharedDocument(client);
+        setSharedDocument(sharedDoc);
+      } catch {
+        setSharedDocument(false);
+      }
+    };
+    fetchData();
+  }, [client]);
+
+  if (sharedDocument) {
+    return <>PUBLIC CONTEXT</>;
+  } else if (sharedDocument !== null) {
+    return <>Une erreur est survenue</>;
+  } else {
+    return <Spinner size='xxlarge' middle />;
+  }
+};
+
+const App = ({ isPublic }) => {
   const { t } = useI18n();
   const client = useClient();
   const { isMobile } = useBreakpoints();
@@ -56,75 +89,82 @@ const App = () => {
           </BarCenter>
         )}
         <Main style={{ display: 'block', backgroundColor: '#f4fcfe' }}>
-          <Header />
-          {allDataStatus.isLoading && !allDataStatus.isLoaded ? (
-            <>
-              <Spinner
-                size='xxlarge'
-                className='u-flex u-flex-justify-center u-flex-items-center u-mt-3 u-pv-2'
-              />
-              <Typography
-                variant='subtitle1'
-                align='center'
-                color='textPrimary'
-              >
-                {t(`JsonFilesProvider.jsonFiles.info`)}
-              </Typography>
-            </>
+          {isPublic ? (
+            <PublicContext />
           ) : (
-            <Content
-              style={styles.content}
-              className={cx({
-                'u-mh-2': !isMobile
-              })}
-              id='main'
-            >
-              {!allDataStatus.isLoaded && !allDataStatus.isLoading ? (
-                <div className='u-mt-3 u-pt-2'>
-                  {Object.keys(jsonFiles).map((key, idx) => {
-                    return (
-                      !jsonFiles[key].dataLoaded && (
-                        <Typography
-                          key={idx}
-                          variant='subtitle2'
-                          align='center'
-                          color='secondary'
-                        >
-                          {t(`JsonFilesProvider.jsonFiles.error`, {
-                            name: jsonFiles[key].name
-                          })}
-                        </Typography>
-                      )
-                    );
-                  })}
-                </div>
+            <>
+              <Header />
+              {allDataStatus.isLoading && !allDataStatus.isLoaded ? (
+                <>
+                  <Spinner
+                    size='xxlarge'
+                    className='u-flex u-flex-justify-center u-flex-items-center u-mt-3 u-pv-2'
+                  />
+                  <Typography
+                    variant='subtitle1'
+                    align='center'
+                    color='textPrimary'
+                  >
+                    {t(`JsonFilesProvider.jsonFiles.info`)}
+                  </Typography>
+                </>
               ) : (
-                <Switch>
-                  <Route path='/index' component={HomePage} />
-                  <Route path='/softSkills' component={SoftSkillsPage} />
-                  <Route path='/resumes' component={CVAndCoverLetter} />
-                  <Route
-                    path='/jobExplorations'
-                    component={JobExplorationsPage}
-                  />
-                  <Route path='/skills' component={WipPage} />
-                  <Route path='/wip' component={WipPage} />
-                  {/* <Route path='/jobsintension' component={JobsInTensions} /> */}
-                  <Route path='/jobsintension' component={WipPage} />
-                  <Route path='/bilanorientation' component={PublicPage} />
-                  <Route
-                    path='/results/bo'
-                    component={BilanOrientationResultsPage}
-                  />
-                  <Route
-                    path='/projetreorientation'
-                    component={ProjetReorientation}
-                  />
-                  <Redirect from='/' to='/index' />
-                  <Redirect from='*' to='/index' />
-                </Switch>
+                <Content
+                  style={styles.content}
+                  className={cx({
+                    'u-mh-2': !isMobile
+                  })}
+                  id='main'
+                >
+                  {!allDataStatus.isLoaded && !allDataStatus.isLoading ? (
+                    <div className='u-mt-3 u-pt-2'>
+                      {Object.keys(jsonFiles).map((key, idx) => {
+                        return (
+                          !jsonFiles[key].dataLoaded && (
+                            <Typography
+                              key={idx}
+                              variant='subtitle2'
+                              align='center'
+                              color='secondary'
+                            >
+                              {t(`JsonFilesProvider.jsonFiles.error`, {
+                                name: jsonFiles[key].name
+                              })}
+                            </Typography>
+                          )
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <Switch>
+                      <Route path='/index' component={HomePage} />
+                      <Route path='/softSkills' component={SoftSkillsPage} />
+                      <Route path='/resumes' component={CVAndCoverLetter} />
+                      <Route
+                        path='/jobExplorations'
+                        component={JobExplorationsPage}
+                      />
+                      <Route path='/skills' component={WipPage} />
+                      <Route path='/reoOffers' component={ReoOffersPage} />
+                      <Route path='/wip' component={WipPage} />
+                      <Route path='/jobsintension' component={JobsInTensions} />
+                      {/* <Route path='/jobsintension' component={WipPage} /> */}
+                      <Route path='/bilanorientation' component={PublicPage} />
+                      <Route
+                        path='/results/bo'
+                        component={BilanOrientationResultsPage}
+                      />
+                      <Route
+                        path='/projetreorientation'
+                        component={ProjetReorientation}
+                      />
+                      <Redirect from='/' to='/index' />
+                      <Redirect from='*' to='/index' />
+                    </Switch>
+                  )}
+                </Content>
               )}
-            </Content>
+            </>
           )}
         </Main>
         <Alerter t={t} />

@@ -1,8 +1,20 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useClient } from 'cozy-client';
-import { inokufuApiGET } from '../../../utils/remoteDoctypes';
+import {
+  inokufuApiGET,
+  inokufuApiPOST,
+  visionsTrustApiPOST
+} from '../../../utils/remoteDoctypes';
+import { useMappingData } from '../../Hooks/useMappingData';
+import { saveAPIDataToVisionsCozyDoctype } from '../../../utils/saveDataToVisionsCozyDoctype';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
+import { shuffleArray } from '../../../utils/arrayFunctions';
+import { waitForRepeatingFunctionsToEnd } from '../../../utils/utils';
+import log from 'cozy-logger';
+import useVisionsContextRules, {
+  knownContextCodes
+} from '../../Hooks/useVisionsContextRules';
+
 import Accordion from '../../Accordion';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 import { useI18n } from 'cozy-ui/transpiled/react/I18n';
@@ -12,7 +24,10 @@ import Loader from '../../Loader';
 // IMG
 import icon from '../../../assets/icons/inokufu.svg';
 import EyeIcon from '../../../assets/icons/icon-eye.svg';
-import { useMappingData } from '../../Hooks/useMappingData';
+import Pill, { PILL_TYPES } from '../../Pills/Pill';
+
+const TIME_BETWEEN_QUERIES = 10 * 60 * 1000;
+const BASE_SHOW_COUNT = 2;
 
 const styles = {
   card: {
@@ -27,89 +42,474 @@ const styles = {
   }
 };
 
-const DEMO_DATA = [
-  {
-    title: 'Anglais En Ligne',
-    url:
-      'https://formation.neobridge.com/langues/anglais-hypnose-toeic/#contact--eligi_form',
-    description:
-      'Apprenez facilement l&apos;anglais. Gr\u00e2ce \u00e0 l\u2019apprentissage sous hypnose, levez vos freins et vos \u00e9motions limitantes pour un apprentissage optimal. Choisissez votre formateur pour profitez de face \u00e0 face en visio et d\u2019une formation en ligne \u00e0 visage humain. Obtenez une certification TOEIC reconnue dans le monde du travail. Notre objectif, que vous vous exprimiez avec envie, confiance et s\u00e9r\u00e9nit\u00e9. Plus d&apos;infos : https://formation.neobridge.com/assets/docs/anglais-toeic.pdf'
-  },
-  {
-    title: 'Prospecter et développer un portefeuille client',
-    url:
-      'https://www.moncompteformation.gouv.fr/espace-prive/html/#/formation/recherche/83854281900027_788/83854281900027_782',
-    picture:
-      'https://picturelo.s3.eu-west-3.amazonaws.com/provider/moncompteformation/5moncompteformation.png',
-    description:
-      "La formation « Prospection et développement d'un portefeuille client » vous permet d'accompagner vos clients et définir les actions qui peuvent apporter un avantage concurrentiel à l'entreprise . Le programme s'articule autour de 3 axes : 1. Comment et pourquoi se former à la prospection et au dével..."
-  },
-  {
-    title: 'Anglais',
-    url: 'https://lp.wallstreetenglish.fr/vision',
-    description:
-      'Accédez à la Méthode Wall Street English et aux cœurs des éléments qui la composent. Notre formation intensive en anglais est la formation d’apprentissage de l’anglais qu’il vous faut pour améliorer votre anglais rapidement quel que soit votre niveau actuel en suivant un rythme hebdomadaire soutenu. La formation English Express peut être suivie à distance en petit groupe (24h/24) et/ou en centre.',
-    picture:
-      'https://picturelo.s3.eu-west-3.amazonaws.com/provider/moncompteformation/9moncompteformation.png'
-  }
-];
-
 const InokufuAPI = ({
   provider = 'visions',
-  keywords,
-  isPublicPage = false
+  isPublicPage = false,
+  isTension,
+  project = 'smartskills'
 }) => {
+  const [loadingText, setLoadingText] = useState(
+    'Veuillez patienter, nous récupérons les offres adaptées...'
+  );
+
   const client = useClient();
   const { t } = useI18n();
+  const {
+    contextRules,
+    isLoading: contextRulesLoading
+  } = useVisionsContextRules();
+
   const { mappingData, dataStatus } = useMappingData();
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error] = useState(false);
 
-  const [extraDataToggled, setExtraDataToggled] = useState(false);
+  // View more logic
+  const [sectionViewedCount, setSectionViewedCount] = useState(null);
 
-  const getOfferMappingData = url => {
-    if (!mappingData) return null;
-    const idx = mappingData?.of?.findIndex(o => o['lien redirection'] === url);
-    if (idx === -1) {
-      // Try find with other link
-      const idxInfo = mappingData?.of?.findIndex(
-        o => o['lien information'] === url
-      );
-      if (idxInfo === -1) return null;
-      else return mappingData.of[idxInfo];
-    }
+  const { jsonFiles } = useJsonFiles();
+  const jobCards = jsonFiles.orientoi?.data?.data?.jobCards || [];
 
+  const SESSION_INOKUFU_DATA = 'inokufuApi' + provider;
+  const SESSION_INOKUFU_LAST_CALL = 'inokufuLastCall' + provider;
+
+  const getOfferMappingData = publisherArr => {
+    if (!publisherArr || !publisherArr.length || !mappingData) return null;
+
+    const publisherName = publisherArr[0].name;
+    const idx = mappingData?.of?.findIndex(
+      o => o.OF.toLowerCase().trim() === publisherName.toLowerCase().trim()
+    );
+    if (idx === -1) return null;
     return mappingData.of[idx];
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      const res = await inokufuApiGET(client, { provider, keywords });
-      if (res.statusCode !== 200) {
-        setLoading(false);
-        setError(true);
-        return;
+  /**
+   * Stores in VisionsTrust when a lead is shown on the page
+   * @param {string} of OF name
+   */
+  const storeLeadView = useCallback(
+    async of => {
+      const sessionStorageKey = 'ofs';
+      if (!sessionStorage.getItem(sessionStorageKey))
+        sessionStorage.setItem(sessionStorageKey, JSON.stringify({}));
+
+      let v = JSON.parse(sessionStorage.getItem(sessionStorageKey));
+      if (v[of]) {
+        v[of]++;
+      } else {
+        v[of] = 1;
+      }
+      sessionStorage.setItem(sessionStorageKey, JSON.stringify(v));
+
+      waitForRepeatingFunctionsToEnd(async () => {
+        const leads = JSON.parse(sessionStorage.getItem(sessionStorageKey));
+        if (!leads) return;
+        await visionsTrustApiPOST(client, 'leadview', { leads });
+        sessionStorage.removeItem(sessionStorageKey);
+      }, 500);
+    },
+    [client]
+  );
+
+  const forceReload = () => {
+    sessionStorage.removeItem(SESSION_INOKUFU_DATA);
+    sessionStorage.removeItem(SESSION_INOKUFU_LAST_CALL);
+    window.location.reload();
+  };
+
+  const addCPFIfNeeded = urls => {
+    const result = [...urls];
+    for (const url of urls) {
+      const u = new URL(url);
+      const sp = u.searchParams;
+      if (!sp.get('publisher')) {
+        if (sp.get('provider') === 'visions') continue;
+        result.push(
+          'https://api.inokufu.com/learningobject/v2/search-provider?lang=fr&model=strict&sort=popularity&max=20&match=strict&page=0&provider=moncompteformation'
+        );
+      }
+    }
+    return result;
+  };
+
+  const getUsedJobCards = useCallback(
+    cards => {
+      const tensionCards = cards.filter(jc => jc.isTension);
+      const nonTensionCards = cards.filter(jc => !jc.isTension);
+      if (isTension) {
+        if (contextRules.context === knownContextCodes.numerique) {
+          const idkPositionnedCards = nonTensionCards.filter(
+            jc => jc.positionnement?.toLowerCase() === 'je ne sais pas'
+          );
+          const positionnedCards = nonTensionCards.filter(
+            jc => jc.positionnement?.toLowerCase() === 'ça me correspond'
+          );
+          return [...positionnedCards, ...idkPositionnedCards, ...tensionCards];
+        } else {
+          return tensionCards;
+        }
       }
 
-      if (res?.response?.content) {
-        // const content = res.response.content;
-        setData(DEMO_DATA);
+      return nonTensionCards.filter(
+        jc => jc.positionnement !== 'ça ne me correspond pas'
+      );
+    },
+    [isTension, contextRules.context]
+  );
+
+  /**
+   * LOAD API DATA FROM INOKUFU AND MATCH OFFERS
+   */
+  useEffect(() => {
+    if (contextRulesLoading) return;
+    let isMounted = true;
+    const getData = async () => {
+      try {
+        // VIEW MORE LOGIC
+        const buildSectionViewCount = sectionsArr => {
+          const r = {};
+          for (const s of sectionsArr) {
+            r[s.title] = {
+              offers: [...s.offers],
+              title: s.title,
+              viewCount: BASE_SHOW_COUNT
+            };
+          }
+
+          // STORE INITIAL LEADS
+          for (const key in r) {
+            for (let i = 0; i < BASE_SHOW_COUNT; i++) {
+              if (i >= r[key].offers.length) break;
+              if (r[key]?.offers[i]?.publisher) {
+                const publisher =
+                  r[key]?.offers[i]?.publisher[0]?.name || 'UNKNOWN_PUBLISHER';
+                storeLeadView(publisher);
+              } else {
+                storeLeadView('UNKNOWN_PUBLISHER');
+              }
+            }
+          }
+
+          setSectionViewedCount(prev => ({
+            ...prev,
+            ...r
+          }));
+        };
+
+        const usedJobCards = getUsedJobCards(jobCards);
+
+        if (!usedJobCards || !usedJobCards.length) {
+          setLoading(false);
+          return;
+        }
+
+        const usedKeywords = usedJobCards.map(jc => jc.name);
+        if (!usedKeywords.length) return;
+
+        // Check session storage and when was last call to avoid too many calls
+        if (sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)) {
+          const lastCall = JSON.parse(
+            sessionStorage.getItem(SESSION_INOKUFU_LAST_CALL)
+          );
+          if (Date.now() - lastCall < TIME_BETWEEN_QUERIES) {
+            if (sessionStorage.getItem(SESSION_INOKUFU_DATA) && isMounted) {
+              setData(JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA)));
+              buildSectionViewCount(
+                JSON.parse(sessionStorage.getItem(SESSION_INOKUFU_DATA))
+              );
+              setLoading(false);
+              return;
+            }
+          }
+        }
+
+        // Call to wakeup the API
+        await inokufuApiPOST(client, {
+          project,
+          inputKeyword: usedKeywords[0]
+        });
+
+        // Prepare calls to retrieve output keywords for every input keyword
+        // there is. The output keywords are then used to get the offers
+        const retrieveOutputKeywordsPromises = [];
+
+        if (isMounted)
+          setLoadingText(
+            `Recherche de compétences pour les métiers en tension...`
+          );
+
+        for (const keyword of usedKeywords) {
+          retrieveOutputKeywordsPromises.push(
+            inokufuApiPOST(client, {
+              project,
+              inputKeyword: keyword.toLowerCase().trim()
+            })
+          );
+        }
+
+        const outputKeywordsPromiseResults = await Promise.all(
+          retrieveOutputKeywordsPromises
+        );
+
+        // Match input keywords to output keywords results to build out the sections
+        // in the UI
+        const matchInKeyToOutKey = results => {
+          const match = {};
+          // Loop over the usedKeywords as it will be same length as the promise array we built
+          for (let i = 0; i < usedKeywords.length; i++) {
+            let apiResult = results[i];
+
+            if (typeof apiResult === 'string')
+              apiResult = JSON.parse(apiResult);
+
+            match[usedKeywords[i]] = apiResult;
+          }
+
+          return match;
+        };
+
+        const match = matchInKeyToOutKey(outputKeywordsPromiseResults);
+
+        const removeDuplicateKwFromMatch = obj => {
+          const seenKeywords = [];
+          const r = {};
+          for (const [key, apiRes] of Object.entries(obj)) {
+            if (apiRes.statusCode !== 200 && apiRes.statusCode !== 210) {
+              r[key] = apiRes;
+              continue;
+            }
+
+            if (seenKeywords.length === 0) {
+              seenKeywords.push(...apiRes.response.outputKeywords);
+              r[key] = apiRes;
+              continue;
+            }
+
+            const newKwArr = [];
+            for (const kw of apiRes.response.outputKeywords) {
+              if (!seenKeywords.includes(kw)) newKwArr.push(kw);
+            }
+            apiRes.response.outputKeywords = newKwArr;
+            r[key] = apiRes;
+          }
+          return r;
+        };
+
+        const matchWithoutDuplicates = removeDuplicateKwFromMatch(match);
+
+        for (const inputKeyword in matchWithoutDuplicates) {
+          if (isMounted)
+            setLoadingText(
+              `Récupération des offres adaptées pour ${inputKeyword}`
+            );
+
+          if (matchWithoutDuplicates[inputKeyword].statusCode === 400) {
+            matchWithoutDuplicates[inputKeyword].offers = [];
+            continue;
+          }
+          const outputKeywords =
+            matchWithoutDuplicates[inputKeyword].response.outputKeywords;
+          const queryParams =
+            matchWithoutDuplicates[inputKeyword].response.queryParameters;
+
+          const thisInputKeywordPromises = [];
+          for (const url of addCPFIfNeeded(queryParams)) {
+            const u = new URL(url);
+            const searchParams = u.searchParams;
+            const options = {};
+            for (const [k, v] of searchParams.entries()) {
+              options[k] = v;
+            }
+
+            for (const k of outputKeywords) {
+              thisInputKeywordPromises.push(
+                inokufuApiGET(client, {
+                  ...options,
+                  keywords: k
+                })
+              );
+            }
+          }
+
+          const thisInKwOffersResponses = await Promise.all(
+            thisInputKeywordPromises
+          );
+          const thisInKwOffers = [];
+          for (const r of thisInKwOffersResponses) {
+            if (r.statusCode !== 200) continue;
+            for (const offer of r.response.content) {
+              if (thisInKwOffers.find(o => o.title === offer.title)) continue;
+              thisInKwOffers.push(offer);
+            }
+          }
+
+          matchWithoutDuplicates[inputKeyword].offers = thisInKwOffers;
+        }
+
+        const sections = [];
+
+        // GET PRIORITY KEYWORDS
+        const differentPublishersOffers = [];
+        let differentPublisherOffersIndex = -1;
+        for (const keyW in matchWithoutDuplicates) {
+          ++differentPublisherOffersIndex;
+          differentPublishersOffers.push([]);
+          // First keyword is the most important, try to find 2 publishers different
+          const offers = matchWithoutDuplicates[keyW].offers;
+          const tmpStorage = [];
+
+          for (const o of shuffleArray(offers)) {
+            if (
+              !o.publisher ||
+              differentPublishersOffers[differentPublisherOffersIndex].length ==
+                2
+            ) {
+              tmpStorage.push(o);
+              continue;
+            }
+
+            try {
+              const existsIndex = differentPublishersOffers[
+                differentPublisherOffersIndex
+              ].findIndex(
+                item => item.publisher[0].name === o.publisher[0].name
+              );
+              if (existsIndex === -1) {
+                differentPublishersOffers[differentPublisherOffersIndex].push(
+                  o
+                );
+              } else {
+                tmpStorage.push(o);
+              }
+            } catch (e) {
+              tmpStorage.push(o);
+              continue;
+            }
+          }
+
+          // Replaces the array without the 2 first ones
+          // We refill it with the 2 first ones later
+          matchWithoutDuplicates[keyW].offers = tmpStorage;
+        }
+
+        let i = 0;
+        for (const key in matchWithoutDuplicates) {
+          sections.push({
+            title: key,
+            offers: [
+              ...differentPublishersOffers[i], // Rebuild the array with the 2 initial offers
+              ...shuffleArray(matchWithoutDuplicates[key].offers)
+            ],
+            jobCard: jobCards.find(jc => jc.name === key)
+          });
+
+          i++;
+        }
+
+        if (!isMounted) return;
+
+        buildSectionViewCount(sections);
+        setData(sections);
         setLoading(false);
-        setError(false);
+
+        sessionStorage.setItem(SESSION_INOKUFU_DATA, JSON.stringify(sections));
+        sessionStorage.setItem(
+          SESSION_INOKUFU_LAST_CALL,
+          JSON.stringify(Date.now())
+        );
+
+        await saveAPIDataToVisionsCozyDoctype(
+          client,
+          'inokufu-smartskills',
+          sections
+        );
+      } catch (err) {
+        log('error', err);
+        setData([]);
+        setLoading(false);
       }
     };
 
     getData();
-  }, [client, keywords, provider]);
 
-  const toggleViewMore = () => {
-    setExtraDataToggled(!extraDataToggled);
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    client,
+    provider,
+    jobCards,
+    isTension,
+    project,
+    SESSION_INOKUFU_DATA,
+    SESSION_INOKUFU_LAST_CALL,
+    storeLeadView,
+    contextRulesLoading,
+    contextRules,
+    getUsedJobCards
+  ]);
+
+  /**
+   * Augments the allowed offers to appear
+   * @param {string} sectionTitle The name of the job - section title
+   * @param {string} of The name of the of
+   */
+  const viewMore = sectionTitle => {
+    for (
+      let i = sectionViewedCount[sectionTitle].viewCount;
+      i < sectionViewedCount[sectionTitle].viewCount + BASE_SHOW_COUNT;
+      i++
+    ) {
+      if (i >= sectionViewedCount[sectionTitle].offers.length) break;
+      if (sectionViewedCount[sectionTitle]?.offers[i]?.publisher) {
+        const publisher =
+          sectionViewedCount[sectionTitle]?.offers[i]?.publisher[0]?.name ||
+          'UNKNOWN_PUBLISHER';
+
+        storeLeadView(publisher);
+      } else {
+        storeLeadView('UNKNWON_PUBLISHER');
+      }
+    }
+
+    setSectionViewedCount(prev => ({
+      ...prev,
+      [sectionTitle]: {
+        ...prev[sectionTitle],
+        viewCount: prev[sectionTitle].viewCount + BASE_SHOW_COUNT
+      }
+    }));
   };
 
+  /**
+   * Finds the method for the of with email if necessary
+   * @param {string} of Name of the OF
+   * @returns The mapping for this of
+   */
+  const getOFMethodMapping = of => {
+    const map = mappingData.methods.find(
+      o => o.OF === of.toLowerCase().replaceAll(' ', '_')
+    );
+    return map || 5;
+  };
+
+  const getPillColor = positionning => {
+    switch (positionning.toLowerCase()) {
+      case 'ça me correspond':
+        return PILL_TYPES.SUCCESS;
+      case 'ça ne me correspond pas':
+        return PILL_TYPES.DANGER;
+      case 'je ne sais pas':
+        return PILL_TYPES.WARN;
+    }
+  };
+
+  if (contextRulesLoading) return <Loader text='Chargement...' />;
+
   if (!dataStatus.isLoaded && dataStatus.isLoading) {
-    return <Loader text='Chargement' />;
+    return <Loader text={'Chargement'} />;
   } else if (!dataStatus.isLoaded && !dataStatus.isLoading) {
     return <div>Une erreur est survenue</div>;
   }
@@ -120,51 +520,102 @@ const InokufuAPI = ({
       title={t('formationOffers')}
       addStyles={styles.card}
       bgHeader={'#FFF'}
-      btnSeeMore={data.length > 2}
-      seeMoreFC={toggleViewMore}
-      seeMoreToggled={extraDataToggled}
+      btnSeeMore={false}
+      seeMoreFC={() => {}}
+      seeMoreToggled={false}
     >
       {error && (
         <div>Une erreur est survenue lors du chargement des données</div>
       )}
       {loading ? (
-        <Loader
-          text={'Veuillez patienter, nous récupérons les offres adaptées...'}
-        />
+        <Loader text={loadingText} />
       ) : (
-        <Grid className='containerBadgeRow'>
-          {data.slice(0, 2).map((offer, index) => (
-            <Grid key={index} item>
-              <BadgeRow
-                offerAPI={offer}
-                icon={EyeIcon}
-                addStyles={styles.badge}
-                offerDataMapping={getOfferMappingData(offer.url)}
-                isPublicPage={isPublicPage}
-              />
+        <Grid>
+          {data.map((section, index) => (
+            <Grid key={index} xs={12} className='containerBadgeRow' item>
+              <div>
+                {section?.offers?.length === 0 ? (
+                  <>
+                    <h4>Aucune offre trouvée pour : {section.title}</h4>
+                    {!section.jobCard?.isTension && (
+                      <Pill
+                        textContent={section.jobCard.positionnement}
+                        type={getPillColor(section.jobCard.positionnement)}
+                      />
+                    )}
+                    {section.jobCard?.isTension && (
+                      <Pill
+                        textContent={'Métier en tension recommandé'}
+                        type={PILL_TYPES.INFO}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <h4>Vos offres pour : {section.title}</h4>
+                    {!section.jobCard?.isTension && (
+                      <Pill
+                        textContent={section.jobCard.positionnement}
+                        type={getPillColor(section.jobCard.positionnement)}
+                      />
+                    )}
+                    {section.jobCard?.isTension && (
+                      <Pill
+                        textContent={'Métier en tension recommandé'}
+                        type={PILL_TYPES.INFO}
+                      />
+                    )}
+                  </>
+                )}
+                {section.offers.map((offer, yndex) => {
+                  if (
+                    yndex <
+                    (sectionViewedCount[section.title]?.viewCount ||
+                      BASE_SHOW_COUNT)
+                  ) {
+                    return (
+                      <Grid key={yndex} item>
+                        <BadgeRow
+                          offerAPI={offer}
+                          icon={EyeIcon}
+                          addStyles={styles.badge}
+                          offerMethodMapping={getOFMethodMapping(
+                            offer.publisher
+                              ? offer.publisher[0]?.name || ''
+                              : ''
+                          )}
+                          offerDataMapping={getOfferMappingData(
+                            offer?.publisher
+                          )}
+                          isPublicPage={isPublicPage}
+                        />
+                      </Grid>
+                    );
+                  }
+                })}
+                {section.offers.length >
+                  (sectionViewedCount[section.title]?.viewCount ||
+                    BASE_SHOW_COUNT) && (
+                  <div
+                    className='btnShare'
+                    onClick={() => {
+                      viewMore(section.title);
+                    }}
+                    style={{ marginTop: '10px' }}
+                  >
+                    <p className='btnText'>Voir +</p>
+                  </div>
+                )}
+              </div>
+              <p className='sourceData'>
+                Source de données : <span>Inokufu</span>
+              </p>
             </Grid>
           ))}
-          {data.length > 2 &&
-            data.slice(2, 8).map((offer, index) => (
-              <Grid
-                key={index}
-                item
-                className={
-                  extraDataToggled ? 'carouselData' : 'inoHideExtraData'
-                }
-              >
-                <BadgeRow
-                  offerAPI={offer}
-                  icon={EyeIcon}
-                  addStyles={styles.badge}
-                  offerDataMapping={getOfferMappingData(offer.url)}
-                  isPublicPage={isPublicPage}
-                />
-              </Grid>
-            ))}
-          <p className='sourceData'>
-            Source de données : <span>Inokufu</span>
-          </p>
+          <hr />
+          <button className='btnShare' onClick={() => forceReload()}>
+            Actualiser les résultats
+          </button>
         </Grid>
       )}
     </Accordion>

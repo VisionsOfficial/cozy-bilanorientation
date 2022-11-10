@@ -1,30 +1,32 @@
 import React, { useState, useRef } from 'react';
 import Icon from 'cozy-ui/transpiled/react/Icon';
+import { useClient } from 'cozy-client';
+import { useVisionsAccount } from '../../Hooks/useVisionsAccount';
+
 import ShareBilanBtn from '../../Button/ShareBilanBtn';
 
 // TMP
 import logoTmp from '../../../assets/icons/icon-check.svg';
 import logoVisions from '../../../assets/icons/logo_picto.svg';
-
-// const regex = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/gm;
-const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
+import { trySendBOMail } from '../../../utils/sendMail';
 
 const ModalGeneric = ({ open = false, closeModal }) => {
   const openModal = open === false ? '' : 'openModal';
 
   const emailRef = useRef();
+  const client = useClient();
+  const { visionsAccount } = useVisionsAccount();
 
   const [confirmation, setConfirmation] = useState(false);
   const [saveEmail, setSaveEmail] = useState('');
-  const confirm = () => {
+
+  const confirm = async () => {
     setConfirmation(true);
-    setSaveEmail(emailRef.current.value);
-    // if (regex.test(emailRef.current.value)) {
-    //   setConfirmation(true);
-    //   setSaveEmail(emailRef.current.value);
-    // } else {
-    //   alert("adresse email erronée");
-    // }
+    if (!emailRef.current) return;
+    const email = emailRef.current.value;
+    setSaveEmail(email);
+
+    await trySendBOMail(client, email, email, visionsAccount);
   };
 
   if (confirmation) {
@@ -49,8 +51,11 @@ const ModalGeneric = ({ open = false, closeModal }) => {
               Vous pouvez également partager le lien suivant pour donner accès à
               votre bilan d&apos;orientation : <br />
               <br />
-              <a href={'/#/bilanorientation'} className='modalPublicLink'>
-                {publicLinkTMP}
+              <a
+                href={sessionStorage.getItem('pubshare')}
+                className='modalPublicLink'
+              >
+                {sessionStorage.getItem('pubshare')}
               </a>
             </p>
           </div>

@@ -11,6 +11,12 @@ import { Q } from 'cozy-client';
 
 const DOCTYPE = 'visions.cozy';
 
+export const DOCTYPE_COLLECTIONS = {
+  USER: 'user',
+  SETTINGS: 'settings',
+  USER_DOCUMENTS: 'userDocuments'
+};
+
 /**
  * Fetches the document of the set category
  * @param {string} category The document category field
@@ -69,4 +75,36 @@ export const updateVisionsCozyDocument = async (client, category, fields) => {
 export const deleteVisionsCozyDocument = async (client, document) => {
   const response = await client.destroy(document);
   return response;
+};
+
+/**
+ * Generates a public share code for a document in the visions.cozy doctype
+ * @param {CozyClient} client The cozy client instance
+ * @param {object} document The cozy document to share
+ * @returns The public sharecode
+ */
+export const createPublicShareCode = async (client, document) => {
+  const shareObject = await client
+    .collection('io.cozy.permissions')
+    .createSharingLink({
+      _id: document.id,
+      _type: 'visions.cozy'
+    });
+
+  const shareCode = shareObject.data.attributes.shortcodes.email;
+  return shareCode;
+};
+
+/**
+ * Generates a public share code for a document in the visions.cozy doctype, generates
+ * the full url for it and stores it in the session
+ * @param {CozyClient} client The cozy client instance
+ * @param {object} document The cozy document to share
+ * @returns The full public report url
+ */
+export const createPublicReportLink = async (client, document) => {
+  const shareCode = await createPublicShareCode(client, document);
+  const publicReportLink = `${location.protocol}//${location.host}/public/?sharecode=${shareCode}`;
+  sessionStorage.setItem('pubshare', publicReportLink);
+  return publicReportLink;
 };

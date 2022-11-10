@@ -1,9 +1,9 @@
 {
-  "name": "VisionsGalaxy",
+  "name": "Visions Galaxy",
   "slug": "bilanorientation",
-  "icon": "icon.svg",
+  "icon": "iconVg.svg",
   "categories": [],
-  "version": "0.4.3",
+  "version": "0.5.3",
   "licence": "AGPL-3.0",
   "editor": "visions",
   "source": "https://github.com/VisionsOfficial/cozy-bilanorientation.git",
@@ -17,7 +17,7 @@
       "index": "index.html",
       "public": false
     },
-    "/": {
+    "/public": {
       "folder": "/",
       "index": "index.html",
       "public": true
@@ -39,9 +39,47 @@
       "type": "io.cozy.files",
       "verbs": ["ALL"]
     },
-    "mocks todos": {
-      "description": "TO REMOVE: only used as demonstration about Cozy App data interactions",
-      "type": "io.mocks.todos"
+    "mail": {
+      "description": "Send emails to orientation experts",
+      "type": "io.cozy.jobs",
+      "verbs": ["POST"],
+      "selector": "worker",
+      "values": ["sendmail"]
+    },
+    "visions-aggregator": {
+      "type": "io.cozy.accounts",
+      "description": "Use your Visions account to communicate with VisionsTrust & VisionsGalaxy",
+      "verbs": ["GET"]
+    },
+    "visionstrust": {
+      "description": "Communication with Visions API to show elements regarding VisionsGalaxy",
+      "type": "com.visionstrust",
+      "verbs": ["GET", "POST"]
+    },
+    "inokufu offers": {
+      "description": "Communication with the Inokufu Learning Objects API to retrieve appropriate offers",
+      "type": "com.inokufu.api",
+      "verbs": ["GET"]
+    },
+    "inokufu matchings": {
+      "description": "Retrieve offer keywords associated with job recommendations.",
+      "type": "com.inokufu",
+      "verbs": ["POST"]
+    },
+    "palm": {
+      "description": "Communication with the PALM matching API to retrieve appropriate offers",
+      "type": "io.vision.palmapp",
+      "verbs": ["POST"]
+    },
+    "megaapply": {
+      "description": "Automatically send job applications",
+      "type": "com.megaapply.www",
+      "verbs": ["POST"]
+    },
+    "visions": {
+      "description": "General Visions related information",
+      "type": "visions.cozy",
+      "verbs": ["ALL"]
     }
   }
 }

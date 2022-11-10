@@ -58,13 +58,34 @@
   "becominoTitle": "Becomino",
   "pitangooTitle": "PITANGOO",
   "formationOffers": "Offres de formation",
+  "offers": {
+    "smartskills": "Offres de formation - Bilan d'orientation",
+    "reo": "Offres de formation - Réorientation"
+  },
   "jobsInTension": "Mes Propositions de métiers en tensions, d'offres d'emploi et de formation",
   "jobsOffers": "Offres d'emplois des métiers en tension",
   "offersPorposed": "Métiers en tension proposés/sélectionnés",
   "publicPageTitle": "Récapitulatif du Bilan",
   "myTalent": "Mes talents de personne",
   "resultsReo": "Mes Résultats du Bilan de RéOrientation",
-  "resultsBo" : "Mes Résultats du Bilan d'Orientation",
+  "resultsBo": "Mes Résultats du Bilan d'Orientation",
   "softSkillsCV": "Mes soft skills qui ressortent de mon CV ou de ma lettre de motivation",
-  "JobExplore": "Métiers, secteurs et contextes professionnels que j'explore"
+  "JobExplore": "Métiers, secteurs et contextes professionnels que j'explore",
+  "reo": {
+    "offers": "Mes offres de formation"
+  },
+  "home": {
+    "bo": {
+      "proposals": {
+        "default": "Mes propositions de métiers en tensions, d'offres d'emploi et de formation",
+        "numerique": "Mes matchings formations pour le speedating"
+      }
+    }
+  },
+  "visionsContext": {
+    "numerique": {
+      "rdv": "Je prends RDV",
+      "pre_jobscroller": "Super tu as trouvé une formation qui t'intéresse ! Inscris-toi pour pouvoir rencontrer les acteurs les 23 & 24 Novembre aux créneaux de ton choix."
+    }
+  }
 }

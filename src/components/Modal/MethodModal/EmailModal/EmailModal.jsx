@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
+import { useClient } from 'cozy-client';
+import { trySendBOMail } from '../../../../utils/sendMail';
 import GenericButton from '../../../Button/GenericButton/GenericButton';
+import { useVisionsAccount } from '../../../Hooks/useVisionsAccount';
 
-const publicLinkTMP = `${location.protocol}//${location.host}/#/bilanorientation?shareCode=45dsf45`;
-
-const EmailModal = ({ offerDataMapping }) => {
-  const email = offerDataMapping['envoi bilan'];
+const EmailModal = ({ offerAPI, offerDataMapping, btnClickFc, email }) => {
+  const { visionsAccount } = useVisionsAccount();
+  const client = useClient();
   const [confirmed, setConfirmed] = useState(false);
 
-  const handleClick = e => {
-    e.stopPropagation();
+  const emailModalClickFc = async () => {
+    if (!email) return;
     setConfirmed(true);
-    if (offerDataMapping['lien redirection']) {
+
+    await trySendBOMail(client, email, email, visionsAccount);
+
+    const usedUrl = offerDataMapping.url_redirection
+      ? offerDataMapping.url_redirection
+      : offerAPI.url;
+    if (usedUrl) {
       setTimeout(() => {
-        window.open(offerDataMapping['lien redirection']);
+        window.open(usedUrl);
       }, 2000);
     }
   };
 
+  const handleClick = e => {
+    e.stopPropagation();
+    btnClickFc(emailModalClickFc);
+  };
+
   const data = {
     title: !confirmed
-      ? `Vous êtes intéressé par la formation ${offerDataMapping.formation}`
+      ? `Vous êtes intéressé par la formation ${offerDataMapping.formation_name}`
       : `Votre bilan a bien été partagé à ${email}`,
     body: !confirmed ? (
       <>
@@ -40,13 +53,16 @@ const EmailModal = ({ offerDataMapping }) => {
           Vous pouvez également partager le lien suivant pour donner accès à
           votre bilan d&apos;orientation : <br />
           <br />
-          <a href={'/#/bilanorientation'} className='modalPublicLink'>
-            {publicLinkTMP}
+          <a
+            href={sessionStorage.getItem('pubshare')}
+            className='modalPublicLink'
+          >
+            {sessionStorage.getItem('pubshare')}
           </a>
-          {offerDataMapping['lien redirection'] !== '' && (
-            <p>Vous allez être redirigé vers {offerDataMapping.OF}</p>
-          )}
         </p>
+        {offerDataMapping.url_redirection !== '' && (
+          <p>Vous allez être redirigé vers {offerDataMapping.OF}</p>
+        )}
       </>
     )
   };

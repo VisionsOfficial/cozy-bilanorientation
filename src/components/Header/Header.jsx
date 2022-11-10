@@ -9,7 +9,9 @@ import Icon from 'cozy-ui/transpiled/react/Icon';
 import PerviousIcon from 'cozy-ui/transpiled/react/Icons/Previous';
 import backgroundImage from '../../assets/images/en-tete-vg.svg';
 import ShareBilanBtn from '../Button/ShareBilanBtn';
-import ModalGeneric from '../Modal/ModalGeneric/ModalGeneric';
+import GlobalModal from '../Modal/GlobalModal';
+import useVisionsContextRules from '../Hooks/useVisionsContextRules';
+import Loader from '../Loader';
 
 const styles = {
   backButton: {
@@ -22,6 +24,11 @@ const styles = {
 const Title = () => {
   const { pathname } = useLocation();
   const { t } = useI18n();
+  const { contextRules, isLoading } = useVisionsContextRules();
+
+  if (isLoading) {
+    return <Loader text='Chargement...' />;
+  }
 
   let title = t('orientationReport');
   switch (pathname) {
@@ -41,7 +48,7 @@ const Title = () => {
       title = t('wip.inProgress');
       break;
     case '/jobsintension':
-      title = t('jobsInTension');
+      title = t(contextRules.homePage.bo.text.proposals);
       break;
     case '/index':
       title = t('List.myReport');
@@ -58,6 +65,9 @@ const Title = () => {
     case '/resumes':
       title = t('List.resumes');
       break;
+    case '/reoOffers':
+      title = t('reo.offers');
+      break;
   }
 
   return <>{title}</>;
@@ -68,8 +78,8 @@ const Header = () => {
   const { pathname } = useLocation();
   const history = useHistory();
 
-  const showBackButton = pathname !== '/index' ? true : false;
-  const showBackButtonPublic = pathname !== '/bilanorientation' ? true : false;
+  const showBackButton = pathname !== '/index';
+  const isPublicPage = pathname === '/public';
 
   const goBack = useCallback(() => history.goBack(), [history]);
   // if (isMobile) return null
@@ -95,7 +105,7 @@ const Header = () => {
     >
       <div className='u-flex headerContent'>
         <div className='u-flex' style={{ width: '100%' }}>
-          {showBackButton && showBackButtonPublic && (
+          {showBackButton && !isPublicPage && (
             <IconButton
               className='u-mr-1'
               style={styles.backButton}
@@ -108,10 +118,16 @@ const Header = () => {
             <Title />
           </Typography>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
-          <ModalGeneric open={open} closeModal={closeModal} />
-        </div>
+        {isPublicPage === false && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <ShareBilanBtn absolute={true} onClickFc={OpenModal} />
+            <GlobalModal
+              hardcodedMethod={5}
+              open={open}
+              closeModal={closeModal}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

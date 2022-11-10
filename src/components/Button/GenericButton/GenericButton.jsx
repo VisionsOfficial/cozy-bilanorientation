@@ -8,15 +8,34 @@ import '../../../styles/genericbtn.styl';
 const GenericButton = ({
   hasArrow = true,
   textContent,
+  color,
   type,
+  role,
+  tag = 'button',
   onClickFc = () => {},
   disabled = false,
   eyeIcon = false
 }) => {
+  let CustomTag = tag;
+
+  let colorGenericButton;
+  switch (color) {
+    case 'gradient':
+      colorGenericButton = 'genericButtonGradient';
+      break;
+    default:
+      colorGenericButton = '';
+      break;
+  }
+
   return (
-    <button
-      className={`genericButton ${disabled ? 'btnDisabled' : ''}`}
+    <CustomTag
+      className={`genericButton ${
+        disabled ? 'btnDisabled' : ''
+      } ${colorGenericButton}`}
       type={type}
+      tabIndex='0'
+      role={role}
       onClick={e => onClickFc(e)}
     >
       <p>{textContent}</p>
@@ -25,7 +44,7 @@ const GenericButton = ({
           <Icon icon={eyeIcon ? Eye : Arrow} />
         </div>
       )}
-    </button>
+    </CustomTag>
   );
 };
 
