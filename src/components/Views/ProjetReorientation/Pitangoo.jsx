@@ -4,8 +4,7 @@ import { useI18n } from 'cozy-ui/transpiled/react/I18n';
 import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
 import Accordion from '../../Accordion';
-// import icon from "../../../assets/icons/pitangoo.svg";
-import icon from '../../../assets/icons/default_icon.svg';
+import icon from '../../../assets/icons/pitangoo.svg';
 import { useJsonFiles } from '../../Hooks/useJsonFiles';
 import BadgeGraph from '../../Badge/BadgeGraph/BadgeGraph';
 

@@ -45,7 +45,7 @@ const Orientoi = ({
   const datas = jsonFiles.orientoi.data?.data?.jobCards || [];
   const badges = jsonFiles.orientoi.data?.data?.badges || [];
   const usedJobcards = isTension
-    ? datas.filter(o => o.isTension === true).slice(0.3)
+    ? datas.filter(o => o.isTension === true).slice(0, 3)
     : datas.filter(
         o =>
           !o.isTension ||

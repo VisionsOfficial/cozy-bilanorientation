@@ -1,17 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-import { useI18n } from 'cozy-ui/transpiled/react/I18n'
-import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid'
+import { useI18n } from 'cozy-ui/transpiled/react/I18n';
+import Grid from 'cozy-ui/transpiled/react/MuiCozyTheme/Grid';
 
-import Accordion from '../../Accordion'
-// import icon from "../../../assets/icons/pitangoo.svg";
-import icon from '../../../assets/icons/default_icon.svg'
-import { useJsonFiles } from '../../Hooks/useJsonFiles'
+import Accordion from '../../Accordion';
+import icon from '../../../assets/icons/pitangoo.svg';
+import { useJsonFiles } from '../../Hooks/useJsonFiles';
 
 const PitangooOLD = () => {
-  const { t } = useI18n()
-  const { jsonFiles } = useJsonFiles()
-  const data = jsonFiles.pitangoo?.data?.data || []
+  const { t } = useI18n();
+  const { jsonFiles } = useJsonFiles();
+  const data = jsonFiles.pitangoo?.data?.data || [];
 
   return (
     <Accordion icon={icon} title={t('pitangooTitle')}>
@@ -32,7 +31,7 @@ const PitangooOLD = () => {
           ))}
       </Grid>
     </Accordion>
-  )
-}
+  );
+};
 
-export default PitangooOLD
+export default PitangooOLD;
