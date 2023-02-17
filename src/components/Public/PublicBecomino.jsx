@@ -10,6 +10,8 @@ import EducationalContent from '../Views/JobExplorationsPage/EducationalContent'
 const PublicBecomino = ({ data }) => {
   const { t } = useI18n();
 
+  if (!data?.length) return null;
+
   return (
     <Accordion icon={icon} title={t('becominoTitle')}>
       <Grid className='u-mv-1 u-ph-1' container spacing={2}>

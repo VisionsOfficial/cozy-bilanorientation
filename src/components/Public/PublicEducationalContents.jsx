@@ -13,6 +13,7 @@ const PublicEducationalContents = ({ data }) => {
   const { t } = useI18n();
   const datas = getLastElements(data, 4);
 
+  if (!datas?.length) return null;
   return (
     <Accordion icon={InokufuIcon} title={t('educationalContents')}>
       <Grid className='u-mv-1 u-ph-1' container spacing={2}>

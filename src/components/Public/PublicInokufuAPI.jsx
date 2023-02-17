@@ -23,6 +23,8 @@ const styles = {
 const PublicInokufuAPI = ({ data, isPublicPage = true }) => {
   const { t } = useI18n();
 
+  if (!data?.length) return;
+
   return (
     <Accordion
       icon={icon}

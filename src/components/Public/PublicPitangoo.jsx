@@ -10,6 +10,8 @@ import BadgeGraph from '../Badge/BadgeGraph/BadgeGraph';
 const PublicPitangoo = ({ headerBg, addStyles, data }) => {
   const { t } = useI18n();
 
+  if (!data?.length) return null;
+
   return (
     <Accordion
       icon={icon}

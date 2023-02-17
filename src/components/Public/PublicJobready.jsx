@@ -20,6 +20,8 @@ const JobReady = ({ data }) => {
   const { t } = useI18n();
   const datas = data;
 
+  if (!datas?.length) return null;
+
   return (
     <Accordion icon={JobReadyIcon} title={t('badges')}>
       <Grid className='u-mv-1' container spacing={2}>

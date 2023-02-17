@@ -21,6 +21,8 @@ const bgBadge = 'linear-gradient(85deg, #16f7b415, #21bbee15)';
 const PublicPalmAPI = ({ data }) => {
   const { t } = useI18n();
 
+  if (!data?.length) return null;
+
   return (
     <Accordion
       icon={icon}
@@ -37,7 +39,16 @@ const PublicPalmAPI = ({ data }) => {
           </Grid>
         )}
         {data.map(
-          ({ mission_name, similarity, short_summary, email, mission_customer_url }, idx) => (
+          (
+            {
+              mission_name,
+              similarity,
+              short_summary,
+              email,
+              mission_customer_url
+            },
+            idx
+          ) => (
             <Grid key={idx} item xs={12} sm={12} lg={6} xl={6}>
               <Badge
                 title={mission_name}
